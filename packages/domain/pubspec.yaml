@@ -1,4 +1,4 @@
-name: data
+name: domain
 description: "A new Flutter package project."
 version: 0.0.1
 publish_to: none
@@ -11,10 +11,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-    
-  firebase_auth: ^6.1.2
-  cloud_firestore: ^6.1.0
   equatable: ^2.0.7
+  data:
+    path: ../data
+  riverpod: ^3.0.3
 
 dev_dependencies:
   flutter_test:

@@ -1,0 +1,85 @@
+import 'package:domain/domain.dart';
+import 'package:domain/login/models/firebase_auth_errors.dart';
+import 'package:domain/users/models/create_user_entity.dart';
+import 'package:domain/users/models/user_entity.dart';
+import 'package:flutter_riverpod/legacy.dart';
+import 'package:folly/extensions/string_extensions.dart';
+import 'package:folly/features/register/models/register_state.dart';
+
+class RegisterNotifier extends StateNotifier<RegisterState> {
+  RegisterNotifier({
+    required this.checkUserAvailability,
+    required this.createUser,
+  }) : super(RegisterState());
+
+  final CheckUsernameAvailability checkUserAvailability;
+  final CreateUser createUser;
+
+  Future<void> register({
+    required UserEntity user,
+    required String password,
+    required String repeatPassword,
+  }) async {
+    List<RegisterError> errors = [
+      if (!user.email.isValidEmail) RegisterError.emailNotValid,
+      if (!password.isStrongPassword) RegisterError.passwordMustBeStronger,
+      if (password != repeatPassword) RegisterError.passwordNotMatch,
+    ];
+
+    if (errors.isNotEmpty) {
+      state = state.copyWith(status: RegisterStatus.initial, errors: errors);
+    } else {
+      state = state.copyWith(status: RegisterStatus.loading);
+
+      final result = await checkUserAvailability(user.username);
+
+      result.when((isAvailable) {
+        if (isAvailable) {
+          _createUser(
+            user: CreateUserEntity(data: user, password: password),
+          );
+        } else {
+          state = state.copyWith(
+            status: RegisterStatus.initial,
+            errors: [RegisterError.usernameAlreadyInUse],
+          );
+        }
+      }, (failure) => _onError(failure));
+    }
+  }
+
+  Future<void> _createUser({required CreateUserEntity user}) async {
+    final result = await createUser(user);
+
+    result.when(
+      (user) => state = state.copyWith(status: RegisterStatus.success),
+      (failure) => _onError(failure),
+    );
+  }
+
+  void _onError(Object failure) {
+    if (failure is FirebaseAuthErrors) {
+      final registerError = RegisterError.fromFirebaseAuthError(failure);
+
+      state = state.copyWith(
+        status: registerError.isEmailAlreayInUse
+            ? RegisterStatus.initial
+            : RegisterStatus.error,
+        errors: [registerError],
+      );
+    } else {
+      state = state.copyWith(
+        status: RegisterStatus.error,
+        errors: [RegisterError.unknown],
+      );
+    }
+  }
+}
+
+final registerNotifierProvider =
+    StateNotifierProvider<RegisterNotifier, RegisterState>(
+      (ref) => RegisterNotifier(
+        checkUserAvailability: ref.watch(checkUserAvailabilityProvider),
+        createUser: ref.watch(createUserProvider),
+      ),
+    );
