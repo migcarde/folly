@@ -122,6 +122,18 @@ abstract class AppLocalizations {
   /// **'Password'**
   String get password;
 
+  /// No description provided for @username.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get username;
+
+  /// No description provided for @tell_something_about_you.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell something about you'**
+  String get tell_something_about_you;
+
   /// No description provided for @login.
   ///
   /// In en, this message translates to:
@@ -193,6 +205,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Email not valid'**
   String get email_not_valid;
+
+  /// No description provided for @username_already_in_use.
+  ///
+  /// In en, this message translates to:
+  /// **'Username already in use'**
+  String get username_already_in_use;
 
   /// No description provided for @name.
   ///

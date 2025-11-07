@@ -21,6 +21,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get password => 'Password';
 
   @override
+  String get username => 'Username';
+
+  @override
+  String get tell_something_about_you => 'Tell something about you';
+
+  @override
   String get login => 'Login';
 
   @override
@@ -59,6 +65,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get email_not_valid => 'Email not valid';
+
+  @override
+  String get username_already_in_use => 'Username already in use';
 
   @override
   String get name => 'Name';

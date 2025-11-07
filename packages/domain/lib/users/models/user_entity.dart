@@ -6,6 +6,7 @@ class UserEntity extends Equatable {
     required this.uid,
     required this.email,
     required this.username,
+    required this.biography,
     required this.firebaseToken,
     required this.locale,
   });
@@ -13,6 +14,7 @@ class UserEntity extends Equatable {
   final String uid;
   final String email;
   final String username;
+  final String biography;
   final String firebaseToken;
   final String locale;
 
@@ -20,12 +22,36 @@ class UserEntity extends Equatable {
     uid: uid,
     email: email,
     username: username,
+    biography: biography,
     firebaseToken: firebaseToken,
     locale: locale,
   );
 
   @override
-  List<Object?> get props => [uid, email, username, firebaseToken, locale];
+  List<Object?> get props => [
+    uid,
+    email,
+    username,
+    biography,
+    firebaseToken,
+    locale,
+  ];
+
+  UserEntity copyWith({
+    String? uid,
+    String? email,
+    String? username,
+    String? biography,
+    String? firebaseToken,
+    String? locale,
+  }) => UserEntity(
+    uid: uid ?? this.uid,
+    email: email ?? this.email,
+    username: username ?? this.username,
+    biography: biography ?? this.biography,
+    firebaseToken: firebaseToken ?? this.firebaseToken,
+    locale: locale ?? this.locale,
+  );
 }
 
 extension UserRemoteEntityExtensions on UserRemoteEntity {
@@ -33,6 +59,7 @@ extension UserRemoteEntityExtensions on UserRemoteEntity {
     uid: uid,
     email: email,
     username: username,
+    biography: biography,
     firebaseToken: firebaseToken,
     locale: locale,
   );
