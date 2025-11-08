@@ -13,7 +13,7 @@ abstract class UserRepository {
   Future<Result<bool>> checkUsernameAvailability({required String username});
 }
 
-final userRepositoryProvider = Provider<UserRepository>(
+final userRepositoryProvider = Provider.autoDispose<UserRepository>(
   (ref) => UserRepositoryImpl(
     userRemoteDataSource: ref.watch(userRemoteDatasourceProvider),
     loginRemoteDatasource: ref.watch(loginRemoteDatasourceProvider),

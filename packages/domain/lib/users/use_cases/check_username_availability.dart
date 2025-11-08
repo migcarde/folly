@@ -13,8 +13,9 @@ class CheckUsernameAvailability implements BaseUseCase<bool, String> {
       userRepository.checkUsernameAvailability(username: params);
 }
 
-final checkUserAvailabilityProvider = Provider<CheckUsernameAvailability>(
-  (ref) => CheckUsernameAvailability(
-    userRepository: ref.watch(userRepositoryProvider),
-  ),
-);
+final checkUserAvailabilityProvider =
+    Provider.autoDispose<CheckUsernameAvailability>(
+      (ref) => CheckUsernameAvailability(
+        userRepository: ref.watch(userRepositoryProvider),
+      ),
+    );
