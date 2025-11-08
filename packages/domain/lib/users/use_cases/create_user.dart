@@ -15,6 +15,6 @@ class CreateUser implements BaseUseCase<UserEntity, CreateUserEntity> {
       userRepository.createUser(user: params);
 }
 
-final createUserProvider = Provider<CreateUser>(
+final createUserProvider = Provider.autoDispose<CreateUser>(
   (ref) => CreateUser(userRepository: ref.watch(userRepositoryProvider)),
 );

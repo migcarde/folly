@@ -24,7 +24,7 @@ abstract class LoginRepository {
   });
 }
 
-final loginRepositoryProvider = Provider<LoginRepository>(
+final loginRepositoryProvider = Provider.autoDispose<LoginRepository>(
   (ref) => LoginRepositoryImpl(
     remoteDatasource: ref.watch(loginRemoteDatasourceProvider),
   ),

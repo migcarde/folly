@@ -1,4 +1,5 @@
 import 'package:folly/features/home/home_page.dart';
+import 'package:folly/features/login/login_page.dart';
 import 'package:folly/features/register/register_page.dart';
 import 'package:folly/routes/paths.dart';
 import 'package:go_router/go_router.dart';
@@ -11,7 +12,7 @@ class Routes {
     ),
     GoRoute(
       path: Paths.login.route,
-      builder: (context, state) => const RegisterPage(),
+      builder: (context, state) => const LoginPage(),
     ),
     GoRoute(
       path: Paths.register.route,
