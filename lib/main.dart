@@ -22,6 +22,7 @@ class MainApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authNotfier = ref.watch(authNotifierProvider);
     ref.read(authNotifierProvider.notifier).listen();
+
     return MaterialApp.router(
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,

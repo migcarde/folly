@@ -31,7 +31,7 @@ class LoadingButton extends StatelessWidget {
           height: AppDimens.buttonHeight,
           alignment: Alignment.center,
           padding: const EdgeInsets.all(AppDimens.buttonPadding),
-          decoration: ContainerDecorators.card(color: style.backgroundColor),
+          decoration: ContainerDecorators.button(color: style.backgroundColor),
           child: isLoading
               ? FittedBox(
                   child: CircularProgressIndicator(color: style.textColor),

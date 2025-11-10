@@ -5,6 +5,7 @@ import 'package:data/remote/users/user_remote_datasource.dart';
 class UserRemoteDatasourceImpl extends UserRemoteDataSource {
   static const _usersCollection = 'users';
   static const _usernameCollection = 'usernames';
+  static const _geminiCollection = 'gemini';
 
   final FirebaseFirestore _instance = FirebaseFirestore.instance;
 
@@ -14,7 +15,7 @@ class UserRemoteDatasourceImpl extends UserRemoteDataSource {
       _instance.collection(_usernameCollection).doc(user.uid).set({
         'username': user.username,
       }),
-      _instance.collection(_usersCollection).doc(user.uid).set(user.toJson()),
+      _instance.collection(_usersCollection).add(user.toJson()),
     ]);
   }
 
@@ -42,5 +43,15 @@ class UserRemoteDatasourceImpl extends UserRemoteDataSource {
         .get();
 
     return result.docs.isEmpty;
+  }
+
+  @override
+  Future<String> getAIToken() async {
+    final result = await _instance
+        .collection(_geminiCollection)
+        .doc('key')
+        .get();
+
+    return result.data()?['value'] ?? '';
   }
 }

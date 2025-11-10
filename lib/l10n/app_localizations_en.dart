@@ -104,4 +104,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get you_must_enter_your_credentials_again_to_delete_your_account =>
       'You must delete your credentials again to delete your account.';
+
+  @override
+  String get challenge_time => 'Challenge time!';
+
+  @override
+  String get publish_a_story => 'Publish a story';
 }
