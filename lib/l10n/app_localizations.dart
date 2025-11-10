@@ -278,6 +278,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You must delete your credentials again to delete your account.'**
   String get you_must_enter_your_credentials_again_to_delete_your_account;
+
+  /// No description provided for @challenge_time.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenge time!'**
+  String get challenge_time;
+
+  /// No description provided for @publish_a_story.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish a story'**
+  String get publish_a_story;
 }
 
 class _AppLocalizationsDelegate

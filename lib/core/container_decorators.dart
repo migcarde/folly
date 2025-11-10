@@ -11,4 +11,9 @@ class ContainerDecorators {
     color: color,
     borderRadius: BorderRadius.circular(AppDimens.circularRadius),
   );
+
+  static BoxDecoration button({Color color = Colors.white}) => BoxDecoration(
+    color: color,
+    borderRadius: BorderRadius.circular(AppDimens.buttonRadius),
+  );
 }

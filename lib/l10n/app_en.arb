@@ -59,5 +59,9 @@
     "all_data_related_to_this_account_will_be_deleted_and_cannot_be_recovered": "All data related to this account will be deleted and cannot be recovered.",
     "@all_data_related_to_this_account_will_be_deleted_and_cannot_be_recovered": {},
     "you_must_enter_your_credentials_again_to_delete_your_account": "You must delete your credentials again to delete your account.",
-    "@you_must_enter_your_credentials_again_to_delete_your_account": {}
+    "@you_must_enter_your_credentials_again_to_delete_your_account": {},
+    "challenge_time": "Challenge time!",
+    "@challenge_time": {},
+    "publish_a_story": "Publish a story",
+    "@publish_a_story": {}
 }

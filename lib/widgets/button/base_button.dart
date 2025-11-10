@@ -3,8 +3,8 @@ import 'package:folly/core/app_dimens.dart';
 import 'package:folly/core/container_decorators.dart';
 import 'package:folly/widgets/button/button_type.dart';
 
-class PrimaryButton extends StatelessWidget {
-  const PrimaryButton({
+class BaseButton extends StatelessWidget {
+  const BaseButton({
     super.key,
     required this.text,
     required this.onTap,
@@ -31,7 +31,7 @@ class PrimaryButton extends StatelessWidget {
           height: AppDimens.buttonHeight,
           alignment: Alignment.center,
           padding: const EdgeInsets.all(AppDimens.buttonPadding),
-          decoration: ContainerDecorators.card(color: style.backgroundColor),
+          decoration: ContainerDecorators.button(color: style.backgroundColor),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

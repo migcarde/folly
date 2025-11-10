@@ -7,3 +7,4 @@ export 'package:domain/dependency_injection/local_dependency_injection.dart';
 export 'package:domain/login/use_cases/login.dart';
 export 'package:domain/login/use_cases/auth_listener.dart';
 export 'package:domain/login/use_cases/logout.dart';
+export 'package:domain/challenges/challenges_repository.dart';

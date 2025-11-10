@@ -58,5 +58,9 @@
     "all_data_related_to_this_account_will_be_deleted_and_cannot_be_recovered": "Toda la información asociada a esta cuenta será borrada y no podrá ser recuperada.",
     "@all_data_related_to_this_account_will_be_deleted_and_cannot_be_recovered": {},
     "you_must_enter_your_credentials_again_to_delete_your_account": "Vuelve a escribir tus credenciales para eliminar tu cuenta.",
-    "@you_must_enter_your_credentials_again_to_delete_your_account": {}
+    "@you_must_enter_your_credentials_again_to_delete_your_account": {},
+    "challenge_time": "¡Hora del reto!",
+    "@challenge_time": {},
+    "publish_a_story": "Publica una historia",
+    "@publish_a_story": {}
 }

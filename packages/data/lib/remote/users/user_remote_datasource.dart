@@ -5,4 +5,5 @@ abstract class UserRemoteDataSource {
   Future<UserRemoteEntity> getUser({required String uid});
   Future<void> deleteUser({required String uid});
   Future<bool> checkUsernameAvailability({required String username});
+  Future<String> getAIToken();
 }
