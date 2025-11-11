@@ -17,6 +17,7 @@ enum RegisterStatus {
 enum RegisterError {
   emailNotValid,
   emailAlreadyInUse,
+  nameEmpty,
   passwordNotMatch,
   passwordMustBeStronger,
   usernameAlreadyInUse,
@@ -25,6 +26,7 @@ enum RegisterError {
 
   bool get isEmailNotValid => this == RegisterError.emailNotValid;
   bool get isEmailAlreayInUse => this == RegisterError.emailAlreadyInUse;
+  bool get isNameEmpty => this == RegisterError.nameEmpty;
   bool get isPasswordError => this == RegisterError.passwordNotMatch;
   bool get isPasswordMustBeStronger =>
       this == RegisterError.passwordMustBeStronger;
@@ -38,6 +40,8 @@ enum RegisterError {
         return l10n.email_not_valid;
       case RegisterError.emailAlreadyInUse:
         return l10n.user_already_registered_please_use_another_email;
+      case RegisterError.nameEmpty:
+        return l10n.name_is_required;
       case RegisterError.passwordNotMatch:
         return l10n.password_does_not_match;
       case RegisterError.passwordMustBeStronger:

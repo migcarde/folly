@@ -23,6 +23,7 @@ class RegisterMobileLayout extends ConsumerStatefulWidget {
 
 class _RegisterMobileLayoutState extends ConsumerState<RegisterMobileLayout> {
   final emailController = TextEditingController();
+  final nameController = TextEditingController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final repeatPasswordController = TextEditingController();
@@ -57,6 +58,16 @@ class _RegisterMobileLayoutState extends ConsumerState<RegisterMobileLayout> {
                 errorText: state.errors.hasEmailErrors
                     ? state.errors.getEmailErrorMessage(context)
                     : null,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: AppDimens.m),
+                child: BaseTextField(
+                  hint: l10n.name,
+                  controller: nameController,
+                  errorText: state.errors.contains(RegisterError.nameEmpty)
+                      ? l10n.name_is_required
+                      : null,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: AppDimens.m),
@@ -117,6 +128,7 @@ class _RegisterMobileLayoutState extends ConsumerState<RegisterMobileLayout> {
                 .register(
                   user: UserEntity(
                     uid: '',
+                    name: nameController.text,
                     email: emailController.text,
                     biography: bioController.text,
                     username: usernameController.text,

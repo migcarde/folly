@@ -15,7 +15,7 @@ class UserRemoteDatasourceImpl extends UserRemoteDataSource {
       _instance.collection(_usernameCollection).doc(user.uid).set({
         'username': user.username,
       }),
-      _instance.collection(_usersCollection).add(user.toJson()),
+      _instance.collection(_usersCollection).doc(user.uid).set(user.toJson()),
     ]);
   }
 
