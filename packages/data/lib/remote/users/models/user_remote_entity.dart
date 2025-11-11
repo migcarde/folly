@@ -4,6 +4,7 @@ class UserRemoteEntity extends Equatable {
   const UserRemoteEntity({
     required this.uid,
     required this.email,
+    required this.name,
     required this.username,
     required this.biography,
     required this.firebaseToken,
@@ -11,6 +12,7 @@ class UserRemoteEntity extends Equatable {
   });
 
   final String uid;
+  final String name;
   final String email;
   final String username;
   final String biography;
@@ -22,6 +24,7 @@ class UserRemoteEntity extends Equatable {
     required Map<String, dynamic> json,
   }) => UserRemoteEntity(
     uid: uid,
+    name: json['name'],
     email: json['email'],
     username: json['username'],
     biography: json['biography'],
@@ -31,6 +34,7 @@ class UserRemoteEntity extends Equatable {
 
   Map<String, dynamic> toJson() => {
     'email': email,
+    'name': name,
     'username': username,
     'biography': biography,
     'firebaseToken': firebaseToken,
@@ -40,6 +44,7 @@ class UserRemoteEntity extends Equatable {
   @override
   List<Object?> get props => [
     uid,
+    name,
     email,
     username,
     biography,

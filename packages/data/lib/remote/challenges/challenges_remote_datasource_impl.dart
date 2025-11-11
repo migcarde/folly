@@ -21,7 +21,7 @@ class ChallengesRemoteDatasourceImpl implements ChallengesRemoteDatasource {
     The challenge must be a physical or social task that takes less than 5 minutes and is purely for fun. Also it must avoid dangerous and sexual content and be appropriate for all ages.
 
     The output must be a short, clear, and direct instruction, formatted exactly as follows:
-    [Specific Instruction/Task]
+    Specific Instruction/Task
 
     Example:
     Spend 30 seconds interacting with an imaginary, elaborately decorated hat on your head.

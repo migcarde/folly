@@ -170,6 +170,12 @@ abstract class AppLocalizations {
   /// **'User is already registered, please, use another email'**
   String get user_already_registered_please_use_another_email;
 
+  /// No description provided for @name_is_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Name is required'**
+  String get name_is_required;
+
   /// No description provided for @invalid_credentials_please_try_again.
   ///
   /// In en, this message translates to:

@@ -24,6 +24,8 @@
     "@repeat_password": {},
     "user_already_registered_please_use_another_email": "Usuario registrado, por favor, usa otro correo",
     "@user_already_registered_please_use_another_email": {},
+    "name_is_required": "El nombre es obligatorio",
+    "@name_is_required": {},
     "invalid_credentials_please_try_again": "Las credenciales no son válidas, por favor, inténtalo de nuevo",
     "@invalid_credentials_please_try_again": {},
     "sorry_we_have_problems_please_try_again_later": "Ha ocurrido un problema inesperado, por favor, inténtalo de nuevo más tarde",

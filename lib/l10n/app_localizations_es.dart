@@ -46,6 +46,9 @@ class AppLocalizationsEs extends AppLocalizations {
       'Usuario registrado, por favor, usa otro correo';
 
   @override
+  String get name_is_required => 'El nombre es obligatorio';
+
+  @override
   String get invalid_credentials_please_try_again =>
       'Las credenciales no son válidas, por favor, inténtalo de nuevo';
 
