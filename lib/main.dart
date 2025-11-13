@@ -1,12 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:folly/features/auth_notifier.dart';
 import 'package:folly/firebase_options.dart';
 import 'package:folly/l10n/app_localizations.dart';
-import 'package:folly/routes/paths.dart';
-import 'package:folly/routes/routes.dart';
-import 'package:go_router/go_router.dart';
+import 'package:folly/routes/go_router_config.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,8 +17,7 @@ class MainApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authNotfier = ref.watch(authNotifierProvider);
-    ref.read(authNotifierProvider.notifier).listen();
+    final goRouterNotifier = ref.watch(goRouterProvider);
 
     return MaterialApp.router(
       supportedLocales: AppLocalizations.supportedLocales,
@@ -29,24 +25,7 @@ class MainApp extends ConsumerWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
       ),
-      routerConfig: GoRouter(
-        routes: Routes.list,
-        initialLocation: Paths.login.route,
-        refreshListenable: authNotfier,
-        redirect: (context, state) {
-          final isConnected = authNotfier.user != null;
-
-          if (!isConnected && state.fullPath != Paths.register.route) {
-            return Paths.login.route;
-          } else if (isConnected &&
-              (state.fullPath == Paths.register.route ||
-                  state.fullPath == Paths.login.route)) {
-            return Paths.home.route;
-          } else {
-            return null;
-          }
-        },
-      ),
+      routerConfig: goRouterNotifier,
     );
   }
 }

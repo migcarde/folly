@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:folly/core/app_dimens.dart';
 import 'package:folly/core/container_decorators.dart';
+import 'package:folly/widgets/button/button_size.dart';
 import 'package:folly/widgets/button/button_type.dart';
 
 class BaseButton extends StatelessWidget {
@@ -9,12 +10,14 @@ class BaseButton extends StatelessWidget {
     required this.text,
     required this.onTap,
     this.type = ButtonType.normal,
+    this.size = ButtonSize.large,
     this.leftIcon,
   });
 
   final String text;
   final VoidCallback onTap;
   final ButtonType type;
+  final ButtonSize size;
   final IconData? leftIcon;
 
   @override
@@ -27,12 +30,12 @@ class BaseButton extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          width: double.infinity,
           height: AppDimens.buttonHeight,
-          alignment: Alignment.center,
+          alignment: size.isSmall ? null : Alignment.center,
           padding: const EdgeInsets.all(AppDimens.buttonPadding),
           decoration: ContainerDecorators.button(color: style.backgroundColor),
           child: Row(
+            mainAxisSize: size.isSmall ? MainAxisSize.min : MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (leftIcon != null)

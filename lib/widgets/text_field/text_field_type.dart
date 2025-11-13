@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 enum TextFieldType {
   initial,
-  alternative;
+  alternative,
+  none;
+
+  bool get isNone => this == TextFieldType.none;
 
   TextFieldStyle getStyle(ThemeData theme) {
     switch (this) {
@@ -17,6 +20,12 @@ enum TextFieldType {
           textColor: theme.textTheme.bodyLarge?.color ?? Colors.white,
           backgroundColor: Colors.white,
           borderColor: theme.primaryColor,
+        );
+      case TextFieldType.none:
+        return TextFieldStyle(
+          textColor: Colors.transparent,
+          backgroundColor: Colors.transparent,
+          borderColor: Colors.transparent,
         );
     }
   }

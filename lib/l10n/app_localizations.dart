@@ -296,6 +296,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Publish a story'**
   String get publish_a_story;
+
+  /// No description provided for @camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get camera;
+
+  /// No description provided for @gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get gallery;
+
+  /// No description provided for @title.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get title;
+
+  /// No description provided for @invalid_file_type.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid file type'**
+  String get invalid_file_type;
+
+  /// No description provided for @please_use_one_of_these.
+  ///
+  /// In en, this message translates to:
+  /// **'Please, use one of these'**
+  String get please_use_one_of_these;
+
+  /// No description provided for @accept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get accept;
+
+  /// No description provided for @story_published.
+  ///
+  /// In en, this message translates to:
+  /// **'Story published'**
+  String get story_published;
 }
 
 class _AppLocalizationsDelegate

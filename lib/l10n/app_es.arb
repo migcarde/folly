@@ -64,5 +64,19 @@
     "challenge_time": "¡Hora del reto!",
     "@challenge_time": {},
     "publish_a_story": "Publica una historia",
-    "@publish_a_story": {}
+    "@publish_a_story": {},
+    "camera": "Cámara",
+    "@camera": {},
+    "gallery": "Galería",
+    "@gallery": {},
+    "title": "Título",
+    "@title": {},
+    "invalid_file_type": "Archivo no soportado",
+    "@invalid_file_type": {},
+    "please_use_one_of_these": "Por favor, usa uno de estos tipos",
+    "@please_use_one_of_these": {},
+    "accept": "Accept",
+    "@accept": {},
+    "story_published": "Historia publicada",
+    "@story_published": {}
 }
