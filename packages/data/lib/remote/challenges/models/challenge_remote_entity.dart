@@ -5,7 +5,7 @@ class ChallengeRemoteEntity extends Equatable {
   final String uid;
   final String text;
   final bool isCompleted;
-  final DateTime date;
+  final String date;
 
   const ChallengeRemoteEntity({
     required this.id,
@@ -25,7 +25,7 @@ class ChallengeRemoteEntity extends Equatable {
     uid: json['user_id'],
     text: json['text'],
     isCompleted: json['is_completed'],
-    date: (json['created_at'] as DateTime),
+    date: json['created_at'],
   );
 
   Map<String, dynamic> toJson() => {
