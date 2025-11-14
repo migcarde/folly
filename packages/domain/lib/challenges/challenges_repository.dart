@@ -5,7 +5,6 @@ import 'package:domain/domain.dart';
 import 'package:riverpod/riverpod.dart';
 
 abstract class ChallengesRepository {
-  Future<Result<void>> init();
   Future<Result<String>> createChallenge({
     required String uid,
     required String languageCode,

@@ -1,13 +1,13 @@
-import 'package:domain/login/login_repository.dart';
-import 'package:domain/login/models/firebase_user_entity.dart';
+import 'package:domain/login/auth_repository.dart';
+import 'package:domain/login/models/auth_entity.dart';
 import 'package:riverpod/riverpod.dart';
 
 class AuthListener {
-  final LoginRepository loginRepository;
+  final AuthRepository loginRepository;
 
   const AuthListener({required this.loginRepository});
 
-  Stream<FirebaseUserEntity?> call() => loginRepository.listenChanges();
+  Stream<AuthEntity?> call() => loginRepository.listenChanges();
 }
 
 final authListenerProvider = Provider.autoDispose<AuthListener>(

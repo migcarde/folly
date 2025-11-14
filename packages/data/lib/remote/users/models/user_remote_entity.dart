@@ -7,7 +7,7 @@ class UserRemoteEntity extends Equatable {
     required this.name,
     required this.username,
     required this.biography,
-    required this.firebaseToken,
+    required this.token,
     required this.locale,
   });
 
@@ -16,7 +16,7 @@ class UserRemoteEntity extends Equatable {
   final String email;
   final String username;
   final String biography;
-  final String firebaseToken;
+  final String token;
   final String locale;
 
   factory UserRemoteEntity.fromJson({
@@ -24,20 +24,21 @@ class UserRemoteEntity extends Equatable {
     required Map<String, dynamic> json,
   }) => UserRemoteEntity(
     uid: uid,
-    name: json['name'],
+    name: json['display_name'],
     email: json['email'],
     username: json['username'],
     biography: json['biography'],
-    firebaseToken: json['firebaseToken'],
+    token: json['token'],
     locale: json['locale'],
   );
 
   Map<String, dynamic> toJson() => {
+    'id': uid,
     'email': email,
-    'name': name,
+    'display_name': name,
     'username': username,
     'biography': biography,
-    'firebaseToken': firebaseToken,
+    'token': token,
     'locale': locale,
   };
 
@@ -48,7 +49,7 @@ class UserRemoteEntity extends Equatable {
     email,
     username,
     biography,
-    firebaseToken,
+    token,
     locale,
   ];
 }

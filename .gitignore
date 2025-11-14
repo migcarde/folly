@@ -49,3 +49,4 @@ firebase.json
 android/app/google-services.json
 pubspec.lock
 pubspec.lock
+.env

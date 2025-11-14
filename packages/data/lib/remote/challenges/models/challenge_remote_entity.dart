@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class ChallengeRemoteEntity extends Equatable {
@@ -6,7 +5,7 @@ class ChallengeRemoteEntity extends Equatable {
   final String uid;
   final String text;
   final bool isCompleted;
-  final DateTime date;
+  final String date;
 
   const ChallengeRemoteEntity({
     required this.id,
@@ -20,20 +19,18 @@ class ChallengeRemoteEntity extends Equatable {
   List<Object?> get props => [id, uid, text, isCompleted, date];
 
   factory ChallengeRemoteEntity.fromJson({
-    required String id,
     required Map<String, dynamic> json,
   }) => ChallengeRemoteEntity(
-    id: id,
-    uid: json['uid'],
+    id: json['id'],
+    uid: json['user_id'],
     text: json['text'],
-    isCompleted: json['isCompleted'],
-    date: (json['date'] as Timestamp).toDate(),
+    isCompleted: json['is_completed'],
+    date: json['created_at'],
   );
 
   Map<String, dynamic> toJson() => {
-    'uid': uid,
+    'user_id': uid,
     'text': text,
-    'isCompleted': isCompleted,
-    'date': date,
+    'is_completed': isCompleted,
   };
 }
