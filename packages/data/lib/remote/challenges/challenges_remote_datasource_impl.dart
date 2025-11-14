@@ -1,13 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+
 import 'package:data/remote/challenges/challenges_remote_datasource.dart';
 import 'package:data/remote/challenges/models/challenge_remote_entity.dart';
-import 'package:flutter_gemini/flutter_gemini.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ChallengesRemoteDatasourceImpl implements ChallengesRemoteDatasource {
-  static const _geminiCollection = 'gemini';
-  static const _challengesCollection = 'challenges';
+  static const _challengesCollection = 'Challenges';
 
-  final FirebaseFirestore _instance = FirebaseFirestore.instance;
+  final Supabase _supabase = Supabase.instance;
 
   @override
   Future<String> createChallenge({
@@ -29,62 +29,49 @@ class ChallengesRemoteDatasourceImpl implements ChallengesRemoteDatasource {
     Now, generate the daily folly challenge in $languageCode:
     """;
 
-    final result = await Gemini.instance.prompt(
-      parts: [Part.text(follyPrompt)],
-    );
-
     final today = DateTime.now();
+
+    final response = await _supabase.client.functions.invoke(
+      'generate_prompt',
+      body: jsonEncode({'prompt': follyPrompt}),
+    );
 
     final challenge = ChallengeRemoteEntity(
       id: '',
       uid: uid,
-      text: result?.output ?? '',
+      text: response.data['result'] ?? '',
       isCompleted: false,
       date: DateTime(today.year, today.month, today.day),
     );
 
-    await _instance.collection(_challengesCollection).add(challenge.toJson());
+    await _supabase.client
+        .from(_challengesCollection)
+        .insert(challenge.toJson());
 
     return challenge.text;
   }
 
   @override
-  Future<void> init() async {
-    final result = await _instance
-        .collection(_geminiCollection)
-        .doc('key')
-        .get();
-
-    final apiKey = result.data()?['value'] ?? '';
-
-    Gemini.init(apiKey: apiKey);
-  }
-
-  @override
   Future<ChallengeRemoteEntity?> getUserChallenge({required String uid}) async {
-    final result = await _instance
-        .collection(_challengesCollection)
-        .where('uid', isEqualTo: uid)
-        .limit(1)
-        .get();
+    final result = await _supabase.client
+        .from(_challengesCollection)
+        .select()
+        .eq('id', uid);
 
-    return result.docs.isEmpty
+    return result.isEmpty
         ? null
-        : ChallengeRemoteEntity.fromJson(
-            id: result.docs.first.id,
-            json: result.docs.first.data(),
-          );
+        : ChallengeRemoteEntity.fromJson(json: result.first);
   }
 
   @override
   Future<void> updateChallenge({
     required ChallengeRemoteEntity challenge,
-  }) async => await _instance
-      .collection(_challengesCollection)
-      .doc(challenge.id)
-      .set(challenge.toJson());
+  }) async => await _supabase.client
+      .from(_challengesCollection)
+      .update(challenge.toJson())
+      .eq('id', challenge.id);
 
   @override
   Future<void> deleteUserChallenge({required String id}) async =>
-      await _instance.collection(_challengesCollection).doc(id).delete();
+      await _supabase.client.from(_challengesCollection).delete().eq('id', id);
 }

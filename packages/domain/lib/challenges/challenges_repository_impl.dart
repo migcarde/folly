@@ -26,17 +26,6 @@ class ChallengesRepositoryImpl implements ChallengesRepository {
   }
 
   @override
-  Future<Result<void>> init() async {
-    try {
-      await challengesRemoteDatasource.init();
-
-      return Result.success(null);
-    } catch (e) {
-      return Result.failure(e);
-    }
-  }
-
-  @override
   Future<Result<ChallengeEntity?>> getUserChallenge({
     required String uid,
   }) async {

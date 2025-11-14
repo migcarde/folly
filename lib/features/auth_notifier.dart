@@ -1,4 +1,3 @@
-import 'package:domain/base/result.dart';
 import 'package:domain/domain.dart';
 import 'package:domain/users/models/user_entity.dart';
 import 'package:flutter/material.dart';
@@ -20,12 +19,8 @@ class AuthNotifier extends ChangeNotifier {
   void listen() async {
     authListener().listen((event) async {
       if (user == null && event != null && event.uid.isNotEmpty) {
-        final results = await Future.wait([
-          getUser(event.uid),
-          challengesRepository.init(),
-        ]);
+        final userResult = await getUser(event.uid);
 
-        final userResult = results[0] as Result<UserEntity>;
         userResult.ifSuccess((data) {
           user = data;
           notifyListeners();

@@ -1,20 +1,20 @@
 import 'package:domain/base/result.dart';
 import 'package:domain/dependency_injection/local_dependency_injection.dart';
-import 'package:domain/login/login_repository_impl.dart';
-import 'package:domain/login/models/firebase_user_entity.dart';
+import 'package:domain/login/auth_repository_impl.dart';
+import 'package:domain/login/models/auth_entity.dart';
 import 'package:riverpod/riverpod.dart';
 
-abstract class LoginRepository {
-  Future<Result<FirebaseUserEntity>> loginWithEmailAndPassword({
+abstract class AuthRepository {
+  Future<Result<AuthEntity>> loginWithEmailAndPassword({
     required String email,
     required String password,
   });
   Future<Result<void>> logout();
-  Future<Result<FirebaseUserEntity>> createUserWithEmailAndPassword({
+  Future<Result<AuthEntity>> createUserWithEmailAndPassword({
     required String email,
     required String password,
   });
-  Stream<FirebaseUserEntity?> listenChanges();
+  Stream<AuthEntity?> listenChanges();
   bool get isLoggedIn;
   String get uid;
   Future<Result<void>> deleteAccount();
@@ -24,8 +24,8 @@ abstract class LoginRepository {
   });
 }
 
-final loginRepositoryProvider = Provider.autoDispose<LoginRepository>(
-  (ref) => LoginRepositoryImpl(
-    remoteDatasource: ref.watch(loginRemoteDatasourceProvider),
+final loginRepositoryProvider = Provider.autoDispose<AuthRepository>(
+  (ref) => AuthRepositoryImpl(
+    remoteDatasource: ref.watch(authRemoteDatasourceProvider),
   ),
 );

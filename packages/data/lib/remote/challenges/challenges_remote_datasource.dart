@@ -1,7 +1,6 @@
 import 'package:data/remote/challenges/models/challenge_remote_entity.dart';
 
 abstract class ChallengesRemoteDatasource {
-  Future<void> init();
   Future<String> createChallenge({
     required String uid,
     required String languageCode,
