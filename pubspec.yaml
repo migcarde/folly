@@ -13,7 +13,6 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  firebase_core: ^4.2.1
   flutter_riverpod: ^3.0.3
   intl: any
 
@@ -25,6 +24,7 @@ dependencies:
   permission_handler: ^12.0.1
   image_picker: ^1.2.1
   path: ^1.9.1
+  flutter_dotenv: ^6.0.0
 
 dev_dependencies:
   flutter_test:
@@ -36,6 +36,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
+  assets:
+    - .env
 
 flutter_intl:
   enabled: true

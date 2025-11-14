@@ -1,10 +1,10 @@
 import 'package:domain/base/base_use_case.dart';
 import 'package:domain/base/result.dart';
-import 'package:domain/login/login_repository.dart';
+import 'package:domain/login/auth_repository.dart';
 import 'package:riverpod/riverpod.dart';
 
 class Logout extends BaseUseCase<void, void> {
-  final LoginRepository loginRepository;
+  final AuthRepository loginRepository;
 
   Logout({required this.loginRepository});
 

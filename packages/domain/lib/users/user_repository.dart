@@ -10,12 +10,11 @@ abstract class UserRepository {
   Future<Result<UserEntity>> getUser({required String uid});
   Future<Result<void>> saveUser({required UserEntity user});
   Future<Result<void>> deleteUser({required String uid});
-  Future<Result<bool>> checkUsernameAvailability({required String username});
 }
 
 final userRepositoryProvider = Provider.autoDispose<UserRepository>(
   (ref) => UserRepositoryImpl(
     userRemoteDataSource: ref.watch(userRemoteDatasourceProvider),
-    loginRemoteDatasource: ref.watch(loginRemoteDatasourceProvider),
+    loginRemoteDatasource: ref.watch(authRemoteDatasourceProvider),
   ),
 );

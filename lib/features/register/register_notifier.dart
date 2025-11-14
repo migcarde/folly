@@ -7,12 +7,8 @@ import 'package:folly/extensions/string_extensions.dart';
 import 'package:folly/features/register/models/register_state.dart';
 
 class RegisterNotifier extends StateNotifier<RegisterState> {
-  RegisterNotifier({
-    required this.checkUserAvailability,
-    required this.createUser,
-  }) : super(RegisterState());
+  RegisterNotifier({required this.createUser}) : super(RegisterState());
 
-  final CheckUsernameAvailability checkUserAvailability;
   final CreateUser createUser;
 
   Future<void> register({
@@ -31,20 +27,9 @@ class RegisterNotifier extends StateNotifier<RegisterState> {
     } else {
       state = state.copyWith(status: RegisterStatus.loading);
 
-      final result = await checkUserAvailability(user.username);
-
-      result.when((isAvailable) {
-        if (isAvailable) {
-          _createUser(
-            user: CreateUserEntity(data: user, password: password),
-          );
-        } else {
-          state = state.copyWith(
-            status: RegisterStatus.initial,
-            errors: [RegisterError.usernameAlreadyInUse],
-          );
-        }
-      }, (failure) => _onError(failure));
+      _createUser(
+        user: CreateUserEntity(data: user, password: password),
+      );
     }
   }
 
@@ -53,7 +38,8 @@ class RegisterNotifier extends StateNotifier<RegisterState> {
 
     result.when(
       (user) => state = state.copyWith(status: RegisterStatus.success),
-      (failure) => _onError(failure),
+      (failure) =>
+          _onError(failure), // TODO: Check userename availability error
     );
   }
 
@@ -78,8 +64,5 @@ class RegisterNotifier extends StateNotifier<RegisterState> {
 
 final registerNotifierProvider =
     StateNotifierProvider<RegisterNotifier, RegisterState>(
-      (ref) => RegisterNotifier(
-        checkUserAvailability: ref.watch(checkUserAvailabilityProvider),
-        createUser: ref.watch(createUserProvider),
-      ),
+      (ref) => RegisterNotifier(createUser: ref.watch(createUserProvider)),
     );

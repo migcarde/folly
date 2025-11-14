@@ -24,7 +24,7 @@ class ChallengeEntity extends Equatable {
     uid: uid,
     text: text,
     isCompleted: isCompleted,
-    date: date,
+    date: date.toString(),
   );
 }
 
@@ -34,6 +34,6 @@ extension ChallengeRemoteEntityExtensions on ChallengeRemoteEntity {
     uid: uid,
     text: text,
     isCompleted: isCompleted,
-    date: date,
+    date: DateTime.parse(date),
   );
 }

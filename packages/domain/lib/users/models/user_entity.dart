@@ -26,7 +26,7 @@ class UserEntity extends Equatable {
     email: email,
     username: username,
     biography: biography,
-    firebaseToken: firebaseToken,
+    token: firebaseToken,
     locale: locale,
   );
 
@@ -67,7 +67,7 @@ extension UserRemoteEntityExtensions on UserRemoteEntity {
     email: email,
     username: username,
     biography: biography,
-    firebaseToken: firebaseToken,
+    firebaseToken: token,
     locale: locale,
   );
 }

@@ -1,16 +1,15 @@
 import 'package:data/data.dart';
 import 'package:domain/base/result.dart';
-import 'package:domain/login/login_repository.dart';
-import 'package:domain/login/models/firebase_auth_errors.dart';
-import 'package:domain/login/models/firebase_user_entity.dart';
+import 'package:domain/login/auth_repository.dart';
+import 'package:domain/login/models/auth_entity.dart';
 
-class LoginRepositoryImpl extends LoginRepository {
-  final LoginRemoteDatasource remoteDatasource;
+class AuthRepositoryImpl extends AuthRepository {
+  final AuthRemoteDatasource remoteDatasource;
 
-  LoginRepositoryImpl({required this.remoteDatasource});
+  AuthRepositoryImpl({required this.remoteDatasource});
 
   @override
-  Future<Result<FirebaseUserEntity>> createUserWithEmailAndPassword({
+  Future<Result<AuthEntity>> createUserWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
@@ -21,9 +20,7 @@ class LoginRepositoryImpl extends LoginRepository {
       );
 
       return Result.success(result.entity);
-    } on FirebaseAuthException catch (e) {
-      return Result.failure(FirebaseAuthErrors.fromString(e.code));
-    } on Exception catch (e) {
+    } catch (e) {
       return Result.failure(e);
     }
   }
@@ -34,8 +31,6 @@ class LoginRepositoryImpl extends LoginRepository {
       await remoteDatasource.deleteAccount();
 
       return Result.success(null);
-    } on FirebaseAuthException catch (e) {
-      return Result.failure(FirebaseAuthErrors.fromString(e.code));
     } on Exception catch (e) {
       return Result.failure(e);
     }
@@ -45,14 +40,14 @@ class LoginRepositoryImpl extends LoginRepository {
   bool get isLoggedIn => remoteDatasource.isLoggedIn;
 
   @override
-  Stream<FirebaseUserEntity?> listenChanges() async* {
-    await for (final remoteUser in remoteDatasource.listenChanges()) {
-      yield remoteUser?.entity;
+  Stream<AuthEntity?> listenChanges() async* {
+    await for (final auth in remoteDatasource.listenChanges()) {
+      yield auth?.entity;
     }
   }
 
   @override
-  Future<Result<FirebaseUserEntity>> loginWithEmailAndPassword({
+  Future<Result<AuthEntity>> loginWithEmailAndPassword({
     required String email,
     required String password,
   }) async {
@@ -63,8 +58,6 @@ class LoginRepositoryImpl extends LoginRepository {
       );
 
       return Result.success(result.entity);
-    } on FirebaseAuthException catch (e) {
-      return Result.failure(FirebaseAuthErrors.fromString(e.code));
     } on Exception catch (e) {
       return Result.failure(e);
     }
@@ -76,8 +69,6 @@ class LoginRepositoryImpl extends LoginRepository {
       await remoteDatasource.logout();
 
       return Result.success(null);
-    } on FirebaseAuthException catch (e) {
-      return Result.failure(FirebaseAuthErrors.fromString(e.code));
     } catch (e) {
       return Result.failure(e);
     }
@@ -92,8 +83,6 @@ class LoginRepositoryImpl extends LoginRepository {
       await remoteDatasource.reauthenticate(email: email, password: password);
 
       return Result.success(null);
-    } on FirebaseAuthException catch (e) {
-      return Result.failure(FirebaseAuthErrors.fromString(e.code));
     } catch (e) {
       return Result.failure(e);
     }
