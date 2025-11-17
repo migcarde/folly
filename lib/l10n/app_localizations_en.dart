@@ -118,6 +118,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get camera => 'Camera';
 
   @override
+  String get video => 'Video';
+
+  @override
   String get gallery => 'Gallery';
 
   @override
@@ -134,4 +137,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get story_published => 'Story published';
+
+  @override
+  String get challenge => 'Challenge';
+
+  @override
+  String get cannot_post_story_after_challenge_completed =>
+      'You cannot post a story after you have completed the challenge.';
 }

@@ -1,6 +1,13 @@
 import 'package:equatable/equatable.dart';
 
-enum DailyChallengeStatus { loading, success, error }
+enum DailyChallengeStatus {
+  loading,
+  success,
+  error,
+  completed;
+
+  bool get isCompleted => this == DailyChallengeStatus.completed;
+}
 
 class DailyChallengeState extends Equatable {
   final DailyChallengeStatus status;

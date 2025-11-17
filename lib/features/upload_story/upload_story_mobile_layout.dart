@@ -1,15 +1,18 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
+import 'package:folly/features/daily_challenge/daily_challenge_provider.dart';
+import 'package:folly/features/home/home_notifier.dart';
 import 'package:folly/features/upload_story/models/upload_story_state.dart';
 import 'package:folly/features/upload_story/upload_story_notifier.dart';
+import 'package:folly/routes/paths.dart';
 import 'package:folly/widgets/app_snackbar_type.dart';
 import 'package:folly/widgets/button/loading_button.dart';
+import 'package:folly/widgets/media_viewer.dart';
 import 'package:folly/widgets/text_field/base_text_field.dart';
 import 'package:folly/widgets/text_field/text_field_type.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UploadStoryMobileLayout extends ConsumerWidget {
@@ -17,6 +20,8 @@ class UploadStoryMobileLayout extends ConsumerWidget {
 
   final XFile file;
   final titleController = TextEditingController();
+
+  static const _mediaMaxHeight = 200.0;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,6 +36,9 @@ class UploadStoryMobileLayout extends ConsumerWidget {
           break;
         case UploadStoryStatus.success:
           context.showSnackBar(message: l10n.story_published);
+          context.go(Paths.home.route);
+          ref.read(homeNotifierProvider.notifier).init();
+          ref.read(dailyChallengeNotifierProvider.notifier).init();
           break;
         case UploadStoryStatus.error:
           context.showSnackBar(
@@ -48,11 +56,11 @@ class UploadStoryMobileLayout extends ConsumerWidget {
 
           child: Column(
             children: [
-              SizedBox(
-                width: double.infinity,
-                height: 200.0,
-                child: Image.file(File(file.path)),
+              MediaViewer.fromFilePath(
+                filePath: file.path,
+                maxHeight: _mediaMaxHeight,
               ),
+
               GestureDetector(
                 onTap: () =>
                     ref.read(uploadStoryProvider.notifier).hideErrors(),

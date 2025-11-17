@@ -5,6 +5,7 @@ import 'package:folly/core/container_decorators.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
 import 'package:folly/features/daily_challenge/daily_challenge_provider.dart';
 import 'package:folly/features/daily_challenge/models/daily_challenge_state.dart';
+import 'package:folly/features/home/widget/upload_story_options_dialog.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class DailyChallengeMobileLayout extends ConsumerStatefulWidget {
@@ -35,6 +36,7 @@ class _DailyChallengeMobileLayoutState
     switch (state.status) {
       case DailyChallengeStatus.loading:
       case DailyChallengeStatus.error:
+      case DailyChallengeStatus.completed:
         return const SizedBox();
       case DailyChallengeStatus.success:
         return Container(
@@ -69,10 +71,17 @@ class _DailyChallengeMobileLayoutState
                       Text(state.challenge),
                       Padding(
                         padding: const EdgeInsets.only(top: AppDimens.m),
-                        child: Text(
-                          l10n.publish_a_story,
-                          style: theme.textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
+                        child: GestureDetector(
+                          onTap: () =>
+                              UploadStoryOptionsDialog.checkAvailability(
+                                context: context,
+                                isCompleted: state.status.isCompleted,
+                              ),
+                          child: Text(
+                            l10n.publish_a_story,
+                            style: theme.textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),

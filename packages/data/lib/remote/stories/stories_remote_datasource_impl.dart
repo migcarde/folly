@@ -1,35 +1,60 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:data/remote/stories/models/story_remote_entity.dart';
 import 'package:data/remote/stories/stories_remote_datasource.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class StoriesRemoteDatasourceImpl extends StoriesRemoteDatasource {
-  late SupabaseClient _supabase;
+  final Supabase _supabase = Supabase.instance;
 
   static const _bucket = 'media';
-  static const _supabaseCollections = 'supabase';
-
-  final FirebaseFirestore _instance = FirebaseFirestore.instance;
+  static const _storiesCollection = 'Stories';
 
   @override
-  Future<void> uploadStory({required File file}) async {
+  Future<void> uploadStory({
+    required String uid,
+    required String title,
+    required File file,
+    required String challengeId,
+  }) async {
     final fileBytes = await file.readAsBytes();
 
-    await _supabase.storage.from(_bucket).uploadBinary(file.path, fileBytes);
+    final path =
+        '$uid/${DateTime.now().toIso8601String()}-${file.path.split('/').last}';
+    await _supabase.client.storage.from(_bucket).uploadBinary(path, fileBytes);
+
+    final story = StoryRemoteEntity(
+      id: '',
+      uid: uid,
+      title: title,
+      filePath: path,
+      createdAt: DateTime.now().toIso8601String(),
+      likes: 0,
+      challengeId: challengeId,
+    );
+
+    await _supabase.client.from(_storiesCollection).insert(story.toJson());
   }
 
   @override
-  Future<void> init() async {
-    final result = await _instance
-        .collection(_supabaseCollections)
-        .doc('keys')
-        .get();
+  Future<List<StoryRemoteEntity>> getStories({
+    required List<String> uids,
+  }) async {
+    final results = await _supabase.client
+        .from(_storiesCollection)
+        .select()
+        .inFilter('user_id', uids)
+        .order('created_at', ascending: false);
 
-    final data = result.data()!;
+    final stories = results.map((json) {
+      final story = StoryRemoteEntity.fromJson(json: json);
+      final imageUrl = _supabase.client.storage
+          .from(_bucket)
+          .getPublicUrl(story.filePath);
 
-    await Supabase.initialize(url: data['url'], anonKey: data['anonKey']);
+      return story.copyWith(filePath: imageUrl);
+    }).toList();
 
-    _supabase = Supabase.instance.client;
+    return stories;
   }
 }

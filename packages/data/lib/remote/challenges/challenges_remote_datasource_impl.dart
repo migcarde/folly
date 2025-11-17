@@ -79,4 +79,15 @@ Now, generate the daily folly challenge in $languageCode:
   @override
   Future<void> deleteUserChallenge({required String id}) async =>
       await _supabase.client.from(_challengesCollection).delete().eq('id', id);
+
+  @override
+  Future<ChallengeRemoteEntity> getChallenge({required String id}) async {
+    final result = await _supabase.client
+        .from(_challengesCollection)
+        .select()
+        .eq('id', id)
+        .single();
+
+    return ChallengeRemoteEntity.fromJson(json: result);
+  }
 }

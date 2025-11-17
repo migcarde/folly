@@ -67,6 +67,8 @@
     "@publish_a_story": {},
     "camera": "Cámara",
     "@camera": {},
+    "video": "Vídeo",
+    "@video": {},
     "gallery": "Galería",
     "@gallery": {},
     "title": "Título",
@@ -75,8 +77,12 @@
     "@invalid_file_type": {},
     "please_use_one_of_these": "Por favor, usa uno de estos tipos",
     "@please_use_one_of_these": {},
-    "accept": "Accept",
+    "accept": "Aceptar",
     "@accept": {},
     "story_published": "Historia publicada",
-    "@story_published": {}
+    "@story_published": {},
+    "challenge": "Reto",
+    "@challenge": {},
+    "cannot_post_story_after_challenge_completed": "No puedes publicar una historia una vez que has completado el reto.",
+    "@cannot_post_story_after_challenge_completed": {}
 }

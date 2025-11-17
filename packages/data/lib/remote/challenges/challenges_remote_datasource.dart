@@ -8,4 +8,5 @@ abstract class ChallengesRemoteDatasource {
   Future<void> updateChallenge({required ChallengeRemoteEntity challenge});
   Future<ChallengeRemoteEntity?> getUserChallenge({required String uid});
   Future<void> deleteUserChallenge({required String id});
+  Future<ChallengeRemoteEntity> getChallenge({required String id});
 }

@@ -68,6 +68,8 @@
     "@publish_a_story": {},
     "camera": "Camera",
     "@camera": {},
+    "video": "Video",
+    "@video": {},
     "gallery": "Gallery",
     "@gallery": {},
     "title": "Title",
@@ -79,5 +81,9 @@
     "accept": "Accept",
     "@accept": {},
     "story_published": "Story published",
-    "@story_published": {}
+    "@story_published": {},
+    "challenge": "Challenge",
+    "@challenge": {},
+    "cannot_post_story_after_challenge_completed": "You cannot post a story after you have completed the challenge.",
+    "@cannot_post_story_after_challenge_completed": {}
 }

@@ -9,7 +9,7 @@ enum MediaErrors {
   invalidVideoExtension,
 }
 
-class ImageService {
+class MediaService {
   static const supportedImageExtensions = [
     '.jpg',
     '.jpeg',
@@ -29,6 +29,7 @@ class ImageService {
     '.avi',
     '.m4v',
   ];
+
   static Future<XFile?> openCamera() async {
     final permission = await Permission.camera.status;
 
@@ -46,6 +47,23 @@ class ImageService {
     return image;
   }
 
+  static Future<XFile?> openVideo() async {
+    final permission = await Permission.camera.status;
+
+    if (!permission.isGranted) {
+      final requestPermission = await Permission.camera.request();
+
+      if (!requestPermission.isGranted) {
+        return null;
+      }
+    }
+
+    final picker = ImagePicker();
+    final image = await picker.pickVideo(source: ImageSource.camera);
+
+    return image;
+  }
+
   static Future<Result<XFile>> openGallery() async {
     final picker = ImagePicker();
     final media = await picker.pickMedia();
@@ -59,5 +77,10 @@ class ImageService {
     } else {
       return Result.failure(MediaErrors.noFileSelected);
     }
+  }
+
+  static bool isVideo(String url) {
+    final fileExtension = p.extension(url).toLowerCase();
+    return supportedVideoExtensions.contains(fileExtension);
   }
 }

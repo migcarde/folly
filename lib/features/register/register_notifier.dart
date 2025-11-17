@@ -63,6 +63,6 @@ class RegisterNotifier extends StateNotifier<RegisterState> {
 }
 
 final registerNotifierProvider =
-    StateNotifierProvider<RegisterNotifier, RegisterState>(
+    StateNotifierProvider.autoDispose<RegisterNotifier, RegisterState>(
       (ref) => RegisterNotifier(createUser: ref.watch(createUserProvider)),
     );

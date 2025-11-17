@@ -303,6 +303,12 @@ abstract class AppLocalizations {
   /// **'Camera'**
   String get camera;
 
+  /// No description provided for @video.
+  ///
+  /// In en, this message translates to:
+  /// **'Video'**
+  String get video;
+
   /// No description provided for @gallery.
   ///
   /// In en, this message translates to:
@@ -338,6 +344,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Story published'**
   String get story_published;
+
+  /// No description provided for @challenge.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenge'**
+  String get challenge;
+
+  /// No description provided for @cannot_post_story_after_challenge_completed.
+  ///
+  /// In en, this message translates to:
+  /// **'You cannot post a story after you have completed the challenge.'**
+  String get cannot_post_story_after_challenge_completed;
 }
 
 class _AppLocalizationsDelegate

@@ -7,11 +7,13 @@ class BaseScaffold extends StatelessWidget {
     this.title,
     required this.child,
     this.canGoBack = false,
+    this.bottomNavigationBar,
   });
 
   final String? title;
   final Widget child;
   final bool canGoBack;
+  final Widget? bottomNavigationBar;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class BaseScaffold extends StatelessWidget {
                   : null,
             )
           : null,
-
+      bottomNavigationBar: bottomNavigationBar,
       body: SafeArea(child: BaseScreen(child: child)),
     );
   }

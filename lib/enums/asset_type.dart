@@ -1,0 +1,1 @@
+enum AssetType { url, filePath }
