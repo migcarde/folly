@@ -7,4 +7,6 @@ export 'package:domain/login/use_cases/login.dart';
 export 'package:domain/login/use_cases/auth_listener.dart';
 export 'package:domain/login/use_cases/logout.dart';
 export 'package:domain/challenges/challenges_repository.dart';
+export 'package:domain/stories/stories_repository.dart';
 export 'package:domain/core/domain_initializer.dart';
+export 'package:domain/stories/models/story_entity.dart';

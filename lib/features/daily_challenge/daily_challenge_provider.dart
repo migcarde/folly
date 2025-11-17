@@ -33,7 +33,9 @@ class DailyChallengeProvider extends StateNotifier<DailyChallengeState> {
           );
         } else {
           state = state.copyWith(
-            status: DailyChallengeStatus.success,
+            status: challenge.isCompleted
+                ? DailyChallengeStatus.completed
+                : DailyChallengeStatus.success,
             challenge: challenge.text,
           );
         }

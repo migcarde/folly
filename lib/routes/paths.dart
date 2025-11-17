@@ -1,7 +1,8 @@
 enum Paths {
   home(route: '/home'),
   login(route: '/login'),
-  register(route: '/register');
+  register(route: '/register'),
+  uploadStory(route: '/upload-story');
 
   final String route;
 

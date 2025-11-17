@@ -113,4 +113,35 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get publish_a_story => 'Publica una historia';
+
+  @override
+  String get camera => 'Cámara';
+
+  @override
+  String get video => 'Vídeo';
+
+  @override
+  String get gallery => 'Galería';
+
+  @override
+  String get title => 'Título';
+
+  @override
+  String get invalid_file_type => 'Archivo no soportado';
+
+  @override
+  String get please_use_one_of_these => 'Por favor, usa uno de estos tipos';
+
+  @override
+  String get accept => 'Aceptar';
+
+  @override
+  String get story_published => 'Historia publicada';
+
+  @override
+  String get challenge => 'Reto';
+
+  @override
+  String get cannot_post_story_after_challenge_completed =>
+      'No puedes publicar una historia una vez que has completado el reto.';
 }

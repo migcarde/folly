@@ -28,9 +28,5 @@ class ChallengeRemoteEntity extends Equatable {
     date: json['created_at'],
   );
 
-  Map<String, dynamic> toJson() => {
-    'user_id': uid,
-    'text': text,
-    'is_completed': isCompleted,
-  };
+  Map<String, dynamic> toJson() => {'text': text, 'is_completed': isCompleted};
 }

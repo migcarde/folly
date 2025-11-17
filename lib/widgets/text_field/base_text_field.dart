@@ -25,6 +25,7 @@ class BaseTextField extends StatelessWidget {
     this.onTapIcon,
     this.type = TextFieldType.initial,
     this.prefixText,
+    this.textStyle,
   });
 
   final String hint;
@@ -38,6 +39,7 @@ class BaseTextField extends StatelessWidget {
   final Function(String)? onSubmitted;
   final VoidCallback? onTapIcon;
   final String? prefixText;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +51,9 @@ class BaseTextField extends StatelessWidget {
       enableSuggestions: !textType.isPassword,
       autocorrect: !textType.isPassword,
       onSubmitted: onSubmitted,
-      minLines: textType.isTextArea ? 3 : null,
+      minLines: textType.isTextArea && !type.isNone ? 3 : null,
       maxLines: textType.isTextArea ? null : 1,
+      style: textStyle,
       decoration: InputDecoration(
         hintText: hint,
         prefixText: prefixText,

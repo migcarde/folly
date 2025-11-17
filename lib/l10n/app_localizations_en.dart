@@ -113,4 +113,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get publish_a_story => 'Publish a story';
+
+  @override
+  String get camera => 'Camera';
+
+  @override
+  String get video => 'Video';
+
+  @override
+  String get gallery => 'Gallery';
+
+  @override
+  String get title => 'Title';
+
+  @override
+  String get invalid_file_type => 'Invalid file type';
+
+  @override
+  String get please_use_one_of_these => 'Please, use one of these';
+
+  @override
+  String get accept => 'Accept';
+
+  @override
+  String get story_published => 'Story published';
+
+  @override
+  String get challenge => 'Challenge';
+
+  @override
+  String get cannot_post_story_after_challenge_completed =>
+      'You cannot post a story after you have completed the challenge.';
 }

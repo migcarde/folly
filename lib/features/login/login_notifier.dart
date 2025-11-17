@@ -28,6 +28,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
   }
 }
 
-final loginNotifierProvider = StateNotifierProvider<LoginNotifier, LoginState>(
-  (ref) => LoginNotifier(loginUseCase: ref.watch(loginProvider)),
-);
+final loginNotifierProvider =
+    StateNotifierProvider.autoDispose<LoginNotifier, LoginState>(
+      (ref) => LoginNotifier(loginUseCase: ref.watch(loginProvider)),
+    );
