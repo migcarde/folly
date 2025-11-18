@@ -79,6 +79,13 @@ class MediaService {
     }
   }
 
+  static Future<XFile?> openImageGallery() async {
+    final picker = ImagePicker();
+    final media = await picker.pickImage(source: ImageSource.gallery);
+
+    return media;
+  }
+
   static bool isVideo(String url) {
     final fileExtension = p.extension(url).toLowerCase();
     return supportedVideoExtensions.contains(fileExtension);

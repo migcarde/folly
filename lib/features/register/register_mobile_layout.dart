@@ -10,6 +10,8 @@ import 'package:folly/features/register/register_notifier.dart';
 import 'package:folly/routes/paths.dart';
 import 'package:folly/widgets/app_snackbar_type.dart';
 import 'package:folly/widgets/button/loading_button.dart';
+import 'package:folly/widgets/editable_profile_image.dart';
+import 'package:folly/widgets/photo_dialog.dart';
 import 'package:folly/widgets/text_field/base_text_field.dart';
 import 'package:go_router/go_router.dart';
 
@@ -52,12 +54,24 @@ class _RegisterMobileLayoutState extends ConsumerState<RegisterMobileLayout> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              BaseTextField(
-                hint: l10n.email,
-                controller: emailController,
-                errorText: state.errors.hasEmailErrors
-                    ? state.errors.getEmailErrorMessage(context)
-                    : null,
+              EditableProfileImage(
+                onTap: () => PhotoDialog.show(
+                  context: context,
+                  selectedFile: (file) => ref
+                      .read(registerNotifierProvider.notifier)
+                      .loadPhoto(file: file),
+                ),
+                filePath: state.file,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: AppDimens.l),
+                child: BaseTextField(
+                  hint: l10n.email,
+                  controller: emailController,
+                  errorText: state.errors.hasEmailErrors
+                      ? state.errors.getEmailErrorMessage(context)
+                      : null,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: AppDimens.m),
@@ -134,6 +148,7 @@ class _RegisterMobileLayoutState extends ConsumerState<RegisterMobileLayout> {
                     username: usernameController.text,
                     firebaseToken: '',
                     locale: Platform.localeName,
+                    photoPath: '',
                   ),
                   password: passwordController.text,
                   repeatPassword: repeatPasswordController.text,

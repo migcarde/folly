@@ -1,15 +1,17 @@
-import 'package:domain/domain.dart';
+import 'dart:io';
+
 import 'package:domain/login/models/firebase_auth_errors.dart';
 import 'package:domain/users/models/create_user_entity.dart';
 import 'package:domain/users/models/user_entity.dart';
+import 'package:domain/users/user_repository.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:folly/extensions/string_extensions.dart';
 import 'package:folly/features/register/models/register_state.dart';
 
 class RegisterNotifier extends StateNotifier<RegisterState> {
-  RegisterNotifier({required this.createUser}) : super(RegisterState());
+  RegisterNotifier({required this.userRepository}) : super(RegisterState());
 
-  final CreateUser createUser;
+  final UserRepository userRepository;
 
   Future<void> register({
     required UserEntity user,
@@ -33,8 +35,13 @@ class RegisterNotifier extends StateNotifier<RegisterState> {
     }
   }
 
+  void loadPhoto({required File file}) => state = state.copyWith(file: file);
+
   Future<void> _createUser({required CreateUserEntity user}) async {
-    final result = await createUser(user);
+    final result = await userRepository.createUser(
+      user: user,
+      photo: state.file,
+    );
 
     result.when(
       (user) => state = state.copyWith(status: RegisterStatus.success),
@@ -64,5 +71,6 @@ class RegisterNotifier extends StateNotifier<RegisterState> {
 
 final registerNotifierProvider =
     StateNotifierProvider.autoDispose<RegisterNotifier, RegisterState>(
-      (ref) => RegisterNotifier(createUser: ref.watch(createUserProvider)),
+      (ref) =>
+          RegisterNotifier(userRepository: ref.watch(userRepositoryProvider)),
     );

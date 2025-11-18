@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:domain/login/models/firebase_auth_errors.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -85,10 +87,12 @@ extension RegisterErrorsExtensions on List<RegisterError> {
 
 class RegisterState extends Equatable {
   const RegisterState({
+    this.file,
     this.status = RegisterStatus.initial,
     this.errors = const [],
   });
 
+  final File? file;
   final RegisterStatus status;
   final List<RegisterError> errors;
 
@@ -96,9 +100,11 @@ class RegisterState extends Equatable {
   List<Object> get props => [errors, status];
 
   RegisterState copyWith({
+    File? file,
     RegisterStatus? status,
     List<RegisterError>? errors,
   }) => RegisterState(
+    file: file ?? this.file,
     status: status ?? this.status,
     errors: errors ?? this.errors,
   );

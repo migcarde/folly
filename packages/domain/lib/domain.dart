@@ -1,4 +1,3 @@
-export 'package:domain/users/use_cases/create_user.dart';
 export 'package:domain/users/use_cases/get_user.dart';
 export 'package:domain/users/use_cases/save_user.dart';
 export 'package:domain/users/use_cases/delete_user.dart';

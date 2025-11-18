@@ -10,6 +10,7 @@ class UserEntity extends Equatable {
     required this.biography,
     required this.firebaseToken,
     required this.locale,
+    required this.photoPath,
   });
 
   final String uid;
@@ -19,6 +20,7 @@ class UserEntity extends Equatable {
   final String biography;
   final String firebaseToken;
   final String locale;
+  final String photoPath;
 
   UserRemoteEntity get remoteEntity => UserRemoteEntity(
     uid: uid,
@@ -28,6 +30,7 @@ class UserEntity extends Equatable {
     biography: biography,
     token: firebaseToken,
     locale: locale,
+    photoPath: photoPath,
   );
 
   @override
@@ -39,6 +42,7 @@ class UserEntity extends Equatable {
     biography,
     firebaseToken,
     locale,
+    photoPath,
   ];
 
   UserEntity copyWith({
@@ -49,6 +53,7 @@ class UserEntity extends Equatable {
     String? biography,
     String? firebaseToken,
     String? locale,
+    String? photoPath,
   }) => UserEntity(
     uid: uid ?? this.uid,
     name: name ?? this.name,
@@ -57,6 +62,7 @@ class UserEntity extends Equatable {
     biography: biography ?? this.biography,
     firebaseToken: firebaseToken ?? this.firebaseToken,
     locale: locale ?? this.locale,
+    photoPath: photoPath ?? this.photoPath,
   );
 }
 
@@ -69,5 +75,6 @@ extension UserRemoteEntityExtensions on UserRemoteEntity {
     biography: biography,
     firebaseToken: token,
     locale: locale,
+    photoPath: photoPath ?? '',
   );
 }

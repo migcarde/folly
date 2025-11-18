@@ -5,6 +5,7 @@ import 'package:folly/routes/paths.dart';
 import 'package:folly/services/media_service.dart';
 import 'package:folly/widgets/app_snackbar_type.dart';
 import 'package:folly/widgets/base_dialog.dart';
+import 'package:folly/widgets/bottom_dialog_option.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -12,8 +13,6 @@ class UploadStoryOptionsDialog extends StatelessWidget {
   const UploadStoryOptionsDialog._({required this.parentContext});
 
   final BuildContext parentContext;
-
-  static const _iconSize = 42.0;
 
   static void checkAvailability({
     required BuildContext context,
@@ -42,7 +41,9 @@ class UploadStoryOptionsDialog extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            GestureDetector(
+            BottomDialogOption(
+              icon: PhosphorIcons.camera(),
+              label: l10n.camera,
               onTap: () async {
                 final image = await MediaService.openCamera();
 
@@ -51,15 +52,10 @@ class UploadStoryOptionsDialog extends StatelessWidget {
                   parentContext.push(Paths.uploadStory.route, extra: image);
                 }
               },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(PhosphorIcons.camera(), size: _iconSize),
-                  Text(l10n.camera),
-                ],
-              ),
             ),
-            GestureDetector(
+            BottomDialogOption(
+              icon: PhosphorIcons.videoCamera(),
+              label: l10n.video,
               onTap: () async {
                 final image = await MediaService.openVideo();
 
@@ -68,15 +64,10 @@ class UploadStoryOptionsDialog extends StatelessWidget {
                   parentContext.push(Paths.uploadStory.route, extra: image);
                 }
               },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(PhosphorIcons.videoCamera(), size: _iconSize),
-                  Text(l10n.camera),
-                ],
-              ),
             ),
-            GestureDetector(
+            BottomDialogOption(
+              icon: PhosphorIcons.image(),
+              label: l10n.gallery,
               onTap: () async {
                 final result = await MediaService.openGallery();
 
@@ -132,13 +123,6 @@ class UploadStoryOptionsDialog extends StatelessWidget {
                   },
                 );
               },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(PhosphorIcons.image(), size: _iconSize),
-                  Text(l10n.gallery),
-                ],
-              ),
             ),
           ],
         ),
