@@ -1,6 +1,8 @@
+import 'package:folly/features/edit_profile/edit_profile_page.dart';
 import 'package:folly/features/home/home_page.dart';
 import 'package:folly/features/login/login_page.dart';
 import 'package:folly/features/register/register_page.dart';
+import 'package:folly/features/settings/settings_page.dart';
 import 'package:folly/features/upload_story/upload_story_page.dart';
 import 'package:folly/routes/paths.dart';
 import 'package:go_router/go_router.dart';
@@ -23,6 +25,14 @@ class Routes {
     GoRoute(
       path: Paths.uploadStory.route,
       builder: (context, state) => UploadStoryPage(file: state.extra as XFile),
+    ),
+    GoRoute(
+      path: Paths.settings.route,
+      builder: (context, state) => const SettingsPage(),
+    ),
+    GoRoute(
+      path: Paths.editProfile.route,
+      builder: (context, state) => const EditProfilePage(),
     ),
   ];
 }

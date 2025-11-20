@@ -9,6 +9,7 @@ import 'package:folly/features/bottom_bar/bottom_bar_notifier.dart';
 import 'package:folly/features/bottom_bar/models/bottom_bar_state.dart';
 import 'package:folly/features/daily_challenge/daily_challenge_provider.dart';
 import 'package:folly/features/home/widget/upload_story_options_dialog.dart';
+import 'package:folly/widgets/profile_image.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class BottomBarMobileLayout extends ConsumerWidget {
@@ -33,29 +34,24 @@ class BottomBarMobileLayout extends ConsumerWidget {
               final isSelected = state.selectedItem == item;
 
               if (item.isProfile) {
-                return Container(
-                  width: 24.0,
-                  height: 24.0,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(
-                      AppDimens.circularRadius,
+                return GestureDetector(
+                  onTap: () => ref
+                      .read(bottomBarNotifierProvider.notifier)
+                      .selectItem(item),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.outlineVariant,
+                      border: BoxBorder.all(
+                        color: isSelected
+                            ? theme.primaryColor
+                            : Colors.transparent,
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(
+                        AppDimens.circularRadius,
+                      ),
                     ),
-                  ),
-                  child: ClipOval(
-                    child: user?.photoPath != null && user!.photoPath.isNotEmpty
-                        ? Image.network(
-                            user.photoPath,
-                            width: 24.0,
-                            height: 24.0,
-                            fit: BoxFit.cover,
-                          )
-                        : Icon(
-                            Icons.person,
-                            size: 24.0 * 0.6,
-                            color: theme.primaryColor,
-                          ),
+                    child: ProfileImage(imageUrl: user?.photoPath),
                   ),
                 );
               }

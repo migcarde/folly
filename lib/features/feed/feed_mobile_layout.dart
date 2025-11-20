@@ -1,0 +1,75 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:folly/core/app_dimens.dart';
+import 'package:folly/extensions/build_context_extensions.dart';
+import 'package:folly/features/daily_challenge/daily_challenge_mobile_layout.dart';
+import 'package:folly/features/feed/feed_notifier.dart';
+import 'package:folly/features/home/models/home_notifier_state.dart';
+import 'package:folly/widgets/story_card.dart';
+
+class FeedMobileLayout extends ConsumerStatefulWidget {
+  const FeedMobileLayout({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _FeedMobileLayoutState();
+}
+
+class _FeedMobileLayoutState extends ConsumerState<FeedMobileLayout> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(feedNotifierProvider.notifier).init();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final state = ref.watch(feedNotifierProvider);
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.only(bottom: 80.0),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              left: AppDimens.screenPadding,
+              right: AppDimens.screenPadding,
+              top: AppDimens.screenPadding,
+              bottom: AppDimens.l,
+            ),
+            child: DailyChallengeMobileLayout(),
+          ),
+          switch (state.status) {
+            HomeNotifierStatus.loading => const CircularProgressIndicator(),
+            HomeNotifierStatus.success => ListView.separated(
+              itemCount: state.stories.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              separatorBuilder: (context, index) =>
+                  const SizedBox(height: AppDimens.l),
+              itemBuilder: (context, index) {
+                final story = state.stories[index];
+
+                return StoryCard(
+                  user: story.user.name,
+                  userProfileUrl: story.user.photoPath,
+                  title: story.title,
+                  mediaUrl: story.imageUrl,
+                  likes: story.likes,
+                  challenge: story.challenge,
+                );
+              },
+            ),
+            HomeNotifierStatus.error => Text(
+              l10n.sorry_we_have_problems_please_try_again_later,
+            ),
+          },
+        ],
+      ),
+    );
+  }
+}

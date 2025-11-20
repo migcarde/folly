@@ -1,5 +1,4 @@
 export 'package:domain/users/use_cases/get_user.dart';
-export 'package:domain/users/use_cases/save_user.dart';
 export 'package:domain/users/use_cases/delete_user.dart';
 export 'package:domain/dependency_injection/local_dependency_injection.dart';
 export 'package:domain/login/use_cases/login.dart';

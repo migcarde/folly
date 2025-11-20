@@ -38,10 +38,19 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Result<void>> saveUser({required UserEntity user}) async {
+  Future<Result<void>> saveUser({
+    required UserEntity user,
+    File? photo,
+    String? password,
+  }) async {
     try {
+      if (password != null && password.isNotEmpty) {
+        loginRemoteDatasource.updatePassword(password: password);
+      }
+
       final result = await userRemoteDataSource.saveUser(
         user: user.remoteEntity,
+        photo: photo,
       );
 
       return Result.success(result);
@@ -64,7 +73,7 @@ class UserRepositoryImpl implements UserRepository {
 
       final newUser = user.data.copyWith(uid: authResult.uid);
 
-      await userRemoteDataSource.saveUser(
+      await userRemoteDataSource.createUser(
         user: newUser.remoteEntity,
         photo: photo,
       );

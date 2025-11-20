@@ -9,6 +9,6 @@ abstract class StoriesRemoteDatasource {
     required File file,
     required String challengeId,
   });
-
   Future<List<StoryRemoteEntity>> getStories({required List<String> uids});
+  Future<List<StoryRemoteEntity>> getStoriesFromUser({required String uid});
 }

@@ -54,14 +54,14 @@ class _RegisterMobileLayoutState extends ConsumerState<RegisterMobileLayout> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              EditableProfileImage(
+              EditableProfileImage.fromFile(
                 onTap: () => PhotoDialog.show(
                   context: context,
                   selectedFile: (file) => ref
                       .read(registerNotifierProvider.notifier)
                       .loadPhoto(file: file),
                 ),
-                filePath: state.file,
+                file: state.file,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: AppDimens.l),

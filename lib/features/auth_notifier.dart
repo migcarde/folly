@@ -31,6 +31,16 @@ class AuthNotifier extends ChangeNotifier {
       }
     });
   }
+
+  Future<void> update() async {
+    if (user != null) {
+      final userResult = await getUser(user!.uid);
+
+      userResult.ifSuccess((data) {
+        user = data;
+      });
+    }
+  }
 }
 
 final authNotifierProvider = ChangeNotifierProvider.autoDispose<AuthNotifier>(

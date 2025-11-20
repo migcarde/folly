@@ -90,4 +90,15 @@ class AuthRepositoryImpl extends AuthRepository {
 
   @override
   String get uid => remoteDatasource.uid;
+
+  @override
+  Future<Result<void>> sendPasswordResetEmail({required String email}) async {
+    try {
+      await remoteDatasource.sendPasswordResetEmail(email: email);
+
+      return Result.success(null);
+    } catch (e) {
+      return Result.failure(e);
+    }
+  }
 }

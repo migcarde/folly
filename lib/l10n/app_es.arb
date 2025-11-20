@@ -84,5 +84,13 @@
     "challenge": "Reto",
     "@challenge": {},
     "cannot_post_story_after_challenge_completed": "No puedes publicar una historia una vez que has completado el reto.",
-    "@cannot_post_story_after_challenge_completed": {}
+    "@cannot_post_story_after_challenge_completed": {},
+    "user_settings": "Modificar perfil",
+    "@user_settings": {},
+    "change_password": "Cambiar contraseña",
+    "@change_password": {},
+    "profile_updated": "Perfil actualizado",
+    "@profile_updated": {},
+    "password_reset_email_send": "Se le ha enviado un correo para restablecer la contraseña",
+    "@password_reset_email_send": {}
 }

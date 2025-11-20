@@ -13,7 +13,11 @@ abstract class UserRepository {
     File? photo,
   });
   Future<Result<UserEntity>> getUser({required String uid});
-  Future<Result<void>> saveUser({required UserEntity user});
+  Future<Result<void>> saveUser({
+    required UserEntity user,
+    File? photo,
+    String? password,
+  });
   Future<Result<void>> deleteUser({required String uid});
 }
 

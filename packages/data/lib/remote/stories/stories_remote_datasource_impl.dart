@@ -55,6 +55,32 @@ class StoriesRemoteDatasourceImpl extends StoriesRemoteDatasource {
       return story.copyWith(filePath: imageUrl);
     }).toList();
 
+    // TODO: Set as paginated
+
+    return stories;
+  }
+
+  @override
+  Future<List<StoryRemoteEntity>> getStoriesFromUser({
+    required String uid,
+  }) async {
+    final results = await _supabase.client
+        .from(_storiesCollection)
+        .select()
+        .eq('user_id', uid)
+        .order('created_at', ascending: false);
+
+    final stories = results.map((json) {
+      final story = StoryRemoteEntity.fromJson(json: json);
+      final imageUrl = _supabase.client.storage
+          .from(_bucket)
+          .getPublicUrl(story.filePath);
+
+      return story.copyWith(filePath: imageUrl);
+    }).toList();
+
+    // TODO: Set as paginated
+
     return stories;
   }
 }

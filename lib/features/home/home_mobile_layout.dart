@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:folly/core/app_dimens.dart';
-import 'package:folly/extensions/build_context_extensions.dart';
-import 'package:folly/features/daily_challenge/daily_challenge_mobile_layout.dart';
-import 'package:folly/features/home/home_notifier.dart';
-import 'package:folly/features/home/models/home_notifier_state.dart';
-import 'package:folly/widgets/media_viewer.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:folly/features/auth_notifier.dart';
+import 'package:folly/features/bottom_bar/bottom_bar_notifier.dart';
+import 'package:folly/features/bottom_bar/models/bottom_bar_state.dart';
+import 'package:folly/features/feed/feed_mobile_layout.dart';
+import 'package:folly/features/profile/profile_mobile_layout.dart';
 
 class HomeMobileLayout extends ConsumerStatefulWidget {
   const HomeMobileLayout({super.key});
@@ -16,162 +14,50 @@ class HomeMobileLayout extends ConsumerStatefulWidget {
       _HomeMobileLayoutState();
 }
 
-class _HomeMobileLayoutState extends ConsumerState<HomeMobileLayout> {
+class _HomeMobileLayoutState extends ConsumerState<HomeMobileLayout>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(homeNotifierProvider.notifier).init();
-    });
+    _tabController = TabController(
+      length: BottomBarItem.values.length - 1,
+      vsync: this,
+    );
   }
-
-  static const _iconSize = 32.0;
 
   @override
   Widget build(BuildContext context) {
-    final theme = context.theme;
-    final state = ref.watch(homeNotifierProvider);
+    ref.listen(bottomBarNotifierProvider, (previous, next) {
+      switch (next.selectedItem) {
+        case BottomBarItem.home:
+          _tabController.index = 0;
+          break;
+        case BottomBarItem.search:
+          _tabController.index = 1;
+        case BottomBarItem.updateStory:
+          break;
+        case BottomBarItem.notifications:
+          _tabController.index = 2;
+        case BottomBarItem.profile:
+          _tabController.index = 3;
+      }
+    });
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.only(bottom: 80.0),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              left: AppDimens.screenPadding,
-              right: AppDimens.screenPadding,
-              top: AppDimens.screenPadding,
-              bottom: AppDimens.l,
-            ),
-            child: DailyChallengeMobileLayout(),
-          ),
-          switch (state.status) {
-            HomeNotifierStatus.loading => const CircularProgressIndicator(),
-            HomeNotifierStatus.success => ListView.separated(
-              itemCount: state.stories.length,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              separatorBuilder: (context, index) =>
-                  const SizedBox(height: AppDimens.l),
-              itemBuilder: (context, index) {
-                final story = state.stories[index];
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppDimens.screenPadding,
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 40.0,
-                            width: 40.0,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: theme
-                                  .colorScheme
-                                  .outlineVariant, // TODO: Add profile image
-                            ),
-                            child: Icon(
-                              PhosphorIcons.user(PhosphorIconsStyle.fill),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: AppDimens.s),
-                            child: Text(
-                              story.user.name,
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          const Spacer(),
-                          Icon(PhosphorIcons.bookmarkSimple(), size: _iconSize),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: AppDimens.s),
-                      child: Align(
-                        alignment: AlignmentDirectional.center,
-                        child: MediaViewer.fromUrl(url: story.imageUrl),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: AppDimens.screenPadding,
-                        right: AppDimens.screenPadding,
-                        top: AppDimens.s,
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(story.title),
-                          const Spacer(),
-                          // TODO: Replace with comments count and functionality
-                          Text('0'),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: AppDimens.xs,
-                              right: AppDimens.s,
-                            ),
-                            child: Icon(
-                              PhosphorIcons.chatCircle(),
-                              size: _iconSize,
-                            ),
-                          ),
-                          Text(story.likes.toString()),
-                          GestureDetector(
-                            onTap: () {
-                              // TODO: Add like functionality
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                left: AppDimens.xs,
-                              ),
-                              child: Icon(
-                                PhosphorIcons.heart(),
-                                size: _iconSize,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: AppDimens.m,
-                        left: AppDimens.screenPadding,
-                        right: AppDimens.screenPadding,
-                      ),
-                      child: RichText(
-                        text: TextSpan(
-                          style: theme.textTheme.bodyMedium,
-
-                          children: [
-                            TextSpan(
-                              text: '${context.l10n.challenge}: ',
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextSpan(text: story.challenge),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-            HomeNotifierStatus.error => const Text('Error loading stories'),
-          },
-        ],
-      ),
+    return TabBarView(
+      controller: _tabController,
+      physics: const NeverScrollableScrollPhysics(),
+      children: [
+        FeedMobileLayout(),
+        Container(),
+        Container(),
+        ProfileMobileLayout(
+          user: ref.watch(authNotifierProvider).user!,
+          isCurrentUser: true,
+        ),
+      ],
     );
   }
 }

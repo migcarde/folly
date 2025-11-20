@@ -10,26 +10,20 @@ class UserRemoteDatasourceImpl extends UserRemoteDataSource {
   final Supabase _instance = Supabase.instance;
 
   @override
-  Future<void> saveUser({required UserRemoteEntity user, File? photo}) async {
-    try {
-      UserRemoteEntity userToCreate = user;
-      if (photo != null) {
-        final fileBytes = await photo.readAsBytes();
-        final path =
-            '${user.uid}/profile-${DateTime.now().toIso8601String()}-${photo.path.split('/').last}';
-        await _instance.client.storage
-            .from('profile')
-            .uploadBinary(path, fileBytes);
+  Future<void> createUser({required UserRemoteEntity user, File? photo}) async {
+    UserRemoteEntity userToCreate = user;
+    if (photo != null) {
+      final fileBytes = await photo.readAsBytes();
+      final path =
+          '${user.uid}/profile-${DateTime.now().toIso8601String()}-${photo.path.split('/').last}';
+      await _instance.client.storage
+          .from('profile')
+          .uploadBinary(path, fileBytes);
 
-        userToCreate = user.copyWith(photoPath: path);
-      }
-
-      await _instance.client
-          .from(_usersCollection)
-          .insert(userToCreate.toJson());
-    } catch (e) {
-      rethrow;
+      userToCreate = user.copyWith(photoPath: path);
     }
+
+    await _instance.client.from(_usersCollection).insert(userToCreate.toJson());
   }
 
   @override
@@ -56,5 +50,31 @@ class UserRemoteDatasourceImpl extends UserRemoteDataSource {
     }
 
     return user;
+  }
+
+  @override
+  Future<void> saveUser({required UserRemoteEntity user, File? photo}) async {
+    UserRemoteEntity userToUpdate = user;
+
+    if (photo != null) {
+      if (user.photoPath != null && user.photoPath!.isNotEmpty) {
+        await _instance.client.storage.from('profile').remove([
+          user.photoPath!,
+        ]);
+      }
+      final fileBytes = await photo.readAsBytes();
+      final path =
+          '${user.uid}/profile-${DateTime.now().toIso8601String()}-${photo.path.split('/').last}';
+      await _instance.client.storage
+          .from('profile')
+          .uploadBinary(path, fileBytes);
+
+      userToUpdate = user.copyWith(photoPath: path);
+    }
+
+    await _instance.client
+        .from(_usersCollection)
+        .update(userToUpdate.toJson())
+        .eq('id', user.uid);
   }
 }
