@@ -4,7 +4,8 @@ enum Paths {
   register(route: '/register'),
   uploadStory(route: '/upload-story'),
   settings(route: '/settings'),
-  editProfile(route: '/edit-profile');
+  editProfile(route: '/edit-profile'),
+  changeLanguage(route: '/change-language');
 
   final String route;
 

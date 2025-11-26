@@ -1,25 +1,27 @@
 import 'package:domain/domain.dart';
+import 'package:domain/login/auth_repository.dart';
 import 'package:domain/users/models/user_entity.dart';
+import 'package:domain/users/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
 class AuthNotifier extends ChangeNotifier {
   UserEntity? user;
-  final AuthListener authListener;
-  final GetUser getUser;
+  final AuthRepository authRepository;
+  final UserRepository userRepository;
   final ChallengesRepository challengesRepository;
 
   AuthNotifier({
     this.user,
-    required this.authListener,
-    required this.getUser,
+    required this.authRepository,
+    required this.userRepository,
     required this.challengesRepository,
   });
 
-  void listen() async {
-    authListener().listen((event) async {
+  Future<void> listen() async {
+    authRepository.listenChanges().listen((event) async {
       if (user == null && event != null && event.uid.isNotEmpty) {
-        final userResult = await getUser(event.uid);
+        final userResult = await userRepository.getUser(uid: event.uid);
 
         userResult.ifSuccess((data) {
           user = data;
@@ -34,19 +36,21 @@ class AuthNotifier extends ChangeNotifier {
 
   Future<void> update() async {
     if (user != null) {
-      final userResult = await getUser(user!.uid);
+      final userResult = await userRepository.getUser(uid: user!.uid);
 
       userResult.ifSuccess((data) {
         user = data;
       });
     }
   }
+
+  Future<void> logout() async => await authRepository.logout();
 }
 
 final authNotifierProvider = ChangeNotifierProvider.autoDispose<AuthNotifier>(
   (ref) => AuthNotifier(
-    authListener: ref.watch(authListenerProvider),
-    getUser: ref.watch(getUserProvider),
+    authRepository: ref.watch(loginRepositoryProvider),
+    userRepository: ref.watch(userRepositoryProvider),
     challengesRepository: ref.watch(challengeRepositoryProvider),
   ),
 );

@@ -1,3 +1,4 @@
+import 'package:folly/features/change_language/change_language_page.dart';
 import 'package:folly/features/edit_profile/edit_profile_page.dart';
 import 'package:folly/features/home/home_page.dart';
 import 'package:folly/features/login/login_page.dart';
@@ -33,6 +34,10 @@ class Routes {
     GoRoute(
       path: Paths.editProfile.route,
       builder: (context, state) => const EditProfilePage(),
+    ),
+    GoRoute(
+      path: Paths.changeLanguage.route,
+      builder: (context, state) => const ChangeLanguagePage(),
     ),
   ];
 }
