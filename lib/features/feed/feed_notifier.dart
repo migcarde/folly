@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/legacy.dart';
 import 'package:folly/features/auth_notifier.dart';
 import 'package:folly/features/home/models/home_notifier_state.dart';
 
-class HomeNotifier extends StateNotifier<HomeNotifierState> {
-  HomeNotifier({required this.authNotifier, required this.storiesRepository})
+class FeedNotifier extends StateNotifier<HomeNotifierState> {
+  FeedNotifier({required this.authNotifier, required this.storiesRepository})
     : super(const HomeNotifierState());
 
   final AuthNotifier authNotifier;
@@ -28,9 +28,9 @@ class HomeNotifier extends StateNotifier<HomeNotifierState> {
   }
 }
 
-final homeNotifierProvider =
-    StateNotifierProvider.autoDispose<HomeNotifier, HomeNotifierState>(
-      (ref) => HomeNotifier(
+final feedNotifierProvider =
+    StateNotifierProvider.autoDispose<FeedNotifier, HomeNotifierState>(
+      (ref) => FeedNotifier(
         authNotifier: ref.watch(authNotifierProvider),
         storiesRepository: ref.watch(storiesRepositoryProvider),
       ),

@@ -23,7 +23,7 @@ class DailyChallengeProvider extends StateNotifier<DailyChallengeState> {
       result.when((challenge) async {
         final today = DateTime.now().startOfDay;
         if (challenge == null ||
-            challenge.date.difference(today).inDays.abs() >= 1) {
+            challenge.date.startOfDay.difference(today).inDays.abs() >= 1) {
           challenge?.let(
             (data) => challengesRepository.deleteUserChallenge(id: data.id),
           );

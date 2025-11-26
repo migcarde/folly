@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
 import 'package:folly/features/daily_challenge/daily_challenge_provider.dart';
-import 'package:folly/features/home/home_notifier.dart';
+import 'package:folly/features/feed/feed_notifier.dart';
 import 'package:folly/features/upload_story/models/upload_story_state.dart';
 import 'package:folly/features/upload_story/upload_story_notifier.dart';
 import 'package:folly/routes/paths.dart';
@@ -37,7 +37,7 @@ class UploadStoryMobileLayout extends ConsumerWidget {
         case UploadStoryStatus.success:
           context.showSnackBar(message: l10n.story_published);
           context.go(Paths.home.route);
-          ref.read(homeNotifierProvider.notifier).init();
+          ref.read(feedNotifierProvider.notifier).init();
           ref.read(dailyChallengeNotifierProvider.notifier).init();
           break;
         case UploadStoryStatus.error:

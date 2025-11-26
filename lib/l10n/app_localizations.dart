@@ -356,6 +356,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You cannot post a story after you have completed the challenge.'**
   String get cannot_post_story_after_challenge_completed;
+
+  /// No description provided for @user_settings.
+  ///
+  /// In en, this message translates to:
+  /// **'User settings'**
+  String get user_settings;
+
+  /// No description provided for @change_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Change password'**
+  String get change_password;
+
+  /// No description provided for @profile_updated.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile updated'**
+  String get profile_updated;
+
+  /// No description provided for @password_reset_email_send.
+  ///
+  /// In en, this message translates to:
+  /// **'Password reset email sent'**
+  String get password_reset_email_send;
 }
 
 class _AppLocalizationsDelegate

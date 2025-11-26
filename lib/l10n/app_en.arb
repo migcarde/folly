@@ -85,5 +85,13 @@
     "challenge": "Challenge",
     "@challenge": {},
     "cannot_post_story_after_challenge_completed": "You cannot post a story after you have completed the challenge.",
-    "@cannot_post_story_after_challenge_completed": {}
+    "@cannot_post_story_after_challenge_completed": {},
+    "user_settings": "User settings",
+    "@user_settings": {},
+    "change_password": "Change password",
+    "@change_password": {},
+    "profile_updated": "Profile updated",
+    "@profile_updated": {},
+    "password_reset_email_send": "Password reset email sent",
+    "@password_reset_email_send": {}
 }

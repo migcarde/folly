@@ -144,4 +144,16 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get cannot_post_story_after_challenge_completed =>
       'You cannot post a story after you have completed the challenge.';
+
+  @override
+  String get user_settings => 'User settings';
+
+  @override
+  String get change_password => 'Change password';
+
+  @override
+  String get profile_updated => 'Profile updated';
+
+  @override
+  String get password_reset_email_send => 'Password reset email sent';
 }

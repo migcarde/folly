@@ -65,4 +65,14 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
     required String email,
     required String password,
   }) async => await _supabase.client.auth.reauthenticate();
+
+  @override
+  Future<void> sendPasswordResetEmail({required String email}) async =>
+      await _supabase.client.auth.resetPasswordForEmail(email);
+
+  @override
+  Future<void> updatePassword({required String password}) async =>
+      await _supabase.client.auth.updateUser(
+        UserAttributes(password: password),
+      );
 }

@@ -2,7 +2,10 @@ enum Paths {
   home(route: '/home'),
   login(route: '/login'),
   register(route: '/register'),
-  uploadStory(route: '/upload-story');
+  uploadStory(route: '/upload-story'),
+  settings(route: '/settings'),
+  editProfile(route: '/edit-profile'),
+  changeLanguage(route: '/change-language');
 
   final String route;
 

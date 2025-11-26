@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:data/data.dart';
 import 'package:domain/base/result.dart';
 import 'package:domain/users/models/create_user_entity.dart';
@@ -36,10 +38,19 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Result<void>> saveUser({required UserEntity user}) async {
+  Future<Result<void>> saveUser({
+    required UserEntity user,
+    File? photo,
+    String? password,
+  }) async {
     try {
+      if (password != null && password.isNotEmpty) {
+        loginRemoteDatasource.updatePassword(password: password);
+      }
+
       final result = await userRemoteDataSource.saveUser(
         user: user.remoteEntity,
+        photo: photo,
       );
 
       return Result.success(result);
@@ -51,6 +62,7 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<Result<UserEntity>> createUser({
     required CreateUserEntity user,
+    File? photo,
   }) async {
     try {
       final authResult = await loginRemoteDatasource
@@ -61,7 +73,10 @@ class UserRepositoryImpl implements UserRepository {
 
       final newUser = user.data.copyWith(uid: authResult.uid);
 
-      await userRemoteDataSource.saveUser(user: newUser.remoteEntity);
+      await userRemoteDataSource.createUser(
+        user: newUser.remoteEntity,
+        photo: photo,
+      );
 
       return Result.success(newUser);
     } catch (e) {
