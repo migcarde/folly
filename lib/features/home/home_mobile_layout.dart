@@ -5,6 +5,7 @@ import 'package:folly/features/bottom_bar/bottom_bar_notifier.dart';
 import 'package:folly/features/bottom_bar/models/bottom_bar_state.dart';
 import 'package:folly/features/feed/feed_mobile_layout.dart';
 import 'package:folly/features/profile/profile_mobile_layout.dart';
+import 'package:folly/features/search_users/search_users_mobile_layout.dart';
 
 class HomeMobileLayout extends ConsumerStatefulWidget {
   const HomeMobileLayout({super.key});
@@ -51,7 +52,7 @@ class _HomeMobileLayoutState extends ConsumerState<HomeMobileLayout>
       physics: const NeverScrollableScrollPhysics(),
       children: [
         FeedMobileLayout(),
-        Container(),
+        SearchUsersMobileLayout(),
         Container(),
         ProfileMobileLayout(
           user: ref.watch(authNotifierProvider).user!,
