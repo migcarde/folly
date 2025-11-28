@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:domain/base/result.dart';
 import 'package:domain/dependency_injection/local_dependency_injection.dart';
+import 'package:domain/models/page_entity.dart';
 import 'package:domain/users/models/create_user_entity.dart';
 import 'package:domain/users/models/user_entity.dart';
 import 'package:domain/users/user_repository_impl.dart';
@@ -19,6 +20,12 @@ abstract class UserRepository {
     String? password,
   });
   Future<Result<void>> deleteUser({required String uid});
+  Future<Result<PageEntity<UserEntity>>> searchUsers({
+    required String query,
+    required int page,
+    int size = 10,
+    int? total,
+  });
 }
 
 final userRepositoryProvider = Provider.autoDispose<UserRepository>(

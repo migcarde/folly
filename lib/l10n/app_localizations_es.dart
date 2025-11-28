@@ -157,4 +157,9 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get password_reset_email_send =>
       'Se le ha enviado un correo para restablecer la contraseña';
+
+  @override
+  String you_must_type_at_least_x_characters(int number) {
+    return 'Debes escribir al menos $number letras';
+  }
 }

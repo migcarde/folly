@@ -380,6 +380,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password reset email sent'**
   String get password_reset_email_send;
+
+  /// No description provided for @you_must_type_at_least_x_characters.
+  ///
+  /// In en, this message translates to:
+  /// **'You must type at least {number} characters'**
+  String you_must_type_at_least_x_characters(int number);
 }
 
 class _AppLocalizationsDelegate

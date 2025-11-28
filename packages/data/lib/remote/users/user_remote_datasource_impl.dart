@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:data/remote/models/page_remote_entity.dart';
 import 'package:data/remote/users/models/user_remote_entity.dart';
 import 'package:data/remote/users/user_remote_datasource.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -39,7 +40,7 @@ class UserRemoteDatasourceImpl extends UserRemoteDataSource {
         .eq('id', uid)
         .single();
 
-    final user = UserRemoteEntity.fromJson(uid: uid, json: result);
+    final user = UserRemoteEntity.fromJson(json: result);
 
     if (user.photoPath != null && user.photoPath!.isNotEmpty) {
       final imageUrl = _instance.client.storage
@@ -76,5 +77,45 @@ class UserRemoteDatasourceImpl extends UserRemoteDataSource {
         .from(_usersCollection)
         .update(userToUpdate.toJson())
         .eq('id', user.uid);
+  }
+
+  @override
+  Future<PageRemoteEntity<UserRemoteEntity>> searchUser({
+    required String query,
+    required int page,
+    int size = 10,
+    int? total,
+  }) async {
+    final startIndex = page * size;
+    final end = startIndex + size;
+
+    final endIndex = total != null && end > total ? (total - 1) : end;
+
+    final result = await _instance.client
+        .from(_usersCollection)
+        .select()
+        .or('username.ilike.%$query%,display_name.ilike.%$query%')
+        .range(startIndex, endIndex)
+        .count();
+
+    final users = result.data.map((json) {
+      final user = UserRemoteEntity.fromJson(json: json);
+      if (user.photoPath != null && user.photoPath!.isNotEmpty) {
+        final imageUrl = _instance.client.storage
+            .from('profile')
+            .getPublicUrl(user.photoPath!);
+
+        return user.copyWith(photoPath: imageUrl);
+      } else {
+        return user;
+      }
+    }).toList();
+
+    return PageRemoteEntity(
+      content: users,
+      page: page,
+      totalPages: (result.count / size).ceil(),
+      total: result.count,
+    );
   }
 }

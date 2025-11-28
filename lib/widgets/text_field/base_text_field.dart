@@ -36,7 +36,7 @@ class BaseTextField extends StatelessWidget {
   final String? errorText;
   final TextEditingController? controller;
   final BaseTextFieldType textType;
-  final Function(String)? onSubmitted;
+  final Function(String value)? onSubmitted;
   final VoidCallback? onTapIcon;
   final String? prefixText;
   final TextStyle? textStyle;

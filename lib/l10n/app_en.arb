@@ -93,5 +93,13 @@
     "profile_updated": "Profile updated",
     "@profile_updated": {},
     "password_reset_email_send": "Password reset email sent",
-    "@password_reset_email_send": {}
+    "@password_reset_email_send": {},
+    "you_must_type_at_least_x_characters": "You must type at least {number} characters",
+    "@you_must_type_at_least_x_characters": {
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    }
 }

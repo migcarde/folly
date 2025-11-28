@@ -21,19 +21,17 @@ class UserRemoteEntity extends Equatable {
   final String locale;
   final String? photoPath;
 
-  factory UserRemoteEntity.fromJson({
-    required String uid,
-    required Map<String, dynamic> json,
-  }) => UserRemoteEntity(
-    uid: uid,
-    name: json['display_name'],
-    email: json['email'],
-    username: json['username'],
-    biography: json['biography'],
-    token: json['token'],
-    locale: json['locale'],
-    photoPath: json['photo_path'],
-  );
+  factory UserRemoteEntity.fromJson({required Map<String, dynamic> json}) =>
+      UserRemoteEntity(
+        uid: json['id'],
+        name: json['display_name'],
+        email: json['email'],
+        username: json['username'],
+        biography: json['biography'],
+        token: json['token'],
+        locale: json['locale'],
+        photoPath: json['photo_path'],
+      );
 
   Map<String, dynamic> toJson() => {
     'id': uid,
