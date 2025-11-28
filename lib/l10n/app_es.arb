@@ -92,5 +92,13 @@
     "profile_updated": "Perfil actualizado",
     "@profile_updated": {},
     "password_reset_email_send": "Se le ha enviado un correo para restablecer la contraseña",
-    "@password_reset_email_send": {}
+    "@password_reset_email_send": {},
+    "you_must_type_at_least_x_characters": "Debes escribir al menos {number} letras",
+    "@you_must_type_at_least_x_characters": {
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    }
 }

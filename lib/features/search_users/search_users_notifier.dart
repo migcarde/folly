@@ -9,20 +9,25 @@ class SearchUsersNotifier extends StateNotifier<SearchUsersState> {
   final UserRepository userRepository;
 
   Future<void> search({required String query}) async {
-    _reset();
-    state = state.copyWith(status: SearchUsersStatus.loading, query: query);
+    reset();
 
-    _searchUsers(query: query);
+    if (query.length < 3) {
+      state = state.copyWith(invalidQuery: true);
+    } else {
+      state = state.copyWith(status: SearchUsersStatus.loading, query: query);
+
+      _searchUsers(query: query);
+    }
   }
 
   Future<void> nextPage() async {
-    if (state.page < state.totalPages) {
+    if (!state.isLast) {
       state = state.copyWith(page: state.page + 1);
       await _searchUsers(query: state.query);
     }
   }
 
-  void _reset() => state = SearchUsersState();
+  void reset() => state = SearchUsersState();
 
   Future<void> _searchUsers({required String query}) async {
     final result = await userRepository.searchUsers(
@@ -36,7 +41,7 @@ class SearchUsersNotifier extends StateNotifier<SearchUsersState> {
         status: data.content.isEmpty
             ? SearchUsersStatus.empty
             : SearchUsersStatus.data,
-        searchUsers: data.content,
+        searchUsers: [...state.searchUsers, ...data.content],
         page: data.page,
         totalPages: data.totalPages,
         total: data.total,

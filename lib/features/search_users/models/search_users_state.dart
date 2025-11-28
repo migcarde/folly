@@ -1,7 +1,15 @@
 import 'package:domain/users/models/user_entity.dart';
 import 'package:equatable/equatable.dart';
 
-enum SearchUsersStatus { initial, loading, data, empty, error }
+enum SearchUsersStatus {
+  initial,
+  loading,
+  data,
+  empty,
+  error;
+
+  bool get isData => this == SearchUsersStatus.data;
+}
 
 class SearchUsersState extends Equatable {
   final SearchUsersStatus status;
@@ -10,6 +18,7 @@ class SearchUsersState extends Equatable {
   final int page;
   final int totalPages;
   final int? total;
+  final bool invalidQuery;
 
   const SearchUsersState({
     this.status = SearchUsersStatus.initial,
@@ -18,6 +27,7 @@ class SearchUsersState extends Equatable {
     this.page = 0,
     this.totalPages = 0,
     this.total,
+    this.invalidQuery = false,
   });
 
   @override
@@ -28,6 +38,7 @@ class SearchUsersState extends Equatable {
     page,
     totalPages,
     total,
+    invalidQuery,
   ];
 
   SearchUsersState copyWith({
@@ -37,6 +48,7 @@ class SearchUsersState extends Equatable {
     int? page,
     int? totalPages,
     int? total,
+    bool? invalidQuery,
   }) => SearchUsersState(
     status: status ?? this.status,
     query: query ?? this.query,
@@ -44,7 +56,8 @@ class SearchUsersState extends Equatable {
     page: page ?? this.page,
     totalPages: totalPages ?? this.totalPages,
     total: total ?? this.total,
+    invalidQuery: invalidQuery ?? this.invalidQuery,
   );
 
-  bool get isLast => (page + 1) == totalPages;
+  bool get isLast => (page + 1) >= totalPages;
 }

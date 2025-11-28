@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/core/app_dimens.dart';
+import 'package:folly/extensions/build_context_extensions.dart';
 import 'package:folly/features/search_users/models/search_users_state.dart';
 import 'package:folly/features/search_users/search_users_notifier.dart';
 import 'package:folly/widgets/profile_image.dart';
@@ -46,12 +47,24 @@ class _SearchUsersMobileLayoutState
           BaseTextField(
             controller: _searchController,
             hint: 'search user',
-            icon: PhosphorIcons.magnifyingGlass(),
+            icon: state.status.isData
+                ? PhosphorIcons.x()
+                : PhosphorIcons.magnifyingGlass(),
             onSubmitted: (query) =>
                 ref.read(searchUsersProvider.notifier).search(query: query),
-            onTapIcon: () => ref
-                .read(searchUsersProvider.notifier)
-                .search(query: _searchController.text),
+            onTapIcon: () {
+              if (state.status.isData) {
+                _searchController.clear();
+                ref.read(searchUsersProvider.notifier).reset();
+              } else {
+                ref
+                    .read(searchUsersProvider.notifier)
+                    .search(query: _searchController.text);
+              }
+            },
+            errorText: state.invalidQuery
+                ? context.l10n.you_must_type_at_least_x_characters(3)
+                : null,
           ),
           switch (state.status) {
             SearchUsersStatus.initial => const SizedBox(),
