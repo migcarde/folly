@@ -162,4 +162,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String you_must_type_at_least_x_characters(int number) {
     return 'Debes escribir al menos $number letras';
   }
+
+  @override
+  String get user_banned => 'Usuario baneado';
 }

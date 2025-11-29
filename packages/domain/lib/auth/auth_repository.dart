@@ -1,7 +1,7 @@
 import 'package:domain/base/result.dart';
 import 'package:domain/dependency_injection/local_dependency_injection.dart';
-import 'package:domain/login/auth_repository_impl.dart';
-import 'package:domain/login/models/auth_entity.dart';
+import 'package:domain/auth/auth_repository_impl.dart';
+import 'package:domain/auth/models/auth_entity.dart';
 import 'package:riverpod/riverpod.dart';
 
 abstract class AuthRepository {
@@ -25,7 +25,7 @@ abstract class AuthRepository {
   Future<Result<void>> sendPasswordResetEmail({required String email});
 }
 
-final loginRepositoryProvider = Provider.autoDispose<AuthRepository>(
+final authRepositoryProvider = Provider.autoDispose<AuthRepository>(
   (ref) => AuthRepositoryImpl(
     remoteDatasource: ref.watch(authRemoteDatasourceProvider),
   ),

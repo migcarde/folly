@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:domain/login/models/firebase_auth_errors.dart';
+import 'package:domain/auth/models/auth_exceptions.dart';
 import 'package:domain/users/models/create_user_entity.dart';
 import 'package:domain/users/models/user_entity.dart';
 import 'package:domain/users/user_repository.dart';
@@ -51,8 +51,8 @@ class RegisterNotifier extends StateNotifier<RegisterState> {
   }
 
   void _onError(Object failure) {
-    if (failure is FirebaseAuthErrors) {
-      final registerError = RegisterError.fromFirebaseAuthError(failure);
+    if (failure is AuthException) {
+      final registerError = RegisterError.fromAuthException(exception: failure);
 
       state = state.copyWith(
         status: registerError.isEmailAlreayInUse

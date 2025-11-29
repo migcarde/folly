@@ -1,7 +1,8 @@
 import 'package:data/data.dart';
+import 'package:domain/auth/models/auth_exceptions.dart';
 import 'package:domain/base/result.dart';
-import 'package:domain/login/auth_repository.dart';
-import 'package:domain/login/models/auth_entity.dart';
+import 'package:domain/auth/auth_repository.dart';
+import 'package:domain/auth/models/auth_entity.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
   final AuthRemoteDatasource remoteDatasource;
@@ -20,7 +21,9 @@ class AuthRepositoryImpl extends AuthRepository {
       );
 
       return Result.success(result.entity);
-    } catch (e) {
+    } on AuthRemoteException catch (e) {
+      return Result.failure(AuthException.fromRemoteException(exception: e));
+    } on Exception catch (e) {
       return Result.failure(e);
     }
   }
@@ -31,6 +34,8 @@ class AuthRepositoryImpl extends AuthRepository {
       await remoteDatasource.deleteAccount();
 
       return Result.success(null);
+    } on AuthRemoteException catch (e) {
+      return Result.failure(AuthException.fromRemoteException(exception: e));
     } on Exception catch (e) {
       return Result.failure(e);
     }
@@ -58,6 +63,8 @@ class AuthRepositoryImpl extends AuthRepository {
       );
 
       return Result.success(result.entity);
+    } on AuthRemoteException catch (e) {
+      return Result.failure(AuthException.fromRemoteException(exception: e));
     } on Exception catch (e) {
       return Result.failure(e);
     }
@@ -69,7 +76,9 @@ class AuthRepositoryImpl extends AuthRepository {
       await remoteDatasource.logout();
 
       return Result.success(null);
-    } catch (e) {
+    } on AuthRemoteException catch (e) {
+      return Result.failure(AuthException.fromRemoteException(exception: e));
+    } on Exception catch (e) {
       return Result.failure(e);
     }
   }
@@ -83,7 +92,9 @@ class AuthRepositoryImpl extends AuthRepository {
       await remoteDatasource.reauthenticate(email: email, password: password);
 
       return Result.success(null);
-    } catch (e) {
+    } on AuthRemoteException catch (e) {
+      return Result.failure(AuthException.fromRemoteException(exception: e));
+    } on Exception catch (e) {
       return Result.failure(e);
     }
   }
@@ -97,7 +108,9 @@ class AuthRepositoryImpl extends AuthRepository {
       await remoteDatasource.sendPasswordResetEmail(email: email);
 
       return Result.success(null);
-    } catch (e) {
+    } on AuthRemoteException catch (e) {
+      return Result.failure(AuthException.fromRemoteException(exception: e));
+    } on Exception catch (e) {
       return Result.failure(e);
     }
   }

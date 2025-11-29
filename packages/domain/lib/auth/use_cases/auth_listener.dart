@@ -1,5 +1,5 @@
-import 'package:domain/login/auth_repository.dart';
-import 'package:domain/login/models/auth_entity.dart';
+import 'package:domain/auth/auth_repository.dart';
+import 'package:domain/auth/models/auth_entity.dart';
 import 'package:riverpod/riverpod.dart';
 
 class AuthListener {
@@ -11,5 +11,5 @@ class AuthListener {
 }
 
 final authListenerProvider = Provider.autoDispose<AuthListener>(
-  (ref) => AuthListener(loginRepository: ref.watch(loginRepositoryProvider)),
+  (ref) => AuthListener(loginRepository: ref.watch(authRepositoryProvider)),
 );

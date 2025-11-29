@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:domain/login/models/firebase_auth_errors.dart';
+import 'package:domain/auth/models/auth_exceptions.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
@@ -19,6 +19,7 @@ enum RegisterStatus {
 enum RegisterError {
   emailNotValid,
   emailAlreadyInUse,
+  userBanned,
   nameEmpty,
   passwordNotMatch,
   passwordMustBeStronger,
@@ -28,6 +29,7 @@ enum RegisterError {
 
   bool get isEmailNotValid => this == RegisterError.emailNotValid;
   bool get isEmailAlreayInUse => this == RegisterError.emailAlreadyInUse;
+  bool get isUserBanned => this == RegisterError.userBanned;
   bool get isNameEmpty => this == RegisterError.nameEmpty;
   bool get isPasswordError => this == RegisterError.passwordNotMatch;
   bool get isPasswordMustBeStronger =>
@@ -42,6 +44,8 @@ enum RegisterError {
         return l10n.email_not_valid;
       case RegisterError.emailAlreadyInUse:
         return l10n.user_already_registered_please_use_another_email;
+      case RegisterError.userBanned:
+        return l10n.user_banned;
       case RegisterError.nameEmpty:
         return l10n.name_is_required;
       case RegisterError.passwordNotMatch:
@@ -57,10 +61,16 @@ enum RegisterError {
     }
   }
 
-  factory RegisterError.fromFirebaseAuthError(FirebaseAuthErrors error) {
-    switch (error) {
-      case FirebaseAuthErrors.emailAlreadyInUse:
+  factory RegisterError.fromAuthException({required AuthException exception}) {
+    switch (exception) {
+      case AuthException.invalidEmail:
+        return RegisterError.emailNotValid;
+      case AuthException.emailAlreadyInUse:
         return RegisterError.emailAlreadyInUse;
+      case AuthException.userBanned:
+        return RegisterError.userBanned;
+      case AuthException.weakPassword:
+        return RegisterError.passwordMustBeStronger;
       default:
         return RegisterError.unknown;
     }

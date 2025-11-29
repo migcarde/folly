@@ -1,5 +1,5 @@
+import 'package:domain/auth/auth_repository.dart';
 import 'package:domain/domain.dart';
-import 'package:domain/login/auth_repository.dart';
 import 'package:domain/users/models/user_entity.dart';
 import 'package:domain/users/user_repository.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +49,7 @@ class AuthNotifier extends ChangeNotifier {
 
 final authNotifierProvider = ChangeNotifierProvider.autoDispose<AuthNotifier>(
   (ref) => AuthNotifier(
-    authRepository: ref.watch(loginRepositoryProvider),
+    authRepository: ref.watch(authRepositoryProvider),
     userRepository: ref.watch(userRepositoryProvider),
     challengesRepository: ref.watch(challengeRepositoryProvider),
   ),
