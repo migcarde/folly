@@ -1,4 +1,4 @@
-import 'package:data/remote/login/models/auth_remote_entity.dart';
+import 'package:data/remote/auth/models/auth_remote_entity.dart';
 
 abstract class AuthRemoteDatasource {
   Future<AuthRemoteEntity> loginWithEmailAndPassword({

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:domain/login/auth_repository.dart';
+import 'package:domain/auth/auth_repository.dart';
 import 'package:domain/users/user_repository.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:folly/features/auth_notifier.dart';
@@ -100,6 +100,6 @@ final editProfileProvider =
       (ref) => EditProfileNotifier(
         authNotifier: ref.watch(authNotifierProvider),
         userRepository: ref.watch(userRepositoryProvider),
-        authRepository: ref.watch(loginRepositoryProvider),
+        authRepository: ref.watch(authRepositoryProvider),
       ),
     );

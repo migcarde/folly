@@ -1,8 +1,8 @@
 import 'package:domain/base/base_use_case.dart';
 import 'package:domain/base/result.dart';
-import 'package:domain/login/auth_repository.dart';
-import 'package:domain/login/models/auth_entity.dart';
-import 'package:domain/login/models/login_entity.dart';
+import 'package:domain/auth/auth_repository.dart';
+import 'package:domain/auth/models/auth_entity.dart';
+import 'package:domain/auth/models/login_entity.dart';
 import 'package:riverpod/riverpod.dart';
 
 class Login implements BaseUseCase<AuthEntity, LoginEntity> {
@@ -19,5 +19,5 @@ class Login implements BaseUseCase<AuthEntity, LoginEntity> {
 }
 
 final loginProvider = Provider.autoDispose<Login>(
-  (ref) => Login(loginRepository: ref.watch(loginRepositoryProvider)),
+  (ref) => Login(loginRepository: ref.watch(authRepositoryProvider)),
 );

@@ -1,4 +1,4 @@
-import 'package:domain/login/models/firebase_auth_errors.dart';
+import 'package:domain/auth/models/auth_exceptions.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
@@ -15,6 +15,8 @@ enum LoginStatus {
 enum LoginError {
   alreadyRegistered,
   invalidCredentials,
+  invalidEmail,
+  userBanned,
   unknown,
   none;
 
@@ -29,22 +31,28 @@ enum LoginError {
       case LoginError.unknown:
         return l10n.sorry_we_have_problems_please_try_again_later;
       case LoginError.invalidCredentials:
+      case LoginError.invalidEmail:
         return l10n.invalid_credentials_please_try_again;
       case LoginError.none:
         return '';
+      case LoginError.userBanned:
+        return l10n.user_banned;
     }
   }
 
-  factory LoginError.fromFirebaseAuthError(FirebaseAuthErrors error) {
-    switch (error) {
-      case FirebaseAuthErrors.emailAlreadyInUse:
+  factory LoginError.fromAuthException({required AuthException exception}) {
+    switch (exception) {
+      case AuthException.emailAlreadyInUse:
         return LoginError.alreadyRegistered;
-      case FirebaseAuthErrors.unknown:
-        return LoginError.unknown;
-      case FirebaseAuthErrors.invalidPassword:
-      case FirebaseAuthErrors.userNotFound:
-      case FirebaseAuthErrors.invalidCredetentials:
+      case AuthException.userNotFound:
+      case AuthException.invalidCredentials:
         return LoginError.invalidCredentials;
+      case AuthException.userBanned:
+        return LoginError.userBanned;
+      case AuthException.invalidEmail:
+        return LoginError.invalidEmail;
+      default:
+        return LoginError.unknown;
     }
   }
 }

@@ -161,4 +161,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String you_must_type_at_least_x_characters(int number) {
     return 'You must type at least $number characters';
   }
+
+  @override
+  String get user_banned => 'User banned';
 }

@@ -386,6 +386,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You must type at least {number} characters'**
   String you_must_type_at_least_x_characters(int number);
+
+  /// No description provided for @user_banned.
+  ///
+  /// In en, this message translates to:
+  /// **'User banned'**
+  String get user_banned;
 }
 
 class _AppLocalizationsDelegate
