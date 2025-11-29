@@ -7,13 +7,11 @@ import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
 import 'package:folly/features/register/models/register_state.dart';
 import 'package:folly/features/register/register_notifier.dart';
-import 'package:folly/routes/paths.dart';
 import 'package:folly/widgets/app_snackbar_type.dart';
 import 'package:folly/widgets/button/loading_button.dart';
 import 'package:folly/widgets/editable_profile_image.dart';
 import 'package:folly/widgets/photo_dialog.dart';
 import 'package:folly/widgets/text_field/base_text_field.dart';
-import 'package:go_router/go_router.dart';
 
 class RegisterMobileLayout extends ConsumerStatefulWidget {
   const RegisterMobileLayout({super.key});
@@ -43,8 +41,6 @@ class _RegisterMobileLayoutState extends ConsumerState<RegisterMobileLayout> {
           message: context.l10n.sorry_we_have_problems_please_try_again_later,
           type: AppSnackbarType.negative,
         );
-      } else if (next.status.isSuccess) {
-        context.go(Paths.home.route);
       }
     });
 
