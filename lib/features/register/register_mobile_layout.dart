@@ -44,7 +44,7 @@ class _RegisterMobileLayoutState extends ConsumerState<RegisterMobileLayout> {
           type: AppSnackbarType.negative,
         );
       } else if (next.status.isSuccess) {
-        await context.go(Paths.home.route);
+        context.go(Paths.home.route);
       }
     });
 
