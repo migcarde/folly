@@ -1,7 +1,9 @@
+import 'package:domain/users/models/user_entity.dart';
 import 'package:folly/features/change_language/change_language_page.dart';
 import 'package:folly/features/edit_profile/edit_profile_page.dart';
 import 'package:folly/features/home/home_page.dart';
 import 'package:folly/features/login/login_page.dart';
+import 'package:folly/features/profile/profile_page.dart';
 import 'package:folly/features/register/register_page.dart';
 import 'package:folly/features/settings/settings_page.dart';
 import 'package:folly/features/upload_story/upload_story_page.dart';
@@ -38,6 +40,14 @@ class Routes {
     GoRoute(
       path: Paths.changeLanguage.route,
       builder: (context, state) => const ChangeLanguagePage(),
+    ),
+    GoRoute(
+      path: Paths.userProfile.route,
+      builder: (context, state) {
+        final user = state.extra! as UserEntity;
+
+        return ProfilePage(user: user);
+      },
     ),
   ];
 }

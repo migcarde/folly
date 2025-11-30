@@ -4,8 +4,10 @@ import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
 import 'package:folly/features/search_users/models/search_users_state.dart';
 import 'package:folly/features/search_users/search_users_notifier.dart';
+import 'package:folly/routes/paths.dart';
 import 'package:folly/widgets/profile_image.dart';
 import 'package:folly/widgets/text_field/base_text_field.dart';
+import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class SearchUsersMobileLayout extends ConsumerStatefulWidget {
@@ -86,9 +88,8 @@ class _SearchUsersMobileLayoutState
                     final user = state.searchUsers[index];
 
                     return GestureDetector(
-                      onTap: () {
-                        // TODO: Navigate to user profile
-                      },
+                      onTap: () =>
+                          context.push(Paths.userProfile.route, extra: user),
                       child: Row(
                         children: [
                           ProfileImage(imageUrl: user.photoPath, size: 48.0),
