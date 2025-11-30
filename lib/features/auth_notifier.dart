@@ -45,6 +45,8 @@ class AuthNotifier extends ChangeNotifier {
   }
 
   Future<void> logout() async => await authRepository.logout();
+
+  bool isCurrentUser({required String uid}) => user?.uid == uid;
 }
 
 final authNotifierProvider = ChangeNotifierProvider.autoDispose<AuthNotifier>(
