@@ -25,8 +25,8 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
       storiesRepository.getStoriesFromUser(user: user),
       if (!isCurrentUser && authNotifier.user != null)
         requestsRepository.isPending(
-          user: user,
-          receiverId: authNotifier.user!.uid,
+          user: authNotifier.user!,
+          receiverId: user.uid,
         ),
     ]);
 

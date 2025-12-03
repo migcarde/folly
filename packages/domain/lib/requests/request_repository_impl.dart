@@ -46,6 +46,26 @@ class RequestRepositoryImpl implements RequestRepository {
   Future<Result<List<RequestEntity>>> getRequests({required String uid}) async {
     try {
       List<RequestEntity> users = [];
+      final result = await requestRemoteDatasource.getRequests(uid: uid);
+
+      for (final request in result) {
+        final requestEntity = await _getRequestEntity(request);
+
+        users.add(requestEntity);
+      }
+
+      return Result.success(users);
+    } catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<List<RequestEntity>>> getPendingRequests({
+    required String uid,
+  }) async {
+    try {
+      List<RequestEntity> users = [];
       final result = await requestRemoteDatasource.getPendingRequests(uid: uid);
 
       for (final request in result) {

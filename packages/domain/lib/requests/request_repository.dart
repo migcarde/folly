@@ -12,6 +12,7 @@ abstract class RequestRepository {
   });
   Future<Result<void>> deleteRequest({required String id});
   Future<Result<List<RequestEntity>>> getRequests({required String uid});
+  Future<Result<List<RequestEntity>>> getPendingRequests({required String uid});
   Future<Result<void>> acceptRequest({required RequestEntity request});
   Future<Result<void>> rejectRequest({required RequestEntity request});
   Future<Result<bool>> isPending({

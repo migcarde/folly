@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:folly/core/app_dimens.dart';
-import 'package:folly/core/container_decorators.dart';
 import 'package:folly/widgets/button/button_size.dart';
 import 'package:folly/widgets/button/button_type.dart';
 
@@ -37,7 +36,11 @@ class BaseButton extends StatelessWidget {
                   vertical: AppDimens.s,
                 )
               : const EdgeInsets.all(AppDimens.buttonPadding),
-          decoration: ContainerDecorators.button(color: style.backgroundColor),
+          decoration: BoxDecoration(
+            color: style.backgroundColor,
+            borderRadius: BorderRadius.circular(AppDimens.buttonRadius),
+            border: Border.all(color: style.borderColor, width: 1.0),
+          ),
           child: Row(
             mainAxisSize: size.isSmall ? MainAxisSize.min : MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,

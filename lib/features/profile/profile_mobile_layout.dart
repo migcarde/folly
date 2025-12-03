@@ -5,9 +5,8 @@ import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
 import 'package:folly/features/profile/models/profile_state.dart';
 import 'package:folly/features/profile/profile_notifier.dart';
+import 'package:folly/features/profile/widgets/request_information.dart';
 import 'package:folly/routes/paths.dart';
-import 'package:folly/widgets/button/base_button.dart';
-import 'package:folly/widgets/button/button_size.dart';
 import 'package:folly/widgets/profile_image.dart';
 import 'package:folly/widgets/story_card.dart';
 import 'package:go_router/go_router.dart';
@@ -83,13 +82,10 @@ class _ProfileMobileLayoutState extends ConsumerState<ProfileMobileLayout> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: AppDimens.s),
-                child: Text(
-                  '@${widget.user.username}',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.disabledColor,
-                  ),
+              Text(
+                '@${widget.user.username}',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.disabledColor,
                 ),
               ),
               // TODO: Add biography text limit and show more button
@@ -105,20 +101,13 @@ class _ProfileMobileLayoutState extends ConsumerState<ProfileMobileLayout> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-              // TODO: Add send request and request status
-              if (state.requestStatus.isNone && !widget.isCurrentUser)
-                BaseButton(
-                  text: l10n.follow,
-                  size: ButtonSize.small,
-                  onTap: () => ref
-                      .read(profileNotifierProvider.notifier)
-                      .sendRequest(receiverId: widget.user.uid),
-                ),
-              if (state.requestStatus.isPending && !widget.isCurrentUser)
-                BaseButton(
-                  text: l10n.pending,
-                  size: ButtonSize.small,
-                  onTap: () {},
+              if (!widget.isCurrentUser)
+                Padding(
+                  padding: const EdgeInsets.only(top: AppDimens.m),
+                  child: RequestInformation(
+                    uid: widget.user.uid,
+                    status: state.requestStatus,
+                  ),
                 ),
               Padding(
                 padding: const EdgeInsets.only(top: AppDimens.l),
