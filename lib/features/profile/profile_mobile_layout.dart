@@ -6,6 +6,8 @@ import 'package:folly/extensions/build_context_extensions.dart';
 import 'package:folly/features/profile/models/profile_state.dart';
 import 'package:folly/features/profile/profile_notifier.dart';
 import 'package:folly/routes/paths.dart';
+import 'package:folly/widgets/button/base_button.dart';
+import 'package:folly/widgets/button/button_size.dart';
 import 'package:folly/widgets/profile_image.dart';
 import 'package:folly/widgets/story_card.dart';
 import 'package:go_router/go_router.dart';
@@ -33,7 +35,9 @@ class _ProfileMobileLayoutState extends ConsumerState<ProfileMobileLayout> {
   void initState() {
     super.initState();
 
-    ref.read(profileNotifierProvider.notifier).init(user: widget.user);
+    ref
+        .read(profileNotifierProvider.notifier)
+        .init(user: widget.user, isCurrentUser: widget.isCurrentUser);
   }
 
   @override
@@ -102,6 +106,20 @@ class _ProfileMobileLayoutState extends ConsumerState<ProfileMobileLayout> {
                   ),
                 ),
               // TODO: Add send request and request status
+              if (state.requestStatus.isNone && !widget.isCurrentUser)
+                BaseButton(
+                  text: l10n.follow,
+                  size: ButtonSize.small,
+                  onTap: () => ref
+                      .read(profileNotifierProvider.notifier)
+                      .sendRequest(receiverId: widget.user.uid),
+                ),
+              if (state.requestStatus.isPending && !widget.isCurrentUser)
+                BaseButton(
+                  text: l10n.pending,
+                  size: ButtonSize.small,
+                  onTap: () {},
+                ),
               Padding(
                 padding: const EdgeInsets.only(top: AppDimens.l),
                 child: ListView.separated(

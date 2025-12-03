@@ -10,6 +10,7 @@ class UserRemoteEntity extends Equatable {
     required this.token,
     required this.locale,
     required this.photoPath,
+    required this.friends,
   });
 
   final String uid;
@@ -20,6 +21,7 @@ class UserRemoteEntity extends Equatable {
   final String token;
   final String locale;
   final String? photoPath;
+  final List<String> friends;
 
   factory UserRemoteEntity.fromJson({required Map<String, dynamic> json}) =>
       UserRemoteEntity(
@@ -31,6 +33,7 @@ class UserRemoteEntity extends Equatable {
         token: json['token'],
         locale: json['locale'],
         photoPath: json['photo_path'],
+        friends: (json['friends'] as List<String>?) ?? [],
       );
 
   Map<String, dynamic> toJson() => {
@@ -42,6 +45,7 @@ class UserRemoteEntity extends Equatable {
     'token': token,
     'locale': locale,
     'photo_path': photoPath,
+    'friends': friends,
   };
 
   @override
@@ -54,6 +58,7 @@ class UserRemoteEntity extends Equatable {
     token,
     locale,
     photoPath,
+    friends,
   ];
 
   UserRemoteEntity copyWith({
@@ -65,6 +70,7 @@ class UserRemoteEntity extends Equatable {
     String? token,
     String? locale,
     String? photoPath,
+    List<String>? friends,
   }) => UserRemoteEntity(
     uid: uid ?? this.uid,
     name: name ?? this.name,
@@ -74,5 +80,6 @@ class UserRemoteEntity extends Equatable {
     token: token ?? this.token,
     locale: locale ?? this.locale,
     photoPath: photoPath ?? this.photoPath,
+    friends: friends ?? this.friends,
   );
 }

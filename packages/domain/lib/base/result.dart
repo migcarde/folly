@@ -6,9 +6,7 @@ class Failure<T> extends Result<T> {
   const Failure(this.failure) : super._();
 
   @override
-  List<Object?> get props => [
-        failure,
-      ];
+  List<Object?> get props => [failure];
 }
 
 class Success<T> extends Result<T> {
@@ -17,9 +15,7 @@ class Success<T> extends Result<T> {
   const Success(this.data) : super._();
 
   @override
-  List<Object?> get props => [
-        data,
-      ];
+  List<Object?> get props => [data];
 }
 
 class Result<T> extends Equatable {
@@ -28,11 +24,11 @@ class Result<T> extends Equatable {
   factory Result.success(T result) => Success<T>(result);
   factory Result.failure(Object failure) => Failure(failure);
 
-  void when(Function(T) success, Function(Object) failure) {
+  W when<W>(W Function(T result) success, W Function(Object failure) failure) {
     if (this is Success<T>) {
-      success((this as Success<T>).data);
-    } else if (this is Failure<T>) {
-      failure((this as Failure<T>).failure);
+      return success((this as Success<T>).data);
+    } else {
+      return failure((this as Failure<T>).failure);
     }
   }
 

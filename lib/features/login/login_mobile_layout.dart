@@ -34,8 +34,6 @@ class _RegisterMobileLayoutState extends ConsumerState<LoginMobileLayout> {
           message: context.l10n.sorry_we_have_problems_please_try_again_later,
           type: AppSnackbarType.negative,
         );
-      } else if (next.status.isConnected) {
-        context.go(Paths.home.route);
       }
     });
 

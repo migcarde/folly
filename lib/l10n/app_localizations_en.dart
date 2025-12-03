@@ -164,4 +164,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get user_banned => 'User banned';
+
+  @override
+  String get follow => 'Follow';
+
+  @override
+  String get decline => 'Decline';
+
+  @override
+  String get pending => 'Pending';
 }

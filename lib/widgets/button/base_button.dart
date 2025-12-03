@@ -30,9 +30,13 @@ class BaseButton extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          height: AppDimens.buttonHeight,
           alignment: size.isSmall ? null : Alignment.center,
-          padding: const EdgeInsets.all(AppDimens.buttonPadding),
+          padding: size.isSmall
+              ? const EdgeInsets.symmetric(
+                  horizontal: AppDimens.l,
+                  vertical: AppDimens.s,
+                )
+              : const EdgeInsets.all(AppDimens.buttonPadding),
           decoration: ContainerDecorators.button(color: style.backgroundColor),
           child: Row(
             mainAxisSize: size.isSmall ? MainAxisSize.min : MainAxisSize.max,

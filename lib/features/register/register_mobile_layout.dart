@@ -145,6 +145,7 @@ class _RegisterMobileLayoutState extends ConsumerState<RegisterMobileLayout> {
                     firebaseToken: '',
                     locale: Platform.localeName,
                     photoPath: '',
+                    friends: [],
                   ),
                   password: passwordController.text,
                   repeatPassword: repeatPasswordController.text,

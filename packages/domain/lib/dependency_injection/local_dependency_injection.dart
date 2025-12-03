@@ -1,6 +1,7 @@
 import 'package:data/data.dart';
 import 'package:data/remote/challenges/challenges_remote_datasource.dart';
 import 'package:data/remote/challenges/challenges_remote_datasource_impl.dart';
+import 'package:data/remote/requests/request_remote_datasource_impl.dart';
 import 'package:data/remote/stories/stories_remote_datasource.dart';
 import 'package:data/remote/stories/stories_remote_datasource_impl.dart';
 import 'package:data/remote/users/user_remote_datasource_impl.dart';
@@ -22,4 +23,9 @@ final challengeRemoteDatasourceProvider =
 final storiesRemoteDatasourceProvider =
     Provider.autoDispose<StoriesRemoteDatasource>(
       (ref) => StoriesRemoteDatasourceImpl(),
+    );
+
+final requestRemoteDatasurceProvider =
+    Provider.autoDispose<RequestRemoteDatasource>(
+      (ref) => RequestRemoteDatasourceImpl(),
     );
