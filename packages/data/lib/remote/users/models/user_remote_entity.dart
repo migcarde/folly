@@ -33,7 +33,7 @@ class UserRemoteEntity extends Equatable {
         token: json['token'],
         locale: json['locale'],
         photoPath: json['photo_path'],
-        friends: (json['friends'] as List<String>?) ?? [],
+        friends: (json['friends'] as List<dynamic>?)?.cast<String>() ?? [],
       );
 
   Map<String, dynamic> toJson() => {
