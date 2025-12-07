@@ -1,5 +1,7 @@
 import 'package:domain/base/result.dart';
 import 'package:domain/domain.dart';
+import 'package:domain/requests/enums/friend_request_state.dart';
+import 'package:domain/requests/models/friend_request_entity.dart';
 import 'package:domain/requests/request_repository.dart';
 import 'package:domain/users/models/user_entity.dart';
 import 'package:flutter_riverpod/legacy.dart';
@@ -24,7 +26,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
     final result = await Future.wait([
       storiesRepository.getStoriesFromUser(user: user),
       if (!isCurrentUser && authNotifier.user != null)
-        requestsRepository.isPending(
+        requestsRepository.getRequestStatus(
           user: authNotifier.user!,
           receiverId: user.uid,
         ),
@@ -32,16 +34,16 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
 
     final storiesResult = result[0] as Result<List<StoryEntity>>;
     final pendingResult = (result.length > 1)
-        ? (result[1] as Result<bool>)
-        : Result.success(false);
+        ? (result[1] as Result<FriendRequestEntity?>)
+        : Result.success(null);
 
     storiesResult.when((stories) {
-      final isPending = pendingResult.when((value) => value, (_) => false);
+      final friendRequest = pendingResult.when((value) => value, (_) => null);
 
       state = state.copyWith(
         status: ProfileStatus.success,
         stories: stories,
-        requestStatus: isPending ? RequestStatus.pending : RequestStatus.none,
+        friendRequest: friendRequest,
       );
     }, (_) => state = state.copyWith(status: ProfileStatus.error));
   }
@@ -54,9 +56,38 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
       );
 
       result.when(
-        (data) => state = state.copyWith(requestStatus: RequestStatus.pending),
+        (data) => state = state.copyWith(
+          friendRequest: FriendRequestEntity(state: FriendRequestState.pending),
+        ),
         (_) => state = state.copyWith(status: ProfileStatus.error),
       );
+    }
+  }
+
+  Future<void> acceptRequest() async {
+    if (state.friendRequest?.request != null) {
+      final result = await requestsRepository.acceptRequest(
+        request: state.friendRequest!.request!,
+      );
+
+      result.when(
+        (_) => state = state.copyWith(
+          friendRequest: state.friendRequest?.copyWith(
+            state: FriendRequestState.friend,
+          ),
+        ),
+        (_) {},
+      );
+    }
+  }
+
+  Future<void> rejectRequest() async {
+    if (state.friendRequest?.request != null) {
+      final result = await requestsRepository.rejectRequest(
+        request: state.friendRequest!.request!,
+      );
+
+      result.when((_) => state = state.clearRequest(), (_) {});
     }
   }
 }

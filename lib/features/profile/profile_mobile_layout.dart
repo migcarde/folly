@@ -103,10 +103,14 @@ class _ProfileMobileLayoutState extends ConsumerState<ProfileMobileLayout> {
                 ),
               if (!widget.isCurrentUser)
                 Padding(
-                  padding: const EdgeInsets.only(top: AppDimens.m),
+                  padding: const EdgeInsets.only(
+                    top: AppDimens.m,
+                    left: AppDimens.screenPadding,
+                    right: AppDimens.screenPadding,
+                  ),
                   child: RequestInformation(
                     uid: widget.user.uid,
-                    status: state.requestStatus,
+                    friendRequest: state.friendRequest,
                   ),
                 ),
               Padding(

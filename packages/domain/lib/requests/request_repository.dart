@@ -1,5 +1,6 @@
 import 'package:domain/base/result.dart';
 import 'package:domain/dependency_injection/local_dependency_injection.dart';
+import 'package:domain/requests/models/friend_request_entity.dart';
 import 'package:domain/requests/models/request_entity.dart';
 import 'package:domain/requests/request_repository_impl.dart';
 import 'package:domain/users/models/user_entity.dart';
@@ -15,7 +16,8 @@ abstract class RequestRepository {
   Future<Result<List<RequestEntity>>> getPendingRequests({required String uid});
   Future<Result<void>> acceptRequest({required RequestEntity request});
   Future<Result<void>> rejectRequest({required RequestEntity request});
-  Future<Result<bool>> isPending({
+
+  Future<Result<FriendRequestEntity?>> getRequestStatus({
     required UserEntity user,
     required String receiverId,
   });

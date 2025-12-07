@@ -1,5 +1,8 @@
+import 'package:collection/collection.dart';
 import 'package:data/data.dart';
 import 'package:domain/base/result.dart';
+import 'package:domain/requests/enums/friend_request_state.dart';
+import 'package:domain/requests/models/friend_request_entity.dart';
 import 'package:domain/requests/models/request_entity.dart';
 import 'package:domain/requests/request_repository.dart';
 import 'package:domain/users/models/user_entity.dart';
@@ -20,6 +23,7 @@ class RequestRepositoryImpl implements RequestRepository {
       final updatedUser = request.user.addFriend(request.receiver.uid);
 
       await Future.wait([
+        //! Does not update this user, review policies
         userRemoteDatasource.saveUser(user: updatedReceiver.remoteEntity),
         userRemoteDatasource.saveUser(user: updatedUser.remoteEntity),
       ]);
@@ -122,20 +126,55 @@ class RequestRepositoryImpl implements RequestRepository {
   }
 
   @override
-  Future<Result<bool>> isPending({
+  Future<Result<FriendRequestEntity?>> getRequestStatus({
     required UserEntity user,
     required String receiverId,
   }) async {
     try {
-      final result = await requestRemoteDatasource.getPendingRequests(
-        uid: user.uid,
-      );
+      if (user.friends.contains(receiverId)) {
+        return Result.success(
+          FriendRequestEntity(state: FriendRequestState.friend),
+        );
+      } else {
+        final pendingRequests = await requestRemoteDatasource
+            .getPendingRequests(uid: user.uid);
 
-      final isPending = result.any(
-        (request) => request.receiverUid == receiverId,
-      );
+        final requestRemoteEntity = pendingRequests.firstWhereOrNull(
+          (request) => request.receiverUid == receiverId,
+        );
 
-      return Result.success(isPending);
+        if (requestRemoteEntity != null) {
+          final request = await _getRequestEntity(requestRemoteEntity);
+          return Result.success(
+            FriendRequestEntity(
+              state: FriendRequestState.pending,
+              request: request,
+            ),
+          );
+        } else {
+          final receiverRequests = await requestRemoteDatasource.getRequests(
+            uid: user.uid,
+          );
+
+          final receivedRequestRemoteEntity = receiverRequests.firstWhereOrNull(
+            (request) => request.uid == receiverId,
+          );
+
+          if (receivedRequestRemoteEntity != null) {
+            final receivedRequestEntity = await _getRequestEntity(
+              receivedRequestRemoteEntity,
+            );
+            return Result.success(
+              FriendRequestEntity(
+                state: FriendRequestState.requested,
+                request: receivedRequestEntity,
+              ),
+            );
+          }
+
+          return Result.success(null);
+        }
+      }
     } catch (e) {
       return Result.failure(e);
     }
