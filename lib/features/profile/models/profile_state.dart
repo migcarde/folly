@@ -1,5 +1,5 @@
 import 'package:domain/domain.dart';
-import 'package:domain/requests/models/friend_request_entity.dart';
+import 'package:domain/friends/models/friend_entity.dart';
 import 'package:domain/users/models/user_entity.dart';
 import 'package:equatable/equatable.dart';
 
@@ -8,28 +8,28 @@ enum ProfileStatus { loading, success, error }
 class ProfileState extends Equatable {
   final ProfileStatus status;
   final List<StoryEntity> stories;
-  final FriendRequestEntity? friendRequest;
+  final FriendEntity? friend;
 
   const ProfileState({
     this.status = ProfileStatus.loading,
     this.stories = const [],
-    this.friendRequest,
+    this.friend,
   });
 
   @override
-  List<Object?> get props => [status, stories, friendRequest];
+  List<Object?> get props => [status, stories, friend];
 
   ProfileState copyWith({
     ProfileStatus? status,
     List<StoryEntity>? stories,
     UserEntity? user,
-    FriendRequestEntity? friendRequest,
+    FriendEntity? friend,
   }) => ProfileState(
     status: status ?? this.status,
     stories: stories ?? this.stories,
-    friendRequest: friendRequest ?? this.friendRequest,
+    friend: friend ?? this.friend,
   );
 
   ProfileState clearRequest() =>
-      ProfileState(status: status, stories: stories, friendRequest: null);
+      ProfileState(status: status, stories: stories, friend: null);
 }

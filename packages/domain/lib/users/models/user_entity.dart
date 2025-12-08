@@ -11,7 +11,6 @@ class UserEntity extends Equatable {
     required this.firebaseToken,
     required this.locale,
     required this.photoPath,
-    required this.friends,
   });
 
   final String uid;
@@ -22,7 +21,6 @@ class UserEntity extends Equatable {
   final String firebaseToken;
   final String locale;
   final String photoPath;
-  final List<String> friends;
 
   UserRemoteEntity get remoteEntity => UserRemoteEntity(
     uid: uid,
@@ -33,7 +31,6 @@ class UserEntity extends Equatable {
     token: firebaseToken,
     locale: locale,
     photoPath: photoPath,
-    friends: friends,
   );
 
   @override
@@ -46,7 +43,6 @@ class UserEntity extends Equatable {
     firebaseToken,
     locale,
     photoPath,
-    friends,
   ];
 
   UserEntity copyWith({
@@ -68,11 +64,7 @@ class UserEntity extends Equatable {
     firebaseToken: firebaseToken ?? this.firebaseToken,
     locale: locale ?? this.locale,
     photoPath: photoPath ?? this.photoPath,
-    friends: friends ?? this.friends,
   );
-
-  UserEntity addFriend(String friend) =>
-      copyWith(friends: [...friends, friend]);
 }
 
 extension UserRemoteEntityExtensions on UserRemoteEntity {
@@ -85,6 +77,5 @@ extension UserRemoteEntityExtensions on UserRemoteEntity {
     firebaseToken: token,
     locale: locale,
     photoPath: photoPath ?? '',
-    friends: friends,
   );
 }

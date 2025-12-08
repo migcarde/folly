@@ -45,7 +45,6 @@ class _SearchUsersMobileLayoutState
       padding: const EdgeInsets.all(AppDimens.screenPadding),
       child: Column(
         children: [
-          // TODO: Add search widget
           BaseTextField(
             controller: _searchController,
             hint: 'search user',

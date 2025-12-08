@@ -110,7 +110,7 @@ class _ProfileMobileLayoutState extends ConsumerState<ProfileMobileLayout> {
                   ),
                   child: RequestInformation(
                     uid: widget.user.uid,
-                    friendRequest: state.friendRequest,
+                    friendRequest: state.friend,
                   ),
                 ),
               Padding(

@@ -1,8 +1,7 @@
 import 'package:domain/base/result.dart';
 import 'package:domain/domain.dart';
-import 'package:domain/requests/enums/friend_request_state.dart';
-import 'package:domain/requests/models/friend_request_entity.dart';
-import 'package:domain/requests/request_repository.dart';
+import 'package:domain/friends/enums/friend_request_state.dart';
+import 'package:domain/friends/models/friend_entity.dart';
 import 'package:domain/users/models/user_entity.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:folly/features/auth_notifier.dart';
@@ -11,12 +10,12 @@ import 'package:folly/features/profile/models/profile_state.dart';
 class ProfileNotifier extends StateNotifier<ProfileState> {
   ProfileNotifier({
     required this.storiesRepository,
-    required this.requestsRepository,
+    required this.friendsRepository,
     required this.authNotifier,
   }) : super(const ProfileState());
 
   final StoriesRepository storiesRepository;
-  final RequestRepository requestsRepository;
+  final FriendsRepository friendsRepository;
   final AuthNotifier authNotifier;
 
   Future<void> init({
@@ -26,38 +25,47 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
     final result = await Future.wait([
       storiesRepository.getStoriesFromUser(user: user),
       if (!isCurrentUser && authNotifier.user != null)
-        requestsRepository.getRequestStatus(
-          user: authNotifier.user!,
-          receiverId: user.uid,
-        ),
+        friendsRepository.getFriend(uid: user.uid),
     ]);
 
     final storiesResult = result[0] as Result<List<StoryEntity>>;
     final pendingResult = (result.length > 1)
-        ? (result[1] as Result<FriendRequestEntity?>)
+        ? (result[1] as Result<FriendEntity?>)
         : Result.success(null);
 
     storiesResult.when((stories) {
-      final friendRequest = pendingResult.when((value) => value, (_) => null);
+      FriendEntity? friendRequest = pendingResult.when(
+        (value) => value,
+        (_) => null,
+      );
+
+      if (authNotifier.user != null &&
+          friendRequest != null &&
+          friendRequest.state == FriendRequestState.pending &&
+          friendRequest.receiverUid == authNotifier.user!.uid) {
+        friendRequest = friendRequest.copyWith(
+          state: FriendRequestState.requested,
+        );
+      }
 
       state = state.copyWith(
         status: ProfileStatus.success,
         stories: stories,
-        friendRequest: friendRequest,
+        friend: friendRequest,
       );
     }, (_) => state = state.copyWith(status: ProfileStatus.error));
   }
 
   Future<void> sendRequest({required String receiverId}) async {
     if (authNotifier.user != null) {
-      final result = await requestsRepository.sendRequest(
+      final result = await friendsRepository.sendRequest(
         senderId: authNotifier.user!.uid,
         receiverId: receiverId,
       );
 
       result.when(
         (data) => state = state.copyWith(
-          friendRequest: FriendRequestEntity(state: FriendRequestState.pending),
+          friend: state.friend?.copyWith(state: FriendRequestState.pending),
         ),
         (_) => state = state.copyWith(status: ProfileStatus.error),
       );
@@ -65,16 +73,12 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
   }
 
   Future<void> acceptRequest() async {
-    if (state.friendRequest?.request != null) {
-      final result = await requestsRepository.acceptRequest(
-        request: state.friendRequest!.request!,
-      );
+    if (state.friend != null) {
+      final result = await friendsRepository.accept(request: state.friend!);
 
       result.when(
         (_) => state = state.copyWith(
-          friendRequest: state.friendRequest?.copyWith(
-            state: FriendRequestState.friend,
-          ),
+          friend: state.friend?.copyWith(state: FriendRequestState.friend),
         ),
         (_) {},
       );
@@ -82,10 +86,8 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
   }
 
   Future<void> rejectRequest() async {
-    if (state.friendRequest?.request != null) {
-      final result = await requestsRepository.rejectRequest(
-        request: state.friendRequest!.request!,
-      );
+    if (state.friend != null) {
+      final result = await friendsRepository.reject(request: state.friend!);
 
       result.when((_) => state = state.clearRequest(), (_) {});
     }
@@ -96,7 +98,7 @@ final profileNotifierProvider =
     StateNotifierProvider.autoDispose<ProfileNotifier, ProfileState>(
       (ref) => ProfileNotifier(
         storiesRepository: ref.watch(storiesRepositoryProvider),
-        requestsRepository: ref.watch(requestRepositoryProvider),
+        friendsRepository: ref.watch(friendsRepositoryProvider),
         authNotifier: ref.watch(authNotifierProvider),
       ),
     );

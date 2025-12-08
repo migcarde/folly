@@ -87,7 +87,7 @@ class UserRemoteDatasourceImpl extends UserRemoteDataSource {
     int? total,
   }) async {
     final startIndex = page * size;
-    final end = startIndex + size;
+    final end = startIndex + size - 1;
 
     final endIndex = total != null && end > total ? (total - 1) : end;
 
