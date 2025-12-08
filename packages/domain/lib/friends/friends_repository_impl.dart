@@ -49,17 +49,17 @@ class FriendsRepositoryImpl implements FriendsRepository {
   }
 
   @override
-  Future<Result<void>> sendRequest({
+  Future<Result<FriendEntity>> sendRequest({
     required String senderId,
     required String receiverId,
   }) async {
     try {
-      await friendRemoteDatasource.sendFriendRequest(
+      final result = await friendRemoteDatasource.sendFriendRequest(
         senderId: senderId,
         receiverId: receiverId,
       );
 
-      return Result.success(null);
+      return Result.success(result.entity);
     } catch (e) {
       return Result.failure(e);
     }
@@ -71,6 +71,28 @@ class FriendsRepositoryImpl implements FriendsRepository {
       final result = await friendRemoteDatasource.getFriend(uid: uid);
 
       return Result.success(result?.entity);
+    } catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<int>> getFollowers({required String uid}) async {
+    try {
+      final result = await friendRemoteDatasource.getFollowers(uid: uid);
+
+      return Result.success(result);
+    } catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<int>> getFollowing({required String uid}) async {
+    try {
+      final result = await friendRemoteDatasource.getFollowing(uid: uid);
+
+      return Result.success(result);
     } catch (e) {
       return Result.failure(e);
     }

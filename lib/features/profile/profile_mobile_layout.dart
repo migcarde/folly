@@ -88,6 +88,52 @@ class _ProfileMobileLayoutState extends ConsumerState<ProfileMobileLayout> {
                   color: theme.disabledColor,
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(top: AppDimens.m),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          l10n.followers,
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(state.followers.toString()),
+                      ],
+                    ),
+                    Container(
+                      height: AppDimens.l,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppDimens.m,
+                      ),
+                      child: VerticalDivider(
+                        indent: AppDimens.xs,
+                        endIndent: AppDimens.xs,
+                      ),
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          l10n.following,
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(state.following.toString()),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              if (!widget.isCurrentUser)
+                RequestInformation(
+                  uid: widget.user.uid,
+                  friendRequest: state.friend,
+                ),
               // TODO: Add biography text limit and show more button
               if (widget.user.biography.isNotEmpty)
                 Padding(
@@ -99,18 +145,6 @@ class _ProfileMobileLayoutState extends ConsumerState<ProfileMobileLayout> {
                   child: Text(
                     widget.user.biography,
                     textAlign: TextAlign.center,
-                  ),
-                ),
-              if (!widget.isCurrentUser)
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: AppDimens.m,
-                    left: AppDimens.screenPadding,
-                    right: AppDimens.screenPadding,
-                  ),
-                  child: RequestInformation(
-                    uid: widget.user.uid,
-                    friendRequest: state.friend,
                   ),
                 ),
               Padding(

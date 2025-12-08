@@ -24,13 +24,17 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
   }) async {
     final result = await Future.wait([
       storiesRepository.getStoriesFromUser(user: user),
+      friendsRepository.getFollowers(uid: user.uid),
+      friendsRepository.getFollowing(uid: user.uid),
       if (!isCurrentUser && authNotifier.user != null)
         friendsRepository.getFriend(uid: user.uid),
     ]);
 
     final storiesResult = result[0] as Result<List<StoryEntity>>;
-    final pendingResult = (result.length > 1)
-        ? (result[1] as Result<FriendEntity?>)
+    final followersResult = result[1] as Result<int>;
+    final followingResult = result[2] as Result<int>;
+    final pendingResult = (result.length > 3)
+        ? (result[3] as Result<FriendEntity?>)
         : Result.success(null);
 
     storiesResult.when((stories) {
@@ -41,7 +45,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
 
       if (authNotifier.user != null &&
           friendRequest != null &&
-          friendRequest.state == FriendRequestState.pending &&
+          friendRequest.state == FriendRequestState.following &&
           friendRequest.receiverUid == authNotifier.user!.uid) {
         friendRequest = friendRequest.copyWith(
           state: FriendRequestState.requested,
@@ -52,6 +56,8 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
         status: ProfileStatus.success,
         stories: stories,
         friend: friendRequest,
+        followers: followersResult.when((value) => value, (_) => 0),
+        following: followingResult.when((value) => value, (_) => 0),
       );
     }, (_) => state = state.copyWith(status: ProfileStatus.error));
   }
@@ -65,7 +71,8 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
 
       result.when(
         (data) => state = state.copyWith(
-          friend: state.friend?.copyWith(state: FriendRequestState.pending),
+          friend: data,
+          followers: state.followers + 1,
         ),
         (_) => state = state.copyWith(status: ProfileStatus.error),
       );
@@ -79,6 +86,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
       result.when(
         (_) => state = state.copyWith(
           friend: state.friend?.copyWith(state: FriendRequestState.friend),
+          following: state.following + 1,
         ),
         (_) {},
       );

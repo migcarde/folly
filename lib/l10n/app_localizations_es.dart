@@ -174,4 +174,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get pending => 'Pendiente';
+
+  @override
+  String get following => 'Siguiendo';
+
+  @override
+  String get followers => 'Seguidores';
 }

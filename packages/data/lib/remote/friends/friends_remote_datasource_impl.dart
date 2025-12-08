@@ -12,7 +12,7 @@ class FriendsRemoteDatasourceImpl implements FriendsRemoteDatasource {
       await _instance.client.from(_friendsCollections).delete().eq('id', id);
 
   @override
-  Future<void> sendFriendRequest({
+  Future<FriendRemoteEntity> sendFriendRequest({
     required String senderId,
     required String receiverId,
   }) async {
@@ -23,9 +23,13 @@ class FriendsRemoteDatasourceImpl implements FriendsRemoteDatasource {
       state: 1,
     );
 
-    await _instance.client
+    final result = await _instance.client
         .from(_friendsCollections)
-        .insert(requestRemoteEntity.toJson());
+        .insert(requestRemoteEntity.toJson())
+        .select()
+        .single();
+
+    return FriendRemoteEntity.fromJson(json: result);
   }
 
   @override
@@ -71,4 +75,26 @@ class FriendsRemoteDatasourceImpl implements FriendsRemoteDatasource {
           .from(_friendsCollections)
           .update(friend.toJson())
           .eq('id', friend.id);
+
+  @override
+  Future<int> getFollowers({required String uid}) async {
+    final result = await _instance.client
+        .from(_friendsCollections)
+        .select()
+        .eq('receiver_uid', uid)
+        .count(CountOption.exact);
+
+    return result.count;
+  }
+
+  @override
+  Future<int> getFollowing({required String uid}) async {
+    final result = await _instance.client
+        .from(_friendsCollections)
+        .select()
+        .eq('uid', uid)
+        .count(CountOption.exact);
+
+    return result.count;
+  }
 }

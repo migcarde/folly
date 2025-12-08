@@ -5,7 +5,7 @@ import 'package:domain/friends/friends_repository_impl.dart';
 import 'package:riverpod/riverpod.dart';
 
 abstract class FriendsRepository {
-  Future<Result<void>> sendRequest({
+  Future<Result<FriendEntity>> sendRequest({
     required String senderId,
     required String receiverId,
   });
@@ -13,6 +13,8 @@ abstract class FriendsRepository {
   Future<Result<void>> accept({required FriendEntity request});
   Future<Result<void>> reject({required FriendEntity request});
   Future<Result<FriendEntity?>> getFriend({required String uid});
+  Future<Result<int>> getFollowers({required String uid});
+  Future<Result<int>> getFollowing({required String uid});
 }
 
 final friendsRepositoryProvider = Provider.autoDispose<FriendsRepository>(

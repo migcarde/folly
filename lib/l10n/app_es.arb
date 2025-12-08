@@ -108,5 +108,9 @@
     "decline": "Declinar",
     "@decline": {},
     "pending": "Pendiente",
-    "@pending": {}
+    "@pending": {},
+    "following": "Siguiendo",
+    "@following": {},
+    "followers": "Seguidores",
+    "@followers": {}
 }
