@@ -77,7 +77,7 @@ class FriendsRemoteDatasourceImpl implements FriendsRemoteDatasource {
           .eq('id', friend.id);
 
   @override
-  Future<int> getFollowers({required String uid}) async {
+  Future<int> getFollowersCount({required String uid}) async {
     final result = await _instance.client
         .from(_friendsCollections)
         .select()
@@ -88,7 +88,7 @@ class FriendsRemoteDatasourceImpl implements FriendsRemoteDatasource {
   }
 
   @override
-  Future<int> getFollowing({required String uid}) async {
+  Future<int> getFollowingCount({required String uid}) async {
     final result = await _instance.client
         .from(_friendsCollections)
         .select()

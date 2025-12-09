@@ -14,4 +14,10 @@ abstract class UserRemoteDataSource {
     int size = 10,
     int? total,
   });
+  Future<PageRemoteEntity<UserRemoteEntity>> getUsers({
+    required List<String> uids,
+    required int page,
+    int size = 10,
+    int? total,
+  });
 }

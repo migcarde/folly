@@ -79,7 +79,7 @@ class FriendsRepositoryImpl implements FriendsRepository {
   @override
   Future<Result<int>> getFollowers({required String uid}) async {
     try {
-      final result = await friendRemoteDatasource.getFollowers(uid: uid);
+      final result = await friendRemoteDatasource.getFollowersCount(uid: uid);
 
       return Result.success(result);
     } catch (e) {
@@ -90,7 +90,7 @@ class FriendsRepositoryImpl implements FriendsRepository {
   @override
   Future<Result<int>> getFollowing({required String uid}) async {
     try {
-      final result = await friendRemoteDatasource.getFollowing(uid: uid);
+      final result = await friendRemoteDatasource.getFollowingCount(uid: uid);
 
       return Result.success(result);
     } catch (e) {

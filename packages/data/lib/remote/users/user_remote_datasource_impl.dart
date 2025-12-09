@@ -86,15 +86,57 @@ class UserRemoteDatasourceImpl extends UserRemoteDataSource {
     int size = 10,
     int? total,
   }) async {
-    final startIndex = page * size;
-    final end = startIndex + size - 1;
-
-    final endIndex = total != null && end > total ? (total - 1) : end;
+    final (startIndex, endIndex) = PageRemoteEntity.getIndexes(
+      page: page,
+      size: size,
+      total: total,
+    );
 
     final result = await _instance.client
         .from(_usersCollection)
         .select()
         .or('username.ilike.%$query%,display_name.ilike.%$query%')
+        .range(startIndex, endIndex)
+        .count();
+
+    final users = result.data.map((json) {
+      final user = UserRemoteEntity.fromJson(json: json);
+      if (user.photoPath != null && user.photoPath!.isNotEmpty) {
+        final imageUrl = _instance.client.storage
+            .from('profile')
+            .getPublicUrl(user.photoPath!);
+
+        return user.copyWith(photoPath: imageUrl);
+      } else {
+        return user;
+      }
+    }).toList();
+
+    return PageRemoteEntity(
+      content: users,
+      page: page,
+      totalPages: (result.count / size).ceil(),
+      total: result.count,
+    );
+  }
+
+  @override
+  Future<PageRemoteEntity<UserRemoteEntity>> getUsers({
+    required List<String> uids,
+    required int page,
+    int size = 10,
+    int? total,
+  }) async {
+    final (startIndex, endIndex) = PageRemoteEntity.getIndexes(
+      page: page,
+      size: size,
+      total: total,
+    );
+
+    final result = await _instance.client
+        .from(_usersCollection)
+        .select()
+        .inFilter('id', uids)
         .range(startIndex, endIndex)
         .count();
 

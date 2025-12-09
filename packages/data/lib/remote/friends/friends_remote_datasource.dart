@@ -10,6 +10,6 @@ abstract class FriendsRemoteDatasource {
   Future<List<FriendRemoteEntity>> getPendingRequests({required String uid});
   Future<FriendRemoteEntity?> getFriend({required String uid});
   Future<void> updateFriend({required FriendRemoteEntity friend});
-  Future<int> getFollowers({required String uid});
-  Future<int> getFollowing({required String uid});
+  Future<int> getFollowersCount({required String uid});
+  Future<int> getFollowingCount({required String uid});
 }
