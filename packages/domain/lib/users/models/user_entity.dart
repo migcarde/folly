@@ -54,6 +54,7 @@ class UserEntity extends Equatable {
     String? firebaseToken,
     String? locale,
     String? photoPath,
+    List<String>? friends,
   }) => UserEntity(
     uid: uid ?? this.uid,
     name: name ?? this.name,

@@ -23,3 +23,8 @@ final storiesRemoteDatasourceProvider =
     Provider.autoDispose<StoriesRemoteDatasource>(
       (ref) => StoriesRemoteDatasourceImpl(),
     );
+
+final friendsRemoteDatasurceProvider =
+    Provider.autoDispose<FriendsRemoteDatasource>(
+      (ref) => FriendsRemoteDatasourceImpl(),
+    );

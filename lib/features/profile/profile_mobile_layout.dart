@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
+import 'package:folly/features/friends/enums/friend_type.dart';
+import 'package:folly/features/friends/models/friends_view_model.dart';
 import 'package:folly/features/profile/models/profile_state.dart';
 import 'package:folly/features/profile/profile_notifier.dart';
+import 'package:folly/features/profile/widgets/request_information.dart';
 import 'package:folly/routes/paths.dart';
 import 'package:folly/widgets/profile_image.dart';
 import 'package:folly/widgets/story_card.dart';
@@ -15,7 +18,7 @@ class ProfileMobileLayout extends ConsumerStatefulWidget {
   const ProfileMobileLayout({
     super.key,
     required this.user,
-    this.isCurrentUser = false,
+    required this.isCurrentUser,
   });
 
   final UserEntity user;
@@ -33,7 +36,11 @@ class _ProfileMobileLayoutState extends ConsumerState<ProfileMobileLayout> {
   void initState() {
     super.initState();
 
-    ref.read(profileNotifierProvider.notifier).init(user: widget.user);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref
+          .read(profileNotifierProvider.notifier)
+          .init(user: widget.user, isCurrentUser: widget.isCurrentUser);
+    });
   }
 
   @override
@@ -79,15 +86,77 @@ class _ProfileMobileLayoutState extends ConsumerState<ProfileMobileLayout> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: AppDimens.s),
-                child: Text(
-                  '@${widget.user.username}',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.disabledColor,
-                  ),
+              Text(
+                '@${widget.user.username}',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.disabledColor,
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(top: AppDimens.m),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    //! Not working well
+                    GestureDetector(
+                      onTap: () => context.push(
+                        Paths.friends.route,
+                        extra: FriendsViewModel(
+                          friendType: FriendType.followers,
+                          uid: widget.user.uid,
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            l10n.followers,
+                            style: theme.textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(state.followers.toString()),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: AppDimens.l,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppDimens.m,
+                      ),
+                      child: VerticalDivider(
+                        indent: AppDimens.xs,
+                        endIndent: AppDimens.xs,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => context.push(
+                        Paths.friends.route,
+                        extra: FriendsViewModel(
+                          friendType: FriendType.following,
+                          uid: widget.user.uid,
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            l10n.following,
+                            style: theme.textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(state.following.toString()),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (!widget.isCurrentUser)
+                RequestInformation(
+                  uid: widget.user.uid,
+                  friendRequest: state.friend,
+                ),
               // TODO: Add biography text limit and show more button
               if (widget.user.biography.isNotEmpty)
                 Padding(
@@ -101,7 +170,6 @@ class _ProfileMobileLayoutState extends ConsumerState<ProfileMobileLayout> {
                     textAlign: TextAlign.center,
                   ),
                 ),
-              // TODO: Add send request and request status
               Padding(
                 padding: const EdgeInsets.only(top: AppDimens.l),
                 child: ListView.separated(

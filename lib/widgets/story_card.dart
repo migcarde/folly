@@ -39,10 +39,7 @@ class StoryCard extends StatelessWidget {
           ),
           child: Row(
             children: [
-              ProfileImage(
-                size: 40.0,
-                imageUrl: userProfileUrl,
-              ), // TODO: add profile image
+              ProfileImage(size: 40.0, imageUrl: userProfileUrl),
               Padding(
                 padding: const EdgeInsets.only(left: AppDimens.s),
                 child: Text(

@@ -1,19 +1,19 @@
+import 'package:domain/auth/auth_repository.dart';
 import 'package:domain/auth/models/auth_exceptions.dart';
-import 'package:domain/auth/models/login_entity.dart';
-import 'package:domain/domain.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:folly/features/login/models/login_state.dart';
 
 class LoginNotifier extends StateNotifier<LoginState> {
-  LoginNotifier({required this.loginUseCase}) : super(const LoginState());
+  LoginNotifier({required this.authRepository}) : super(const LoginState());
 
-  final Login loginUseCase;
+  final AuthRepository authRepository;
 
   Future<void> login({required String email, required String password}) async {
     state = state.copyWith(status: LoginStatus.loading, error: LoginError.none);
 
-    final result = await loginUseCase(
-      LoginEntity(email: email, password: password),
+    final result = await authRepository.loginWithEmailAndPassword(
+      email: email,
+      password: password,
     );
 
     result.when(
@@ -30,5 +30,5 @@ class LoginNotifier extends StateNotifier<LoginState> {
 
 final loginNotifierProvider =
     StateNotifierProvider.autoDispose<LoginNotifier, LoginState>(
-      (ref) => LoginNotifier(loginUseCase: ref.watch(loginProvider)),
+      (ref) => LoginNotifier(authRepository: ref.watch(authRepositoryProvider)),
     );

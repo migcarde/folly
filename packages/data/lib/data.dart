@@ -5,3 +5,6 @@ export 'remote/users/user_remote_datasource.dart';
 export 'remote/users/models/user_remote_entity.dart';
 export 'core/data_initializer.dart';
 export 'remote/auth/models/auth_remote_exception.dart';
+export 'remote/friends/models/request_remote_entity.dart';
+export 'remote/friends/friends_remote_datasource.dart';
+export 'remote/friends/friends_remote_datasource_impl.dart';

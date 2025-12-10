@@ -86,10 +86,11 @@ class UserRemoteDatasourceImpl extends UserRemoteDataSource {
     int size = 10,
     int? total,
   }) async {
-    final startIndex = page * size;
-    final end = startIndex + size;
-
-    final endIndex = total != null && end > total ? (total - 1) : end;
+    final (startIndex, endIndex) = PageRemoteEntity.getIndexes(
+      page: page,
+      size: size,
+      total: total,
+    );
 
     final result = await _instance.client
         .from(_usersCollection)
@@ -117,5 +118,28 @@ class UserRemoteDatasourceImpl extends UserRemoteDataSource {
       totalPages: (result.count / size).ceil(),
       total: result.count,
     );
+  }
+
+  @override
+  Future<List<UserRemoteEntity>> getUsers({required List<String> uids}) async {
+    final result = await _instance.client
+        .from(_usersCollection)
+        .select()
+        .inFilter('id', uids);
+
+    final users = result.map((json) {
+      final user = UserRemoteEntity.fromJson(json: json);
+      if (user.photoPath != null && user.photoPath!.isNotEmpty) {
+        final imageUrl = _instance.client.storage
+            .from('profile')
+            .getPublicUrl(user.photoPath!);
+
+        return user.copyWith(photoPath: imageUrl);
+      } else {
+        return user;
+      }
+    }).toList();
+
+    return users;
   }
 }

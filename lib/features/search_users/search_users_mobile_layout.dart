@@ -5,8 +5,8 @@ import 'package:folly/extensions/build_context_extensions.dart';
 import 'package:folly/features/search_users/models/search_users_state.dart';
 import 'package:folly/features/search_users/search_users_notifier.dart';
 import 'package:folly/routes/paths.dart';
-import 'package:folly/widgets/profile_image.dart';
 import 'package:folly/widgets/text_field/base_text_field.dart';
+import 'package:folly/widgets/user_tile.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -45,7 +45,6 @@ class _SearchUsersMobileLayoutState
       padding: const EdgeInsets.all(AppDimens.screenPadding),
       child: Column(
         children: [
-          // TODO: Add search widget
           BaseTextField(
             controller: _searchController,
             hint: 'search user',
@@ -87,25 +86,12 @@ class _SearchUsersMobileLayoutState
 
                     final user = state.searchUsers[index];
 
-                    return GestureDetector(
+                    return UserTile(
+                      name: user.name,
+                      username: user.username,
+                      imageUrl: user.photoPath,
                       onTap: () =>
                           context.push(Paths.userProfile.route, extra: user),
-                      child: Row(
-                        children: [
-                          ProfileImage(imageUrl: user.photoPath, size: 48.0),
-                          Padding(
-                            padding: const EdgeInsets.only(left: AppDimens.s),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(user.name),
-                                Text('@${user.username}'),
-                              ],
-                            ),
-                          ),
-                          // TODO: Add common friends
-                        ],
-                      ),
                     );
                   },
                   separatorBuilder: (context, index) => const Divider(),

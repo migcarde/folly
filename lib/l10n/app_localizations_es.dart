@@ -165,4 +165,19 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get user_banned => 'Usuario baneado';
+
+  @override
+  String get follow => 'Seguir';
+
+  @override
+  String get decline => 'Declinar';
+
+  @override
+  String get pending => 'Pendiente';
+
+  @override
+  String get following => 'Siguiendo';
+
+  @override
+  String get followers => 'Seguidores';
 }

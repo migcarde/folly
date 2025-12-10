@@ -6,7 +6,8 @@ enum Paths {
   settings(route: '/settings'),
   editProfile(route: '/edit-profile'),
   changeLanguage(route: '/change-language'),
-  userProfile(route: '/user-profile');
+  userProfile(route: '/user-profile'),
+  friends(route: '/friends');
 
   final String route;
 

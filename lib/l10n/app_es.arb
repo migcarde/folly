@@ -102,5 +102,15 @@
         }
     },
     "user_banned": "Usuario baneado",
-    "@user_banned": {}
+    "@user_banned": {},
+    "follow": "Seguir",
+    "@follow": {},
+    "decline": "Declinar",
+    "@decline": {},
+    "pending": "Pendiente",
+    "@pending": {},
+    "following": "Siguiendo",
+    "@following": {},
+    "followers": "Seguidores",
+    "@followers": {}
 }
