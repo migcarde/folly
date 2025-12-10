@@ -27,6 +27,7 @@ class BottomBarMobileLayout extends ConsumerWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: _blur, sigmaY: _blur),
         child: Container(
+          padding: const EdgeInsets.only(bottom: AppDimens.m),
           color: theme.primaryColor.withAlpha(20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -9,16 +9,14 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            HomeMobileLayout(),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: BottomBarMobileLayout(),
-            ),
-          ],
-        ),
+      body: Stack(
+        children: [
+          HomeMobileLayout(),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: BottomBarMobileLayout(),
+          ),
+        ],
       ),
     );
   }
