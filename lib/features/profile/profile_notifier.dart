@@ -22,10 +22,12 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
     required UserEntity user,
     required bool isCurrentUser,
   }) async {
+    state = state.copyWith(status: ProfileStatus.loading);
+
     final result = await Future.wait([
       storiesRepository.getStoriesFromUser(user: user),
-      friendsRepository.getFollowers(uid: user.uid),
-      friendsRepository.getFollowing(uid: user.uid),
+      friendsRepository.getFollowersCount(uid: user.uid),
+      friendsRepository.getFollowingCount(uid: user.uid),
       if (!isCurrentUser && authNotifier.user != null)
         friendsRepository.getFriend(uid: user.uid),
     ]);

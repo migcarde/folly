@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
+import 'package:folly/features/friends/enums/friend_type.dart';
+import 'package:folly/features/friends/models/friends_view_model.dart';
 import 'package:folly/features/profile/models/profile_state.dart';
 import 'package:folly/features/profile/profile_notifier.dart';
 import 'package:folly/features/profile/widgets/request_information.dart';
@@ -16,7 +18,7 @@ class ProfileMobileLayout extends ConsumerStatefulWidget {
   const ProfileMobileLayout({
     super.key,
     required this.user,
-    this.isCurrentUser = false,
+    required this.isCurrentUser,
   });
 
   final UserEntity user;
@@ -34,9 +36,11 @@ class _ProfileMobileLayoutState extends ConsumerState<ProfileMobileLayout> {
   void initState() {
     super.initState();
 
-    ref
-        .read(profileNotifierProvider.notifier)
-        .init(user: widget.user, isCurrentUser: widget.isCurrentUser);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref
+          .read(profileNotifierProvider.notifier)
+          .init(user: widget.user, isCurrentUser: widget.isCurrentUser);
+    });
   }
 
   @override
@@ -94,16 +98,26 @@ class _ProfileMobileLayoutState extends ConsumerState<ProfileMobileLayout> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Column(
-                      children: [
-                        Text(
-                          l10n.followers,
-                          style: theme.textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                    //! Not working well
+                    GestureDetector(
+                      onTap: () => context.push(
+                        Paths.friends.route,
+                        extra: FriendsViewModel(
+                          friendType: FriendType.followers,
+                          uid: widget.user.uid,
                         ),
-                        Text(state.followers.toString()),
-                      ],
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            l10n.followers,
+                            style: theme.textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(state.followers.toString()),
+                        ],
+                      ),
                     ),
                     Container(
                       height: AppDimens.l,
@@ -115,16 +129,25 @@ class _ProfileMobileLayoutState extends ConsumerState<ProfileMobileLayout> {
                         endIndent: AppDimens.xs,
                       ),
                     ),
-                    Column(
-                      children: [
-                        Text(
-                          l10n.following,
-                          style: theme.textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                    GestureDetector(
+                      onTap: () => context.push(
+                        Paths.friends.route,
+                        extra: FriendsViewModel(
+                          friendType: FriendType.following,
+                          uid: widget.user.uid,
                         ),
-                        Text(state.following.toString()),
-                      ],
+                      ),
+                      child: Column(
+                        children: [
+                          Text(
+                            l10n.following,
+                            style: theme.textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(state.following.toString()),
+                        ],
+                      ),
                     ),
                   ],
                 ),

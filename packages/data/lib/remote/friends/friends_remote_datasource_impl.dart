@@ -1,5 +1,6 @@
 import 'package:data/remote/friends/models/request_remote_entity.dart';
 import 'package:data/remote/friends/friends_remote_datasource.dart';
+import 'package:data/remote/models/page_remote_entity.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class FriendsRemoteDatasourceImpl implements FriendsRemoteDatasource {
@@ -96,5 +97,65 @@ class FriendsRemoteDatasourceImpl implements FriendsRemoteDatasource {
         .count(CountOption.exact);
 
     return result.count;
+  }
+
+  @override
+  Future<PageRemoteEntity<FriendRemoteEntity>> getFollowers({
+    required String uid,
+    required int page,
+    int size = 10,
+    int? total,
+  }) async {
+    final (startIndex, endIndex) = PageRemoteEntity.getIndexes(
+      page: page,
+      size: size,
+      total: total,
+    );
+
+    final result = await _instance.client
+        .from(_friendsCollections)
+        .select()
+        .eq('receiver_uid', uid)
+        .range(startIndex, endIndex)
+        .count(CountOption.exact);
+
+    return PageRemoteEntity(
+      content: result.data
+          .map((json) => FriendRemoteEntity.fromJson(json: json))
+          .toList(),
+      page: page,
+      totalPages: (result.count / size).ceil(),
+      total: result.count,
+    );
+  }
+
+  @override
+  Future<PageRemoteEntity<FriendRemoteEntity>> getFollowing({
+    required String uid,
+    required int page,
+    int size = 10,
+    int? total,
+  }) async {
+    final (startIndex, endIndex) = PageRemoteEntity.getIndexes(
+      page: page,
+      size: size,
+      total: total,
+    );
+
+    final result = await _instance.client
+        .from(_friendsCollections)
+        .select()
+        .eq('uid', uid)
+        .range(startIndex, endIndex)
+        .count(CountOption.exact);
+
+    return PageRemoteEntity(
+      content: result.data
+          .map((json) => FriendRemoteEntity.fromJson(json: json))
+          .toList(),
+      page: page,
+      totalPages: (result.count / size).ceil(),
+      total: result.count,
+    );
   }
 }

@@ -1,8 +1,8 @@
 import 'package:domain/users/models/user_entity.dart';
 import 'package:folly/features/change_language/change_language_page.dart';
 import 'package:folly/features/edit_profile/edit_profile_page.dart';
-import 'package:folly/features/friends/enums/friend_type.dart';
 import 'package:folly/features/friends/friends_page.dart';
+import 'package:folly/features/friends/models/friends_view_model.dart';
 import 'package:folly/features/home/home_page.dart';
 import 'package:folly/features/login/login_page.dart';
 import 'package:folly/features/profile/profile_page.dart';
@@ -54,9 +54,9 @@ class Routes {
     GoRoute(
       path: Paths.friends.route,
       builder: (context, state) {
-        final type = state.extra! as FriendType;
+        final viewModel = state.extra! as FriendsViewModel;
 
-        return FriendsPage(type: type);
+        return FriendsPage(viewModel: viewModel);
       },
     ),
   ];
