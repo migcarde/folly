@@ -11,4 +11,5 @@ abstract class StoriesRemoteDatasource {
   });
   Future<List<StoryRemoteEntity>> getStories({required List<String> uids});
   Future<List<StoryRemoteEntity>> getStoriesFromUser({required String uid});
+  Future<StoryRemoteEntity> updateStory({required StoryRemoteEntity story});
 }

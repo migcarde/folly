@@ -1,33 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
+import 'package:folly/features/story_card/story_card_notifier.dart';
 import 'package:folly/widgets/media_viewer.dart';
 import 'package:folly/widgets/profile_image.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-class StoryCard extends StatelessWidget {
+class StoryCard extends ConsumerWidget {
   const StoryCard({
     super.key,
+    required this.storyId,
     required this.user,
     required this.userProfileUrl,
     required this.title,
     required this.mediaUrl,
-    required this.likes,
     required this.challenge,
   });
 
+  final String storyId;
   final String user;
   final String userProfileUrl;
   final String title;
   final String mediaUrl;
-  final int likes;
   final String challenge;
 
   static const _iconSize = 32.0;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = context.theme;
+
+    final state = ref.watch(storyCardNotifierProvider(storyId));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,14 +86,32 @@ class StoryCard extends StatelessWidget {
                 ),
                 child: Icon(PhosphorIcons.chatCircle(), size: _iconSize),
               ),
-              Text(likes.toString()),
+              Text(state.value?.likesCount.toString() ?? '0'),
               GestureDetector(
                 onTap: () {
-                  // TODO: Add like functionality
+                  if (state.value?.like != null) {
+                    ref
+                        .read(storyCardNotifierProvider(storyId).notifier)
+                        .unlike();
+                  } else {
+                    ref
+                        .read(storyCardNotifierProvider(storyId).notifier)
+                        .like();
+                  }
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(left: AppDimens.xs),
-                  child: Icon(PhosphorIcons.heart(), size: _iconSize),
+                  child: Icon(
+                    PhosphorIcons.heart(
+                      state.value?.like != null
+                          ? PhosphorIconsStyle.fill
+                          : PhosphorIconsStyle.regular,
+                    ),
+                    size: _iconSize,
+                    color: state.value?.like != null
+                        ? Colors.red
+                        : null, // TODO: Check color
+                  ),
                 ),
               ),
             ],

@@ -18,6 +18,7 @@ abstract class StoriesRepository {
   Future<Result<List<StoryEntity>>> getStoriesFromUser({
     required UserEntity user,
   });
+  Future<Result<StoryEntity>> updateStory({required StoryEntity story});
 }
 
 final storiesRepositoryProvider = Provider.autoDispose<StoriesRepository>(
