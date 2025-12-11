@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:data/remote/models/page_remote_entity.dart';
 import 'package:data/remote/stories/models/story_remote_entity.dart';
 import 'package:data/remote/stories/stories_remote_datasource.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -37,16 +38,27 @@ class StoriesRemoteDatasourceImpl extends StoriesRemoteDatasource {
   }
 
   @override
-  Future<List<StoryRemoteEntity>> getStories({
+  Future<PageRemoteEntity<StoryRemoteEntity>> getStories({
     required List<String> uids,
+    required int page,
+    int size = 10,
+    int? total,
   }) async {
-    final results = await _supabase.client
+    final (startIndex, endIndex) = PageRemoteEntity.getIndexes(
+      page: page,
+      size: size,
+      total: total,
+    );
+
+    final result = await _supabase.client
         .from(_storiesCollection)
         .select()
         .inFilter('user_id', uids)
-        .order('created_at', ascending: false);
+        .range(startIndex, endIndex)
+        .order('created_at', ascending: false)
+        .count(CountOption.exact);
 
-    final stories = results.map((json) {
+    final stories = result.data.map((json) {
       final story = StoryRemoteEntity.fromJson(json: json);
       final imageUrl = _supabase.client.storage
           .from(_bucket)
@@ -55,22 +67,36 @@ class StoriesRemoteDatasourceImpl extends StoriesRemoteDatasource {
       return story.copyWith(filePath: imageUrl);
     }).toList();
 
-    // TODO: Set as paginated
-
-    return stories;
+    return PageRemoteEntity(
+      content: stories,
+      page: page,
+      totalPages: (result.count / size).ceil(),
+      total: result.count,
+    );
   }
 
   @override
-  Future<List<StoryRemoteEntity>> getStoriesFromUser({
+  Future<PageRemoteEntity<StoryRemoteEntity>> getStoriesFromUser({
     required String uid,
+    required int page,
+    int size = 10,
+    int? total,
   }) async {
-    final results = await _supabase.client
+    final (startIndex, endIndex) = PageRemoteEntity.getIndexes(
+      page: page,
+      size: size,
+      total: total,
+    );
+
+    final result = await _supabase.client
         .from(_storiesCollection)
         .select()
         .eq('user_id', uid)
-        .order('created_at', ascending: false);
+        .range(startIndex, endIndex)
+        .order('created_at', ascending: false)
+        .count(CountOption.exact);
 
-    final stories = results.map((json) {
+    final stories = result.data.map((json) {
       final story = StoryRemoteEntity.fromJson(json: json);
       final imageUrl = _supabase.client.storage
           .from(_bucket)
@@ -79,9 +105,12 @@ class StoriesRemoteDatasourceImpl extends StoriesRemoteDatasource {
       return story.copyWith(filePath: imageUrl);
     }).toList();
 
-    // TODO: Set as paginated
-
-    return stories;
+    return PageRemoteEntity(
+      content: stories,
+      page: page,
+      totalPages: (result.count / size).ceil(),
+      total: result.count,
+    );
   }
 
   @override
