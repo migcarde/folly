@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:domain/base/result.dart';
 import 'package:domain/dependency_injection/local_dependency_injection.dart';
+import 'package:domain/models/page_entity.dart';
 import 'package:domain/stories/models/story_entity.dart';
 import 'package:domain/stories/stories_repository_impl.dart';
 import 'package:domain/users/models/user_entity.dart';
@@ -14,9 +15,17 @@ abstract class StoriesRepository {
     required File file,
     required String challengeId,
   });
-  Future<Result<List<StoryEntity>>> getStories({required List<String> uids});
-  Future<Result<List<StoryEntity>>> getStoriesFromUser({
+  Future<Result<PageEntity<StoryEntity>>> getStories({
+    required List<String> uids,
+    required int page,
+    int size = 10,
+    int? total,
+  });
+  Future<Result<PageEntity<StoryEntity>>> getStoriesFromUser({
     required UserEntity user,
+    required int page,
+    int size = 10,
+    int? total,
   });
   Future<Result<StoryEntity>> updateStory({required StoryEntity story});
 }

@@ -11,6 +11,9 @@ class ProfileState extends Equatable {
   final FriendEntity? friend;
   final int followers;
   final int following;
+  final int page;
+  final int totalPages;
+  final int? total;
 
   const ProfileState({
     this.status = ProfileStatus.loading,
@@ -18,10 +21,22 @@ class ProfileState extends Equatable {
     this.friend,
     this.followers = 0,
     this.following = 0,
+    this.page = 0,
+    this.totalPages = 0,
+    this.total,
   });
 
   @override
-  List<Object?> get props => [status, stories, friend, followers, following];
+  List<Object?> get props => [
+    status,
+    stories,
+    friend,
+    followers,
+    following,
+    page,
+    totalPages,
+    total,
+  ];
 
   ProfileState copyWith({
     ProfileStatus? status,
@@ -30,12 +45,18 @@ class ProfileState extends Equatable {
     FriendEntity? friend,
     int? followers,
     int? following,
+    int? page,
+    int? totalPages,
+    int? total,
   }) => ProfileState(
     status: status ?? this.status,
     stories: stories ?? this.stories,
     friend: friend ?? this.friend,
     followers: followers ?? this.followers,
     following: following ?? this.following,
+    page: page ?? this.page,
+    totalPages: totalPages ?? this.totalPages,
+    total: total ?? this.total,
   );
 
   ProfileState clearRequest() => ProfileState(
@@ -44,5 +65,10 @@ class ProfileState extends Equatable {
     friend: null,
     followers: followers,
     following: following,
+    page: page,
+    totalPages: totalPages,
+    total: total,
   );
+
+  bool get isLast => (page + 1) >= totalPages;
 }

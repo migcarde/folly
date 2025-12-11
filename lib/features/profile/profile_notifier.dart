@@ -2,6 +2,7 @@ import 'package:domain/base/result.dart';
 import 'package:domain/domain.dart';
 import 'package:domain/friends/enums/friend_request_state.dart';
 import 'package:domain/friends/models/friend_entity.dart';
+import 'package:domain/models/page_entity.dart';
 import 'package:domain/users/models/user_entity.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:folly/features/auth_notifier.dart';
@@ -25,14 +26,18 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
     state = state.copyWith(status: ProfileStatus.loading);
 
     final result = await Future.wait([
-      storiesRepository.getStoriesFromUser(user: user),
+      storiesRepository.getStoriesFromUser(
+        user: user,
+        page: state.page,
+        total: state.total,
+      ),
       friendsRepository.getFollowersCount(uid: user.uid),
       friendsRepository.getFollowingCount(uid: user.uid),
       if (!isCurrentUser && authNotifier.user != null)
         friendsRepository.getFriend(uid: user.uid),
     ]);
 
-    final storiesResult = result[0] as Result<List<StoryEntity>>;
+    final storiesResult = result[0] as Result<PageEntity<StoryEntity>>;
     final followersResult = result[1] as Result<int>;
     final followingResult = result[2] as Result<int>;
     final pendingResult = (result.length > 3)
@@ -56,10 +61,12 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
 
       state = state.copyWith(
         status: ProfileStatus.success,
-        stories: stories,
+        stories: stories.content,
         friend: friendRequest,
         followers: followersResult.when((value) => value, (_) => 0),
         following: followingResult.when((value) => value, (_) => 0),
+        totalPages: stories.totalPages,
+        total: stories.total,
       );
     }, (_) => state = state.copyWith(status: ProfileStatus.error));
   }
@@ -100,6 +107,24 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
       final result = await friendsRepository.reject(request: state.friend!);
 
       result.when((_) => state = state.clearRequest(), (_) {});
+    }
+  }
+
+  Future<void> nextPage() async {
+    if (!state.isLast) {
+      state = state.copyWith(page: state.page + 1);
+
+      final result = await storiesRepository.getStoriesFromUser(
+        user: authNotifier.user!,
+        page: state.page,
+        total: state.total,
+      );
+
+      result.when(
+        (data) =>
+            state = ProfileState(stories: [...state.stories, ...data.content]),
+        (_) => state = state.copyWith(status: ProfileStatus.error),
+      );
     }
   }
 }

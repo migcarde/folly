@@ -5,6 +5,7 @@ import 'package:data/remote/challenges/challenges_remote_datasource.dart';
 import 'package:data/remote/challenges/models/challenge_remote_entity.dart';
 import 'package:data/remote/stories/stories_remote_datasource.dart';
 import 'package:domain/base/result.dart';
+import 'package:domain/models/page_entity.dart';
 import 'package:domain/stories/models/story_entity.dart';
 import 'package:domain/stories/stories_repository.dart';
 import 'package:domain/users/models/user_entity.dart';
@@ -56,17 +57,23 @@ class StoriesRepositoryImpl implements StoriesRepository {
   }
 
   @override
-  Future<Result<List<StoryEntity>>> getStories({
+  Future<Result<PageEntity<StoryEntity>>> getStories({
     required List<String> uids,
+    required int page,
+    int size = 10,
+    int? total,
   }) async {
     try {
       final storiesResult = await storiesRemoteDatasource.getStories(
         uids: uids,
+        page: page,
+        size: size,
+        total: total,
       );
 
       List<StoryEntity> result = [];
 
-      for (final story in storiesResult) {
+      for (final story in storiesResult.content) {
         final storyInfoResult = await Future.wait([
           userRemoteDatasource.getUser(uid: story.uid),
           challengesRemoteDatasource.getChallenge(id: story.challengeId),
@@ -80,24 +87,37 @@ class StoriesRepositoryImpl implements StoriesRepository {
         );
       }
 
-      return Result.success(result);
+      return Result.success(
+        PageEntity(
+          content: result,
+          page: page,
+          totalPages: storiesResult.totalPages,
+          total: storiesResult.total,
+        ),
+      );
     } catch (e) {
       return Result.failure(e);
     }
   }
 
   @override
-  Future<Result<List<StoryEntity>>> getStoriesFromUser({
+  Future<Result<PageEntity<StoryEntity>>> getStoriesFromUser({
     required UserEntity user,
+    required int page,
+    int size = 10,
+    int? total,
   }) async {
     try {
       List<StoryEntity> result = [];
 
       final stories = await storiesRemoteDatasource.getStoriesFromUser(
         uid: user.uid,
+        page: page,
+        size: size,
+        total: total,
       );
 
-      for (final story in stories) {
+      for (final story in stories.content) {
         final challenge = await challengesRemoteDatasource.getChallenge(
           id: story.challengeId,
         );
@@ -105,7 +125,14 @@ class StoriesRepositoryImpl implements StoriesRepository {
         result.add(story.toEntity(user: user, challenge: challenge.text));
       }
 
-      return Result.success(result);
+      return Result.success(
+        PageEntity(
+          content: result,
+          page: page,
+          totalPages: stories.totalPages,
+          total: stories.total,
+        ),
+      );
     } catch (e) {
       return Result.failure(e);
     }

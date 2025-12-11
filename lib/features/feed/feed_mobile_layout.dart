@@ -4,7 +4,7 @@ import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
 import 'package:folly/features/daily_challenge/daily_challenge_mobile_layout.dart';
 import 'package:folly/features/feed/feed_notifier.dart';
-import 'package:folly/features/home/models/home_notifier_state.dart';
+import 'package:folly/features/feed/models/feed_notifier_state.dart';
 import 'package:folly/features/story_card/story_card.dart';
 
 class FeedMobileLayout extends ConsumerStatefulWidget {
@@ -44,14 +44,18 @@ class _FeedMobileLayoutState extends ConsumerState<FeedMobileLayout> {
             child: DailyChallengeMobileLayout(),
           ),
           switch (state.status) {
-            HomeNotifierStatus.loading => const CircularProgressIndicator(),
-            HomeNotifierStatus.success => ListView.separated(
+            FeedNotifierStatus.loading => const CircularProgressIndicator(),
+            FeedNotifierStatus.success => ListView.separated(
               itemCount: state.stories.length,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               separatorBuilder: (context, index) =>
                   const SizedBox(height: AppDimens.l),
               itemBuilder: (context, index) {
+                if (index == state.stories.length && !state.isLast) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
                 final story = state.stories[index];
 
                 return StoryCard(
@@ -64,7 +68,7 @@ class _FeedMobileLayoutState extends ConsumerState<FeedMobileLayout> {
                 );
               },
             ),
-            HomeNotifierStatus.error => Text(
+            FeedNotifierStatus.error => Text(
               l10n.sorry_we_have_problems_please_try_again_later,
             ),
           },
