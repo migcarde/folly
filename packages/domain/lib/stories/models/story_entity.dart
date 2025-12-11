@@ -31,6 +31,16 @@ class StoryEntity extends Equatable {
     likes,
     challenge,
   ];
+
+  StoryRemoteEntity get remoteEntity => StoryRemoteEntity(
+    id: id,
+    uid: user.uid,
+    title: title,
+    filePath: imageUrl,
+    createdAt: createdAt.toIso8601String(),
+    likes: likes,
+    challengeId: challenge,
+  );
 }
 
 extension StoryRemoteEntityExtensions on StoryRemoteEntity {

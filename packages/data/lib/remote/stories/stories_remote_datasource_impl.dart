@@ -83,4 +83,18 @@ class StoriesRemoteDatasourceImpl extends StoriesRemoteDatasource {
 
     return stories;
   }
+
+  @override
+  Future<StoryRemoteEntity> updateStory({
+    required StoryRemoteEntity story,
+  }) async {
+    final result = await _supabase.client
+        .from(_storiesCollection)
+        .update(story.toJson())
+        .eq('id', story.id)
+        .select()
+        .single();
+
+    return StoryRemoteEntity.fromJson(json: result);
+  }
 }

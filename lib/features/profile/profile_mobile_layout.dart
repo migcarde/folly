@@ -10,7 +10,7 @@ import 'package:folly/features/profile/profile_notifier.dart';
 import 'package:folly/features/profile/widgets/request_information.dart';
 import 'package:folly/routes/paths.dart';
 import 'package:folly/widgets/profile_image.dart';
-import 'package:folly/widgets/story_card.dart';
+import 'package:folly/features/story_card/story_card.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -98,7 +98,6 @@ class _ProfileMobileLayoutState extends ConsumerState<ProfileMobileLayout> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    //! Not working well
                     GestureDetector(
                       onTap: () => context.push(
                         Paths.friends.route,
@@ -179,11 +178,11 @@ class _ProfileMobileLayoutState extends ConsumerState<ProfileMobileLayout> {
                     final story = state.stories[index];
 
                     return StoryCard(
+                      storyId: story.id,
                       user: widget.user.name,
                       userProfileUrl: widget.user.photoPath,
                       title: story.title,
                       mediaUrl: story.imageUrl,
-                      likes: story.likes,
                       challenge: story.challenge,
                     );
                   },

@@ -5,7 +5,7 @@ import 'package:folly/extensions/build_context_extensions.dart';
 import 'package:folly/features/daily_challenge/daily_challenge_mobile_layout.dart';
 import 'package:folly/features/feed/feed_notifier.dart';
 import 'package:folly/features/home/models/home_notifier_state.dart';
-import 'package:folly/widgets/story_card.dart';
+import 'package:folly/features/story_card/story_card.dart';
 
 class FeedMobileLayout extends ConsumerStatefulWidget {
   const FeedMobileLayout({super.key});
@@ -55,11 +55,11 @@ class _FeedMobileLayoutState extends ConsumerState<FeedMobileLayout> {
                 final story = state.stories[index];
 
                 return StoryCard(
+                  storyId: story.id,
                   user: story.user.name,
                   userProfileUrl: story.user.photoPath,
                   title: story.title,
                   mediaUrl: story.imageUrl,
-                  likes: story.likes,
                   challenge: story.challenge,
                 );
               },
