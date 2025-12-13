@@ -77,14 +77,18 @@ class StoryCard extends ConsumerWidget {
             children: [
               Text(title),
               const Spacer(),
-              // TODO: Replace with comments count and functionality
-              Text('0'),
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: AppDimens.xs,
-                  right: AppDimens.s,
+              Text(state.value?.commentsCount.toString() ?? '0'),
+              GestureDetector(
+                onTap: () {
+                  // TODO: Show comments bottombar
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: AppDimens.xs,
+                    right: AppDimens.s,
+                  ),
+                  child: Icon(PhosphorIcons.chatCircle(), size: _iconSize),
                 ),
-                child: Icon(PhosphorIcons.chatCircle(), size: _iconSize),
               ),
               Text(state.value?.likesCount.toString() ?? '0'),
               GestureDetector(

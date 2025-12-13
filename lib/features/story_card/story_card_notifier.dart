@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:domain/base/result.dart';
-import 'package:domain/likes/likes_repository.dart';
+import 'package:domain/domain.dart';
 import 'package:domain/likes/models/like_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/features/auth_notifier.dart';
@@ -17,20 +17,23 @@ class StoryCardNotifier extends AsyncNotifier<StoryCardState> {
     StoryCardState result = StoryCardState();
     final user = ref.read(authNotifierProvider).user;
     final results = await Future.wait([
-      ref.read(likesRepositoryProvider).getLikesCount(storyId: storyId),
+      ref.read(likesRepositoryProvider).getStoryLikesCount(storyId: storyId),
+      ref.read(commentsRepositoryProvider).getCommentsCount(storyId: storyId),
       if (user != null)
         ref
             .read(likesRepositoryProvider)
-            .getLike(storyId: storyId, uid: user.uid),
+            .getStoryLike(storyId: storyId, uid: user.uid),
     ]);
-    final likesCount = results[0] as Result<int>;
+    final likesCountResult = results[0] as Result<int>;
+    final commentsCountResult = results[1] as Result<int>;
 
     result = result.copyWith(
-      likesCount: likesCount.when((data) => data, (_) => 0),
+      likesCount: likesCountResult.when((data) => data, (_) => 0),
+      commentsCount: commentsCountResult.when((data) => data, (_) => 0),
     );
 
-    if (results.length > 1) {
-      final likeResult = results[1] as Result<LikeEntity?>;
+    if (results.length > 2) {
+      final likeResult = results[2] as Result<LikeEntity?>;
 
       likeResult.ifSuccess((data) {
         result = result.copyWith(like: data);

@@ -10,3 +10,4 @@ export 'package:domain/core/domain_initializer.dart';
 export 'package:domain/stories/models/story_entity.dart';
 export 'package:domain/friends/friends_repository.dart';
 export 'package:domain/likes/likes_repository.dart';
+export 'package:domain/comments/comments_repository.dart';

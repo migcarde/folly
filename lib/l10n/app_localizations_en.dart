@@ -179,4 +179,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get followers => 'Followers';
+
+  @override
+  String reply_to(String name) {
+    return 'Reply to $name';
+  }
 }

@@ -180,4 +180,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get followers => 'Seguidores';
+
+  @override
+  String reply_to(String name) {
+    return 'Reponder a $name';
+  }
 }

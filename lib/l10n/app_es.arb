@@ -112,5 +112,13 @@
     "following": "Siguiendo",
     "@following": {},
     "followers": "Seguidores",
-    "@followers": {}
+    "@followers": {},
+    "reply_to": "Reponder a {name}",
+    "@reply_to": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    }
 }

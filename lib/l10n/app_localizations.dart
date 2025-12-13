@@ -422,6 +422,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Followers'**
   String get followers;
+
+  /// No description provided for @reply_to.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply to {name}'**
+  String reply_to(String name);
 }
 
 class _AppLocalizationsDelegate
