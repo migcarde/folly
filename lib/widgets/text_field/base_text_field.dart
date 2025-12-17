@@ -6,10 +6,12 @@ import 'package:folly/widgets/text_field/text_field_type.dart';
 enum BaseTextFieldType {
   normal,
   password,
-  textArea;
+  textArea,
+  inlineTextArea;
 
   bool get isPassword => this == BaseTextFieldType.password;
   bool get isTextArea => this == BaseTextFieldType.textArea;
+  bool get isInlineTextArea => this == BaseTextFieldType.inlineTextArea;
 }
 
 class BaseTextField extends StatelessWidget {
@@ -26,7 +28,13 @@ class BaseTextField extends StatelessWidget {
     this.type = TextFieldType.initial,
     this.prefixText,
     this.textStyle,
-  });
+    this.maxLines,
+  }) : assert(
+         !((textType == BaseTextFieldType.normal ||
+                 textType == BaseTextFieldType.password) &&
+             maxLines != null),
+         'maxLines cannot be used with BaseTextFieldType.textArea or BaseTextFieldType.inlineTextArea',
+       );
 
   final String hint;
   final bool enabled;
@@ -40,6 +48,7 @@ class BaseTextField extends StatelessWidget {
   final VoidCallback? onTapIcon;
   final String? prefixText;
   final TextStyle? textStyle;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +60,8 @@ class BaseTextField extends StatelessWidget {
       enableSuggestions: !textType.isPassword,
       autocorrect: !textType.isPassword,
       onSubmitted: onSubmitted,
-      minLines: textType.isTextArea && !type.isNone ? 3 : null,
-      maxLines: textType.isTextArea ? null : 1,
+      minLines: textType.isTextArea && !type.isNone ? 3 : 1,
+      maxLines: textType.isTextArea || textType.isInlineTextArea ? maxLines : 1,
       style: textStyle,
       decoration: InputDecoration(
         hintText: hint,
@@ -61,7 +70,7 @@ class BaseTextField extends StatelessWidget {
         enabled: enabled,
         suffixIcon: ClickDetector(
           onTap: onTapIcon ?? () {},
-          child: Icon(icon, color: Theme.of(context).primaryColor),
+          child: Icon(icon, color: style.iconColor),
         ),
         border: OutlineInputBorder(
           borderSide: style.borderColor != Colors.transparent

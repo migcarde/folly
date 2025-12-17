@@ -428,6 +428,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reply to {name}'**
   String reply_to(String name);
+
+  /// No description provided for @comments.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments'**
+  String get comments;
+
+  /// No description provided for @write_a_comment.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a comment'**
+  String get write_a_comment;
+
+  /// No description provided for @no_yet.
+  ///
+  /// In en, this message translates to:
+  /// **'No {name} yet'**
+  String no_yet(String name);
 }
 
 class _AppLocalizationsDelegate

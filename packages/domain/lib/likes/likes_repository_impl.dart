@@ -95,4 +95,31 @@ class LikesRepositoryImpl implements LikesRepository {
       return Result.failure(e);
     }
   }
+
+  @override
+  Future<Result<LikeEntity>> likeComment({
+    required String commentId,
+    required String uid,
+  }) async {
+    try {
+      final result = await likesRemoteDatasource.createLike(
+        like: LikeRemoteEntity(id: commentId, uid: uid, commentId: commentId),
+      );
+
+      return Result.success(result.entity);
+    } catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<void>> unlikeComment({required String likeId}) async {
+    try {
+      await likesRemoteDatasource.deleteLike(id: likeId);
+
+      return Result.success(null);
+    } catch (e) {
+      return Result.failure(e);
+    }
+  }
 }

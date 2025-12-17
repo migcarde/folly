@@ -20,6 +20,11 @@ abstract class LikesRepository {
     required String uid,
   });
   Future<Result<int>> getCommentLikesCount({required String commentId});
+  Future<Result<LikeEntity>> likeComment({
+    required String commentId,
+    required String uid,
+  });
+  Future<Result<void>> unlikeComment({required String likeId});
 }
 
 final likesRepositoryProvider = Provider.autoDispose<LikesRepository>(

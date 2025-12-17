@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:domain/comments/models/comment_entity.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/features/auth_notifier.dart';
@@ -28,19 +29,82 @@ class CommentsNotifier extends AsyncNotifier<CommentsState> {
     result.when(
       (data) => state = AsyncData(
         CommentsState(
-          status: data.content.isEmpty
-              ? CommentsStatus.empty
-              : CommentsStatus.data,
           comments: data.content,
           page: data.page,
           totalPages: data.totalPages,
           total: data.total,
         ),
       ),
-      (e) => state = AsyncData(CommentsState(status: CommentsStatus.error)),
+      (e, stackTrace) => state = AsyncError(e, stackTrace),
     );
 
     return state.value!;
+  }
+
+  Future<void> nextPage() async {
+    if (state.value?.isLast == false && state.value != null) {
+      state = AsyncValue.data(
+        state.value!.copyWith(page: state.value!.page + 1),
+      );
+      await _getComments();
+    }
+  }
+
+  Future<void> _getComments() async {
+    final result = await ref
+        .read(commentsRepositoryProvider)
+        .getComments(
+          storyId: storyId,
+          uid: ref.read(authNotifierProvider).user?.uid ?? '',
+          page: state.value?.page ?? 0,
+          total: state.value?.total ?? 0,
+        );
+
+    result.when(
+      (data) => state = AsyncData(
+        CommentsState(
+          comments: [...state.value?.comments ?? [], ...data.content],
+          page: data.page,
+          totalPages: data.totalPages,
+          total: data.total,
+        ),
+      ),
+      (e, strackTrace) => state = AsyncError(e, strackTrace),
+    );
+  }
+
+  Future<void> createComment({
+    required String text,
+    String? parentCommentId,
+  }) async {
+    final user = ref.read(authNotifierProvider).user;
+
+    if (user != null && state.value != null) {
+      final comment = CommentEntity(
+        id: '',
+        storyId: storyId,
+        user: user,
+        text: text,
+        parentCommentId: parentCommentId,
+      );
+
+      final result = await ref
+          .read(commentsRepositoryProvider)
+          .createComment(comment: comment);
+
+      result.when(
+        (data) => state = AsyncData(
+          state.value!.copyWith(
+            comments: [comment, ...state.value?.comments ?? []],
+          ),
+        ),
+        (failure, __) => state = AsyncData(
+          state.value!.copyWith(
+            error: CommentsErrorMessages.createCommentError,
+          ),
+        ),
+      );
+    }
   }
 }
 

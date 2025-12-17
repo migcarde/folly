@@ -121,5 +121,17 @@
                 "type": "String"
             }
         }
+    },
+    "comments": "Comments",
+    "@comments": {},
+    "write_a_comment": "Write a comment",
+    "@write_a_comment": {},
+    "no_yet": "No {name} yet",
+    "@no_yet": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
     }
 }

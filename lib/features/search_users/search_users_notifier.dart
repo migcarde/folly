@@ -46,7 +46,7 @@ class SearchUsersNotifier extends StateNotifier<SearchUsersState> {
         totalPages: data.totalPages,
         total: data.total,
       ),
-      (_) => state = state.copyWith(status: SearchUsersStatus.error),
+      (_, __) => state = state.copyWith(status: SearchUsersStatus.error),
     );
   }
 }

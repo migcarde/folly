@@ -28,8 +28,8 @@ class StoryCardNotifier extends AsyncNotifier<StoryCardState> {
     final commentsCountResult = results[1] as Result<int>;
 
     result = result.copyWith(
-      likesCount: likesCountResult.when((data) => data, (_) => 0),
-      commentsCount: commentsCountResult.when((data) => data, (_) => 0),
+      likesCount: likesCountResult.when((data) => data, (_, __) => 0),
+      commentsCount: commentsCountResult.when((data) => data, (_, __) => 0),
     );
 
     if (results.length > 2) {

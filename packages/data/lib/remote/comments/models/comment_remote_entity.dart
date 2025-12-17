@@ -18,13 +18,12 @@ class CommentRemoteEntity {
       id: json['id'],
       text: json['text'],
       storyId: json['story_id'],
-      uid: json['uid'],
+      uid: json['user_id'],
       parentCommentId: json['parent_comment_id'],
     );
   }
 
   Map<String, dynamic> toJson() => {
-    'id': id,
     'text': text,
     'story_id': storyId,
     'user_id': uid,

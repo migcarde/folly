@@ -38,7 +38,7 @@ class FeedNotifier extends StateNotifier<FeedNotifierState> {
         totalPages: stories.totalPages,
         total: stories.total,
       ),
-      (_) => state = state.copyWith(status: FeedNotifierStatus.error),
+      (_, __) => state = state.copyWith(status: FeedNotifierStatus.error),
     );
   }
 }

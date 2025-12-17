@@ -185,4 +185,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String reply_to(String name) {
     return 'Reponder a $name';
   }
+
+  @override
+  String get comments => 'Comentarios';
+
+  @override
+  String get write_a_comment => 'Escribe un comentario';
+
+  @override
+  String no_yet(String name) {
+    return 'No existen $name aún';
+  }
 }

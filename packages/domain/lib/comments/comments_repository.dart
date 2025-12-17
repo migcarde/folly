@@ -22,6 +22,5 @@ final commentsRepositoryProvider = Provider<CommentsRepository>(
   (ref) => CommentsRepositoryImpl(
     commentsRemoteDatasource: ref.watch(commentsRemoteDatasourceProvider),
     userRemoteDatasource: ref.watch(userRemoteDatasourceProvider),
-    likesRemoteDatasource: ref.watch(likesRemoteDatasourceProvider),
   ),
 );
