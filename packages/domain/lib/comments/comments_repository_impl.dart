@@ -83,8 +83,6 @@ class CommentsRepositoryImpl implements CommentsRepository {
         } else {
           comments.add(comment.toEntity(user: user.entity));
         }
-
-        comments.add(comment.toEntity(user: user.entity));
       }
 
       if (futures.isNotEmpty) {

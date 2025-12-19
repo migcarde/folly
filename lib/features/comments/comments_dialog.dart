@@ -98,20 +98,27 @@ class _CommentsDialogState extends ConsumerState<CommentsDialog> {
                           ),
                           if (comment.replies.isNotEmpty)
                             Padding(
-                              padding: const EdgeInsets.only(left: AppDimens.l),
-                              child: Column(
-                                children: comment.replies.map((reply) {
-                                  return CommentTile(
-                                    commentId: reply.id,
-                                    name: reply.user.username,
-                                    photoPath: reply.user.photoPath,
-                                    comment: reply.text,
-                                    onTapProfile: () => context.push(
-                                      Paths.userProfile.route,
-                                      extra: reply.user,
-                                    ),
-                                  );
-                                }).toList(),
+                              padding: const EdgeInsets.only(
+                                top: AppDimens.m,
+                                left: AppDimens.l,
+                              ),
+                              child: ListView.separated(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) => CommentTile(
+                                  commentId: comment.replies[index].id,
+                                  name: comment.replies[index].user.username,
+                                  photoPath:
+                                      comment.replies[index].user.photoPath,
+                                  comment: comment.replies[index].text,
+                                  onTapProfile: () => context.push(
+                                    Paths.userProfile.route,
+                                    extra: comment.replies[index].user,
+                                  ),
+                                ),
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(height: AppDimens.s),
+                                itemCount: comment.replies.length,
                               ),
                             ),
                         ],
@@ -197,6 +204,8 @@ class _CommentsDialogState extends ConsumerState<CommentsDialog> {
                           .createComment(
                             text: _commentTextFieldController.text,
                           );
+
+                      _commentTextFieldController.clear();
                     }
                   },
                 ),

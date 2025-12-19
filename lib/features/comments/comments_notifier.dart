@@ -91,11 +91,21 @@ class CommentsNotifier extends AsyncNotifier<CommentsState> {
           .createComment(comment: comment);
 
       result.when(
-        (data) => state = AsyncData(
-          state.value!.copyWith(
-            comments: [comment, ...state.value?.comments ?? []],
-          ),
-        ),
+        (data) {
+          final comments = state.value?.commentToReply != null
+              ? state.value!.comments.map((comment) {
+                  if (comment.id == state.value!.commentToReply!.id) {
+                    return comment.copyWith(
+                      replies: [data, ...comment.replies],
+                    );
+                  }
+                  return comment;
+                }).toList()
+              : [data, ...state.value!.comments];
+
+          state = AsyncData(state.value!.copyWith(comments: comments));
+          state = AsyncData(state.value!.clearCommentToReply());
+        },
         (failure, __) => state = AsyncData(
           state.value!.copyWith(
             error: CommentsErrorMessages.createCommentError,

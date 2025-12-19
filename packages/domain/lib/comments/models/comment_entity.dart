@@ -36,6 +36,22 @@ class CommentEntity extends Equatable {
     uid: user.uid,
     parentCommentId: parentCommentId,
   );
+
+  CommentEntity copyWith({
+    String? id,
+    String? text,
+    String? storyId,
+    UserEntity? user,
+    List<CommentEntity>? replies,
+    String? parentCommentId,
+  }) => CommentEntity(
+    id: id ?? this.id,
+    text: text ?? this.text,
+    storyId: storyId ?? this.storyId,
+    user: user ?? this.user,
+    replies: replies ?? this.replies,
+    parentCommentId: parentCommentId ?? this.parentCommentId,
+  );
 }
 
 extension CommentRemoteEntityExtensions on CommentRemoteEntity {
