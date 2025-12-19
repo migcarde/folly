@@ -7,6 +7,7 @@ class CommentEntity extends Equatable {
   final String text;
   final String storyId;
   final UserEntity user;
+  final List<CommentEntity> replies;
   final String? parentCommentId;
 
   const CommentEntity({
@@ -14,11 +15,19 @@ class CommentEntity extends Equatable {
     required this.text,
     required this.storyId,
     required this.user,
+    required this.replies,
     this.parentCommentId,
   });
 
   @override
-  List<Object?> get props => [id, text, storyId, user, parentCommentId];
+  List<Object?> get props => [
+    id,
+    text,
+    storyId,
+    user,
+    replies,
+    parentCommentId,
+  ];
 
   CommentRemoteEntity get remote => CommentRemoteEntity(
     id: id,
@@ -30,11 +39,15 @@ class CommentEntity extends Equatable {
 }
 
 extension CommentRemoteEntityExtensions on CommentRemoteEntity {
-  CommentEntity toEntity({required UserEntity user}) => CommentEntity(
+  CommentEntity toEntity({
+    required UserEntity user,
+    List<CommentEntity> replies = const [],
+  }) => CommentEntity(
     id: id,
     text: text,
     storyId: storyId,
     user: user,
+    replies: replies,
     parentCommentId: parentCommentId,
   );
 }

@@ -133,5 +133,13 @@
                 "type": "String"
             }
         }
+    },
+    "replying_to": "Replying to @{name}",
+    "@replying_to": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
     }
 }

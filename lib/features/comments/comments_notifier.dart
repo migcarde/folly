@@ -23,7 +23,7 @@ class CommentsNotifier extends AsyncNotifier<CommentsState> {
           storyId: storyId,
           uid: user?.uid ?? '',
           page: state.value?.page ?? 0,
-          total: state.value?.total ?? 0,
+          total: state.value?.total,
         );
 
     result.when(
@@ -73,10 +73,7 @@ class CommentsNotifier extends AsyncNotifier<CommentsState> {
     );
   }
 
-  Future<void> createComment({
-    required String text,
-    String? parentCommentId,
-  }) async {
+  Future<void> createComment({required String text}) async {
     final user = ref.read(authNotifierProvider).user;
 
     if (user != null && state.value != null) {
@@ -85,7 +82,8 @@ class CommentsNotifier extends AsyncNotifier<CommentsState> {
         storyId: storyId,
         user: user,
         text: text,
-        parentCommentId: parentCommentId,
+        parentCommentId: state.value?.commentToReply?.id,
+        replies: [],
       );
 
       final result = await ref
@@ -106,9 +104,21 @@ class CommentsNotifier extends AsyncNotifier<CommentsState> {
       );
     }
   }
+
+  Future<void> setCommentToReply(CommentEntity? comment) async {
+    if (state.value != null) {
+      state = AsyncValue.data(state.value!.copyWith(commentToReply: comment));
+    }
+  }
+
+  Future<void> clearCommentToReply() async {
+    if (state.value != null) {
+      state = AsyncValue.data(state.value!.clearCommentToReply());
+    }
+  }
 }
 
-final commentsNotifierProvider =
-    AsyncNotifierProvider.family<CommentsNotifier, CommentsState, String>(
+final commentsNotifierProvider = AsyncNotifierProvider.family
+    .autoDispose<CommentsNotifier, CommentsState, String>(
       (storyId) => CommentsNotifier(storyId: storyId),
     );

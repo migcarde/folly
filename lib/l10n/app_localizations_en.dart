@@ -195,4 +195,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String no_yet(String name) {
     return 'No $name yet';
   }
+
+  @override
+  String replying_to(String name) {
+    return 'Replying to @$name';
+  }
 }

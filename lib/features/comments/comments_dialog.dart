@@ -77,19 +77,44 @@ class _CommentsDialogState extends ConsumerState<CommentsDialog> {
 
                       final comment = data.comments[index];
 
-                      return CommentTile(
-                        commentId: comment.id,
-                        name: comment.user.name,
-                        photoPath: comment.user.photoPath,
-                        comment: comment.text,
-                        isReply: comment.parentCommentId != null,
-                        onTapProfile: () => context.push(
-                          Paths.userProfile.route,
-                          extra: comment.user,
-                        ),
-                        onTapReply: () {
-                          // TODO: Update comment textfield to reference this comment and update textfield to add reply indicator
-                        },
+                      return Column(
+                        children: [
+                          CommentTile(
+                            commentId: comment.id,
+                            name: comment.user.username,
+                            photoPath: comment.user.photoPath,
+                            comment: comment.text,
+                            onTapProfile: () => context.push(
+                              Paths.userProfile.route,
+                              extra: comment.user,
+                            ),
+                            onTapReply: () => ref
+                                .read(
+                                  commentsNotifierProvider(
+                                    widget.storyId,
+                                  ).notifier,
+                                )
+                                .setCommentToReply(comment),
+                          ),
+                          if (comment.replies.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(left: AppDimens.l),
+                              child: Column(
+                                children: comment.replies.map((reply) {
+                                  return CommentTile(
+                                    commentId: reply.id,
+                                    name: reply.user.username,
+                                    photoPath: reply.user.photoPath,
+                                    comment: reply.text,
+                                    onTapProfile: () => context.push(
+                                      Paths.userProfile.route,
+                                      extra: reply.user,
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                        ],
                       );
                     },
                     separatorBuilder: (context, index) =>
@@ -97,8 +122,65 @@ class _CommentsDialogState extends ConsumerState<CommentsDialog> {
                     itemCount: data.comments.length,
                   ),
                 ),
+              const SizedBox(height: AppDimens.m),
+              Align(
+                alignment: Alignment.centerRight,
+                child: AnimatedSize(
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.fastOutSlowIn,
+                  child: state.value?.commentToReply != null
+                      ? Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppDimens.s,
+                            vertical: AppDimens.xs,
+                          ),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primaryContainer,
+                            borderRadius: BorderRadius.circular(
+                              AppDimens.circularRadius,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  l10n.replying_to(
+                                    state
+                                            .value
+                                            ?.commentToReply
+                                            ?.user
+                                            .username ??
+                                        '',
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: AppDimens.s,
+                                ),
+                                child: GestureDetector(
+                                  onTap: () => ref
+                                      .read(
+                                        commentsNotifierProvider(
+                                          widget.storyId,
+                                        ).notifier,
+                                      )
+                                      .clearCommentToReply(),
+                                  child: Icon(
+                                    PhosphorIcons.x(),
+                                    color: theme.colorScheme.onPrimaryContainer,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : const SizedBox(),
+                ),
+              ),
               Padding(
-                padding: const EdgeInsets.only(top: AppDimens.m),
+                padding: const EdgeInsets.only(top: AppDimens.xs),
                 child: BaseTextField(
                   controller: _commentTextFieldController,
                   hint: l10n.write_a_comment,

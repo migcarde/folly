@@ -446,6 +446,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No {name} yet'**
   String no_yet(String name);
+
+  /// No description provided for @replying_to.
+  ///
+  /// In en, this message translates to:
+  /// **'Replying to @{name}'**
+  String replying_to(String name);
 }
 
 class _AppLocalizationsDelegate

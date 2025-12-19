@@ -42,6 +42,7 @@ class CommentsRemoteDatasourceImpl extends CommentsRemoteDatasource {
         .from(_commentsCollection)
         .select()
         .eq('story_id', storyId)
+        .isFilter('parent_comment_id', null)
         .range(startIndex, endIndex)
         .order('created_at', ascending: false)
         .count(CountOption.exact);
@@ -65,5 +66,36 @@ class CommentsRemoteDatasourceImpl extends CommentsRemoteDatasource {
         .count(CountOption.exact);
 
     return result.count;
+  }
+
+  @override
+  Future<PageRemoteEntity<CommentRemoteEntity>> getReplies({
+    required String parentCommentId,
+    required int page,
+    int size = 10,
+    int? total,
+  }) async {
+    final (startIndex, endIndex) = PageRemoteEntity.getIndexes(
+      page: page,
+      size: size,
+      total: total,
+    );
+
+    final result = await _supabase.client
+        .from(_commentsCollection)
+        .select()
+        .eq('parent_comment_id', parentCommentId)
+        .range(startIndex, endIndex)
+        .order('created_at', ascending: false)
+        .count(CountOption.exact);
+
+    return PageRemoteEntity(
+      content: result.data
+          .map((json) => CommentRemoteEntity.fromJson(json: json))
+          .toList(),
+      page: page,
+      totalPages: (result.count / size).ceil(),
+      total: result.count,
+    );
   }
 }

@@ -13,4 +13,10 @@ abstract class CommentsRemoteDatasource {
     int? total,
   });
   Future<int> getCommentsCount({required String storyId});
+  Future<PageRemoteEntity<CommentRemoteEntity>> getReplies({
+    required String parentCommentId,
+    required int page,
+    int size = 10,
+    int? total,
+  });
 }

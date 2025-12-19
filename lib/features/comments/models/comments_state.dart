@@ -9,6 +9,7 @@ class CommentsState extends Equatable {
   final int page;
   final int totalPages;
   final int? total;
+  final CommentEntity? commentToReply;
 
   const CommentsState({
     this.error = CommentsErrorMessages.none,
@@ -16,10 +17,18 @@ class CommentsState extends Equatable {
     this.page = 0,
     this.totalPages = 0,
     this.total,
+    this.commentToReply,
   });
 
   @override
-  List<Object?> get props => [error, comments, page, totalPages, total];
+  List<Object?> get props => [
+    error,
+    comments,
+    page,
+    totalPages,
+    total,
+    commentToReply,
+  ];
 
   CommentsState copyWith({
     CommentsErrorMessages? error,
@@ -27,12 +36,23 @@ class CommentsState extends Equatable {
     int? page,
     int? totalPages,
     int? total,
+    CommentEntity? commentToReply,
   }) => CommentsState(
     error: error ?? this.error,
     comments: comments ?? this.comments,
     page: page ?? this.page,
     totalPages: totalPages ?? this.totalPages,
     total: total ?? this.total,
+    commentToReply: commentToReply ?? this.commentToReply,
+  );
+
+  CommentsState clearCommentToReply() => CommentsState(
+    error: error,
+    comments: comments,
+    page: page,
+    totalPages: totalPages,
+    total: total,
+    commentToReply: null,
   );
 
   bool get isLast => (page + 1) == totalPages;

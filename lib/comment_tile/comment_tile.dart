@@ -14,8 +14,7 @@ class CommentTile extends ConsumerWidget {
     required this.photoPath,
     required this.comment,
     required this.onTapProfile,
-    required this.onTapReply,
-    required this.isReply,
+    this.onTapReply,
   });
 
   final String commentId;
@@ -23,8 +22,7 @@ class CommentTile extends ConsumerWidget {
   final String photoPath;
   final String comment;
   final VoidCallback onTapProfile;
-  final VoidCallback onTapReply;
-  final bool isReply;
+  final VoidCallback? onTapReply;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -86,26 +84,27 @@ class CommentTile extends ConsumerWidget {
             ),
           ],
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: AppDimens.l, top: AppDimens.s),
-          child: GestureDetector(
-            onTap: onTapReply,
-            child: Row(
-              children: [
-                Icon(PhosphorIcons.chatCircle()),
-                Padding(
-                  padding: const EdgeInsets.only(left: AppDimens.s),
-                  child: Text(
-                    l10n.reply_to(name),
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+        if (onTapReply != null)
+          Padding(
+            padding: const EdgeInsets.only(left: AppDimens.l, top: AppDimens.s),
+            child: GestureDetector(
+              onTap: onTapReply,
+              child: Row(
+                children: [
+                  Icon(PhosphorIcons.chatCircle()),
+                  Padding(
+                    padding: const EdgeInsets.only(left: AppDimens.s),
+                    child: Text(
+                      l10n.reply_to(name),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
       ],
     );
   }

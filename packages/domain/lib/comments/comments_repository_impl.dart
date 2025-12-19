@@ -57,10 +57,38 @@ class CommentsRepositoryImpl implements CommentsRepository {
         total: total,
       );
 
+      List<Future<dynamic>> futures = [];
+
       for (var comment in commentsResult.content) {
         final user = await userRemoteDatasource.getUser(uid: comment.uid);
 
+        if (comment.parentCommentId != null) {
+          futures.add(
+            commentsRemoteDatasource
+                .getReplies(parentCommentId: comment.parentCommentId!, page: 0)
+                .then((repliesResult) async {
+                  List<CommentEntity> replies = [];
+                  for (var reply in repliesResult.content) {
+                    final replyUser = await userRemoteDatasource.getUser(
+                      uid: reply.uid,
+                    );
+                    replies.add(reply.toEntity(user: replyUser.entity));
+                  }
+
+                  comments.add(
+                    comment.toEntity(user: user.entity, replies: replies),
+                  );
+                }),
+          );
+        } else {
+          comments.add(comment.toEntity(user: user.entity));
+        }
+
         comments.add(comment.toEntity(user: user.entity));
+      }
+
+      if (futures.isNotEmpty) {
+        await Future.wait(futures);
       }
 
       return Result.success(
