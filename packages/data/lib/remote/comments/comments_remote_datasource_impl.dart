@@ -72,7 +72,7 @@ class CommentsRemoteDatasourceImpl extends CommentsRemoteDatasource {
   Future<PageRemoteEntity<CommentRemoteEntity>> getReplies({
     required String parentCommentId,
     required int page,
-    int size = 10,
+    int size = 5,
     int? total,
   }) async {
     final (startIndex, endIndex) = PageRemoteEntity.getIndexes(
@@ -86,7 +86,7 @@ class CommentsRemoteDatasourceImpl extends CommentsRemoteDatasource {
         .select()
         .eq('parent_comment_id', parentCommentId)
         .range(startIndex, endIndex)
-        .order('created_at', ascending: false)
+        .order('created_at', ascending: true)
         .count(CountOption.exact);
 
     return PageRemoteEntity(
@@ -97,5 +97,13 @@ class CommentsRemoteDatasourceImpl extends CommentsRemoteDatasource {
       totalPages: (result.count / size).ceil(),
       total: result.count,
     );
+  }
+
+  @override
+  Future<void> updateComment({required CommentRemoteEntity comment}) async {
+    await _supabase.client
+        .from(_commentsCollection)
+        .update(comment.toJson())
+        .eq('id', comment.id);
   }
 }

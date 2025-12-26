@@ -3,6 +3,7 @@ class CommentRemoteEntity {
   final String text;
   final String storyId;
   final String uid;
+  final int repliesCount;
   final String? parentCommentId;
 
   const CommentRemoteEntity({
@@ -10,6 +11,7 @@ class CommentRemoteEntity {
     required this.text,
     required this.storyId,
     required this.uid,
+    required this.repliesCount,
     this.parentCommentId,
   });
 
@@ -19,6 +21,7 @@ class CommentRemoteEntity {
       text: json['text'],
       storyId: json['story_id'],
       uid: json['user_id'],
+      repliesCount: json['replies_count'],
       parentCommentId: json['parent_comment_id'],
     );
   }
@@ -27,6 +30,7 @@ class CommentRemoteEntity {
     'text': text,
     'story_id': storyId,
     'user_id': uid,
+    'replies_count': repliesCount,
     if (parentCommentId != null) 'parent_comment_id': parentCommentId,
   };
 }

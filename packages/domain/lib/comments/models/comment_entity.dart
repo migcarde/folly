@@ -35,6 +35,7 @@ class CommentEntity extends Equatable {
     storyId: storyId,
     uid: user.uid,
     parentCommentId: parentCommentId,
+    repliesCount: replies.length,
   );
 
   CommentEntity copyWith({

@@ -62,10 +62,10 @@ class CommentsRepositoryImpl implements CommentsRepository {
       for (var comment in commentsResult.content) {
         final user = await userRemoteDatasource.getUser(uid: comment.uid);
 
-        if (comment.parentCommentId != null) {
+        if (comment.repliesCount > 0) {
           futures.add(
             commentsRemoteDatasource
-                .getReplies(parentCommentId: comment.parentCommentId!, page: 0)
+                .getReplies(parentCommentId: comment.id, page: 0)
                 .then((repliesResult) async {
                   List<CommentEntity> replies = [];
                   for (var reply in repliesResult.content) {
@@ -107,6 +107,19 @@ class CommentsRepositoryImpl implements CommentsRepository {
     try {
       final result = await commentsRemoteDatasource.getCommentsCount(
         storyId: storyId,
+      );
+
+      return Result.success(result);
+    } catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<void>> updateComment({required CommentEntity comment}) async {
+    try {
+      final result = await commentsRemoteDatasource.updateComment(
+        comment: comment.remote,
       );
 
       return Result.success(result);

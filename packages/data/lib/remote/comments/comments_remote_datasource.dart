@@ -16,7 +16,8 @@ abstract class CommentsRemoteDatasource {
   Future<PageRemoteEntity<CommentRemoteEntity>> getReplies({
     required String parentCommentId,
     required int page,
-    int size = 10,
+    int size = 5,
     int? total,
   });
+  Future<void> updateComment({required CommentRemoteEntity comment});
 }
