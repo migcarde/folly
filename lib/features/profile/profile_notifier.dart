@@ -47,7 +47,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
     storiesResult.when((stories) {
       FriendEntity? friendRequest = pendingResult.when(
         (value) => value,
-        (_) => null,
+        (_, __) => null,
       );
 
       if (authNotifier.user != null &&
@@ -63,12 +63,12 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
         status: ProfileStatus.success,
         stories: stories.content,
         friend: friendRequest,
-        followers: followersResult.when((value) => value, (_) => 0),
-        following: followingResult.when((value) => value, (_) => 0),
+        followers: followersResult.when((value) => value, (_, __) => 0),
+        following: followingResult.when((value) => value, (_, __) => 0),
         totalPages: stories.totalPages,
         total: stories.total,
       );
-    }, (_) => state = state.copyWith(status: ProfileStatus.error));
+    }, (_, __) => state = state.copyWith(status: ProfileStatus.error));
   }
 
   Future<void> sendRequest({required String receiverId}) async {
@@ -83,7 +83,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
           friend: data,
           followers: state.followers + 1,
         ),
-        (_) => state = state.copyWith(status: ProfileStatus.error),
+        (_, __) => state = state.copyWith(status: ProfileStatus.error),
       );
     }
   }
@@ -97,7 +97,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
           friend: state.friend?.copyWith(state: FriendRequestState.friend),
           following: state.following + 1,
         ),
-        (_) {},
+        (_, __) {},
       );
     }
   }
@@ -106,7 +106,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
     if (state.friend != null) {
       final result = await friendsRepository.reject(request: state.friend!);
 
-      result.when((_) => state = state.clearRequest(), (_) {});
+      result.when((_) => state = state.clearRequest(), (_, __) {});
     }
   }
 
@@ -123,7 +123,7 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
       result.when(
         (data) =>
             state = ProfileState(stories: [...state.stories, ...data.content]),
-        (_) => state = state.copyWith(status: ProfileStatus.error),
+        (_, __) => state = state.copyWith(status: ProfileStatus.error),
       );
     }
   }

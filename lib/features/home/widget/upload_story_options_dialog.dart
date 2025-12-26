@@ -78,7 +78,7 @@ class UploadStoryOptionsDialog extends StatelessWidget {
                       parentContext.push(Paths.uploadStory.route, extra: image);
                     }
                   },
-                  (error) {
+                  (error, __) {
                     if (error is MediaErrors) {
                       switch (error) {
                         case MediaErrors.noFileSelected:

@@ -10,11 +10,21 @@ abstract class LikesRepository {
     required String uid,
   });
   Future<Result<void>> unlikeStory({required String likeId});
-  Future<Result<LikeEntity?>> getLike({
+  Future<Result<LikeEntity?>> getStoryLike({
     required String storyId,
     required String uid,
   });
-  Future<Result<int>> getLikesCount({required String storyId});
+  Future<Result<int>> getStoryLikesCount({required String storyId});
+  Future<Result<LikeEntity?>> getCommentLike({
+    required String commentId,
+    required String uid,
+  });
+  Future<Result<int>> getCommentLikesCount({required String commentId});
+  Future<Result<LikeEntity>> likeComment({
+    required String commentId,
+    required String uid,
+  });
+  Future<Result<void>> unlikeComment({required String likeId});
 }
 
 final likesRepositoryProvider = Provider.autoDispose<LikesRepository>(

@@ -31,7 +31,7 @@ class ChangeLanguageNotifier extends StateNotifier<ChangeLanguageState> {
 
       result.when(
         (_) => state = state.copyWith(status: ChangeLanguageStatus.success),
-        (_) => state = state.copyWith(status: ChangeLanguageStatus.error),
+        (_, __) => state = state.copyWith(status: ChangeLanguageStatus.error),
       );
     }
   }

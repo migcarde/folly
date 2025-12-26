@@ -39,7 +39,7 @@ class UploadStoryNotifier extends StateNotifier<UploadStoryState> {
 
       result.when(
         (_) => state = state.copyWith(status: UploadStoryStatus.success),
-        (_) => state = state.copyWith(status: UploadStoryStatus.error),
+        (_, __) => state = state.copyWith(status: UploadStoryStatus.error),
       );
     });
 

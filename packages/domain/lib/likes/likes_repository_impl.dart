@@ -37,12 +37,12 @@ class LikesRepositoryImpl implements LikesRepository {
   }
 
   @override
-  Future<Result<LikeEntity?>> getLike({
+  Future<Result<LikeEntity?>> getStoryLike({
     required String storyId,
     required String uid,
   }) async {
     try {
-      final result = await likesRemoteDatasource.getLike(
+      final result = await likesRemoteDatasource.getStoryLike(
         storyId: storyId,
         uid: uid,
       );
@@ -54,13 +54,70 @@ class LikesRepositoryImpl implements LikesRepository {
   }
 
   @override
-  Future<Result<int>> getLikesCount({required String storyId}) async {
+  Future<Result<int>> getStoryLikesCount({required String storyId}) async {
     try {
-      final result = await likesRemoteDatasource.getLikesCount(
+      final result = await likesRemoteDatasource.getStoryLikesCount(
         storyId: storyId,
       );
 
       return Result.success(result);
+    } catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<LikeEntity?>> getCommentLike({
+    required String commentId,
+    required String uid,
+  }) async {
+    try {
+      final result = await likesRemoteDatasource.getCommentLike(
+        commentId: commentId,
+        uid: uid,
+      );
+
+      return Result.success(result?.entity);
+    } catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<int>> getCommentLikesCount({required String commentId}) async {
+    try {
+      final result = await likesRemoteDatasource.getCommentLikesCount(
+        commentId: commentId,
+      );
+
+      return Result.success(result);
+    } catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<LikeEntity>> likeComment({
+    required String commentId,
+    required String uid,
+  }) async {
+    try {
+      final result = await likesRemoteDatasource.createLike(
+        like: LikeRemoteEntity(id: commentId, uid: uid, commentId: commentId),
+      );
+
+      return Result.success(result.entity);
+    } catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<void>> unlikeComment({required String likeId}) async {
+    try {
+      await likesRemoteDatasource.deleteLike(id: likeId);
+
+      return Result.success(null);
     } catch (e) {
       return Result.failure(e);
     }

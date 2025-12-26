@@ -23,7 +23,7 @@ class LikesRemoteDatasourceImpl extends LikesRemoteDatasource {
       await _supabase.client.from(_likesCollection).delete().eq('id', id);
 
   @override
-  Future<LikeRemoteEntity?> getLike({
+  Future<LikeRemoteEntity?> getStoryLike({
     required String storyId,
     required String uid,
   }) async {
@@ -38,11 +38,37 @@ class LikesRemoteDatasourceImpl extends LikesRemoteDatasource {
   }
 
   @override
-  Future<int> getLikesCount({required String storyId}) async {
+  Future<int> getStoryLikesCount({required String storyId}) async {
     final result = await _supabase.client
         .from(_likesCollection)
         .select()
         .eq('story_id', storyId)
+        .count(CountOption.exact);
+
+    return result.count;
+  }
+
+  @override
+  Future<LikeRemoteEntity?> getCommentLike({
+    required String commentId,
+    required String uid,
+  }) async {
+    final result = await _supabase.client
+        .from(_likesCollection)
+        .select()
+        .eq('comment_id', commentId)
+        .eq('uid', uid)
+        .maybeSingle();
+
+    return result == null ? null : LikeRemoteEntity.fromJson(json: result);
+  }
+
+  @override
+  Future<int> getCommentLikesCount({required String commentId}) async {
+    final result = await _supabase.client
+        .from(_likesCollection)
+        .select()
+        .eq('comment_id', commentId)
         .count(CountOption.exact);
 
     return result.count;

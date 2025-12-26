@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
+import 'package:folly/features/comments/comments_dialog.dart';
 import 'package:folly/features/story_card/story_card_notifier.dart';
 import 'package:folly/widgets/media_viewer.dart';
 import 'package:folly/widgets/profile_image.dart';
@@ -77,14 +78,25 @@ class StoryCard extends ConsumerWidget {
             children: [
               Text(title),
               const Spacer(),
-              // TODO: Replace with comments count and functionality
-              Text('0'),
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: AppDimens.xs,
-                  right: AppDimens.s,
+              Text(state.value?.commentsCount.toString() ?? '0'),
+              GestureDetector(
+                onTap: () {
+                  // TODO: Show comments bottombar
+                  showModalBottomSheet(
+                    context: context,
+                    backgroundColor: Colors.white,
+                    builder: (context) {
+                      return CommentsDialog(storyId: storyId);
+                    },
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: AppDimens.xs,
+                    right: AppDimens.s,
+                  ),
+                  child: Icon(PhosphorIcons.chatCircle(), size: _iconSize),
                 ),
-                child: Icon(PhosphorIcons.chatCircle(), size: _iconSize),
               ),
               Text(state.value?.likesCount.toString() ?? '0'),
               GestureDetector(

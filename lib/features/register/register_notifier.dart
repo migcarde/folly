@@ -45,7 +45,7 @@ class RegisterNotifier extends StateNotifier<RegisterState> {
 
     result.when(
       (user) => state = state.copyWith(status: RegisterStatus.success),
-      (failure) =>
+      (failure, __) =>
           _onError(failure), // TODO: Check userename availability error
     );
   }

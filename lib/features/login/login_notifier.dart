@@ -18,7 +18,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
 
     result.when(
       (user) => state = state.copyWith(status: LoginStatus.connected),
-      (failure) => state = state.copyWith(
+      (failure, __) => state = state.copyWith(
         status: LoginStatus.disconnected,
         error: failure is AuthException
             ? LoginError.fromAuthException(exception: failure)

@@ -422,6 +422,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Followers'**
   String get followers;
+
+  /// No description provided for @reply_to.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply to {name}'**
+  String reply_to(String name);
+
+  /// No description provided for @comments.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments'**
+  String get comments;
+
+  /// No description provided for @write_a_comment.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a comment'**
+  String get write_a_comment;
+
+  /// No description provided for @no_yet.
+  ///
+  /// In en, this message translates to:
+  /// **'No {name} yet'**
+  String no_yet(String name);
+
+  /// No description provided for @replying_to.
+  ///
+  /// In en, this message translates to:
+  /// **'Replying to @{name}'**
+  String replying_to(String name);
+
+  /// No description provided for @more_replies.
+  ///
+  /// In en, this message translates to:
+  /// **'More replies'**
+  String get more_replies;
 }
 
 class _AppLocalizationsDelegate

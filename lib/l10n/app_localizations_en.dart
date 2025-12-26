@@ -179,4 +179,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get followers => 'Followers';
+
+  @override
+  String reply_to(String name) {
+    return 'Reply to $name';
+  }
+
+  @override
+  String get comments => 'Comments';
+
+  @override
+  String get write_a_comment => 'Write a comment';
+
+  @override
+  String no_yet(String name) {
+    return 'No $name yet';
+  }
+
+  @override
+  String replying_to(String name) {
+    return 'Replying to @$name';
+  }
+
+  @override
+  String get more_replies => 'More replies';
 }

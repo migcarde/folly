@@ -58,7 +58,7 @@ class FriendsNotifier extends AsyncNotifier<FriendsState> {
           total: data.total,
         ),
       ),
-      (error) => state = AsyncValue.error(error, StackTrace.current),
+      (error, stackTrace) => state = AsyncValue.error(error, stackTrace),
     );
   }
 

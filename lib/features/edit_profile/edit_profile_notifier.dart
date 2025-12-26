@@ -69,7 +69,7 @@ class EditProfileNotifier extends StateNotifier<EditProfileState> {
             error: EditProfileError.none,
           );
         },
-        (_) => state = state.copyWith(
+        (_, __) => state = state.copyWith(
           status: EditProfileStatus.error,
           error: EditProfileError.none,
         ),
@@ -87,7 +87,7 @@ class EditProfileNotifier extends StateNotifier<EditProfileState> {
         (_) => state = state.copyWith(
           status: EditProfileStatus.sendPasswordResetEmail,
         ),
-        (_) => state = state.copyWith(status: EditProfileStatus.error),
+        (_, __) => state = state.copyWith(status: EditProfileStatus.error),
       );
     }
   }

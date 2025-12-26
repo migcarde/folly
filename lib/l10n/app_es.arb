@@ -112,5 +112,35 @@
     "following": "Siguiendo",
     "@following": {},
     "followers": "Seguidores",
-    "@followers": {}
+    "@followers": {},
+    "reply_to": "Reponder a {name}",
+    "@reply_to": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "comments": "Comentarios",
+    "@comments": {},
+    "write_a_comment": "Escribe un comentario",
+    "@write_a_comment": {},
+    "no_yet": "No existen {name} aún",
+    "@no_yet": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "replying_to": "Respondiendo a @{name}",
+    "@replying_to": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
+    "more_replies": "Más respuestas",
+    "@more_replies": {}
 }

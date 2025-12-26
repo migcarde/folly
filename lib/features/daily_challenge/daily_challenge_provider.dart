@@ -39,7 +39,7 @@ class DailyChallengeProvider extends StateNotifier<DailyChallengeState> {
             challenge: challenge.text,
           );
         }
-      }, (_) => state.copyWith(status: DailyChallengeStatus.error));
+      }, (_, __) => state.copyWith(status: DailyChallengeStatus.error));
     }
   }
 
@@ -57,7 +57,8 @@ class DailyChallengeProvider extends StateNotifier<DailyChallengeState> {
         status: DailyChallengeStatus.success,
         challenge: challenge,
       ),
-      (failure) => state = state.copyWith(status: DailyChallengeStatus.error),
+      (failure, __) =>
+          state = state.copyWith(status: DailyChallengeStatus.error),
     );
   }
 }

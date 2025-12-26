@@ -10,3 +10,6 @@ export 'remote/friends/friends_remote_datasource.dart';
 export 'remote/friends/friends_remote_datasource_impl.dart';
 export 'remote/likes/likes_remote_datasource.dart';
 export 'remote/likes/likes_remote_datasource_impl.dart';
+export 'remote/comments/comments_remote_datasource.dart';
+export 'remote/comments/comments_remote_datasource_impl.dart';
+export 'remote/comments/models/comment_remote_entity.dart';
