@@ -201,4 +201,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String replying_to(String name) {
     return 'Respondiendo a @$name';
   }
+
+  @override
+  String get more_replies => 'Más respuestas';
 }

@@ -6,8 +6,8 @@ import 'package:folly/extensions/build_context_extensions.dart';
 import 'package:folly/widgets/profile_image.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-class CommentTile extends ConsumerWidget {
-  const CommentTile({
+class CommentRow extends ConsumerWidget {
+  const CommentRow({
     super.key,
     required this.commentId,
     required this.name,

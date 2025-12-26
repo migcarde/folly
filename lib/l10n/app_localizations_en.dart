@@ -200,4 +200,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String replying_to(String name) {
     return 'Replying to @$name';
   }
+
+  @override
+  String get more_replies => 'More replies';
 }

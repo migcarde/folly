@@ -57,36 +57,10 @@ class CommentsRepositoryImpl implements CommentsRepository {
         total: total,
       );
 
-      List<Future<dynamic>> futures = [];
-
       for (var comment in commentsResult.content) {
         final user = await userRemoteDatasource.getUser(uid: comment.uid);
 
-        if (comment.repliesCount > 0) {
-          futures.add(
-            commentsRemoteDatasource
-                .getReplies(parentCommentId: comment.id, page: 0)
-                .then((repliesResult) async {
-                  List<CommentEntity> replies = [];
-                  for (var reply in repliesResult.content) {
-                    final replyUser = await userRemoteDatasource.getUser(
-                      uid: reply.uid,
-                    );
-                    replies.add(reply.toEntity(user: replyUser.entity));
-                  }
-
-                  comments.add(
-                    comment.toEntity(user: user.entity, replies: replies),
-                  );
-                }),
-          );
-        } else {
-          comments.add(comment.toEntity(user: user.entity));
-        }
-      }
-
-      if (futures.isNotEmpty) {
-        await Future.wait(futures);
+        comments.add(comment.toEntity(user: user.entity));
       }
 
       return Result.success(
@@ -123,6 +97,41 @@ class CommentsRepositoryImpl implements CommentsRepository {
       );
 
       return Result.success(result);
+    } catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<PageEntity<CommentEntity>>> getReplies({
+    required String parentCommentId,
+    required int page,
+    int size = 5,
+    int? total,
+  }) async {
+    try {
+      final repliesResult = await commentsRemoteDatasource.getReplies(
+        parentCommentId: parentCommentId,
+        page: page,
+        size: size,
+        total: total,
+      );
+
+      List<CommentEntity> replies = [];
+
+      for (var reply in repliesResult.content) {
+        final user = await userRemoteDatasource.getUser(uid: reply.uid);
+        replies.add(reply.toEntity(user: user.entity));
+      }
+
+      return Result.success(
+        PageEntity(
+          content: replies,
+          page: page,
+          totalPages: repliesResult.totalPages,
+          total: repliesResult.total,
+        ),
+      );
     } catch (e) {
       return Result.failure(e);
     }

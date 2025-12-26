@@ -17,6 +17,12 @@ abstract class CommentsRepository {
   });
   Future<Result<int>> getCommentsCount({required String storyId});
   Future<Result<void>> updateComment({required CommentEntity comment});
+  Future<Result<PageEntity<CommentEntity>>> getReplies({
+    required String parentCommentId,
+    required int page,
+    int size = 5,
+    int? total,
+  });
 }
 
 final commentsRepositoryProvider = Provider<CommentsRepository>(

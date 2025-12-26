@@ -7,7 +7,7 @@ class CommentEntity extends Equatable {
   final String text;
   final String storyId;
   final UserEntity user;
-  final List<CommentEntity> replies;
+  final int repliesCount;
   final String? parentCommentId;
 
   const CommentEntity({
@@ -15,7 +15,7 @@ class CommentEntity extends Equatable {
     required this.text,
     required this.storyId,
     required this.user,
-    required this.replies,
+    required this.repliesCount,
     this.parentCommentId,
   });
 
@@ -25,7 +25,7 @@ class CommentEntity extends Equatable {
     text,
     storyId,
     user,
-    replies,
+    repliesCount,
     parentCommentId,
   ];
 
@@ -35,7 +35,7 @@ class CommentEntity extends Equatable {
     storyId: storyId,
     uid: user.uid,
     parentCommentId: parentCommentId,
-    repliesCount: replies.length,
+    repliesCount: repliesCount,
   );
 
   CommentEntity copyWith({
@@ -43,28 +43,25 @@ class CommentEntity extends Equatable {
     String? text,
     String? storyId,
     UserEntity? user,
-    List<CommentEntity>? replies,
+    int? repliesCount,
     String? parentCommentId,
   }) => CommentEntity(
     id: id ?? this.id,
     text: text ?? this.text,
     storyId: storyId ?? this.storyId,
     user: user ?? this.user,
-    replies: replies ?? this.replies,
+    repliesCount: repliesCount ?? this.repliesCount,
     parentCommentId: parentCommentId ?? this.parentCommentId,
   );
 }
 
 extension CommentRemoteEntityExtensions on CommentRemoteEntity {
-  CommentEntity toEntity({
-    required UserEntity user,
-    List<CommentEntity> replies = const [],
-  }) => CommentEntity(
+  CommentEntity toEntity({required UserEntity user}) => CommentEntity(
     id: id,
     text: text,
     storyId: storyId,
     user: user,
-    replies: replies,
+    repliesCount: repliesCount,
     parentCommentId: parentCommentId,
   );
 }

@@ -4,6 +4,7 @@ import 'package:domain/comments/models/comment_entity.dart';
 import 'package:domain/domain.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/features/auth_notifier.dart';
+import 'package:folly/features/comment_tile/comment_tile_notifier.dart';
 import 'package:folly/features/comments/models/comments_state.dart';
 
 class CommentsNotifier extends AsyncNotifier<CommentsState> {
@@ -83,7 +84,7 @@ class CommentsNotifier extends AsyncNotifier<CommentsState> {
         user: user,
         text: text,
         parentCommentId: state.value?.commentToReply?.id,
-        replies: [],
+        repliesCount: 0,
       );
 
       final result = await ref
@@ -92,18 +93,24 @@ class CommentsNotifier extends AsyncNotifier<CommentsState> {
 
       result.when(
         (data) {
-          final comments = state.value?.commentToReply != null
-              ? state.value!.comments.map((comment) {
-                  if (comment.id == state.value!.commentToReply!.id) {
-                    return comment.copyWith(
-                      replies: [data, ...comment.replies],
-                    );
-                  }
-                  return comment;
-                }).toList()
-              : [data, ...state.value!.comments];
+          if (state.value?.commentToReply != null) {
+            ref
+                .read(
+                  commentTileNotifierProvider(
+                    state.value!.commentToReply!.id,
+                  ).notifier,
+                )
+                .addComment(comment: data);
+          }
 
-          state = AsyncData(state.value!.copyWith(comments: comments));
+          state = AsyncData(
+            state.value!.copyWith(
+              comments: [
+                if (state.value?.commentToReply == null) data,
+                ...state.value!.comments,
+              ],
+            ),
+          );
           state = AsyncData(state.value!.clearCommentToReply());
         },
         (failure, __) => state = AsyncData(

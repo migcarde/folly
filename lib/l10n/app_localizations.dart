@@ -452,6 +452,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Replying to @{name}'**
   String replying_to(String name);
+
+  /// No description provided for @more_replies.
+  ///
+  /// In en, this message translates to:
+  /// **'More replies'**
+  String get more_replies;
 }
 
 class _AppLocalizationsDelegate

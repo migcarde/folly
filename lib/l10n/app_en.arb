@@ -141,5 +141,7 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "more_replies": "More replies",
+    "@more_replies": {}
 }

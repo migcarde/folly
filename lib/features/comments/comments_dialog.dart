@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
+import 'package:folly/features/comment_tile/comment_tile.dart';
 import 'package:folly/features/comments/comments_notifier.dart';
-import 'package:folly/comment_tile/comment_tile.dart';
-import 'package:folly/routes/paths.dart';
 import 'package:folly/widgets/text_field/base_text_field.dart';
 import 'package:folly/widgets/text_field/text_field_type.dart';
-import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class CommentsDialog extends ConsumerStatefulWidget {
@@ -77,51 +75,13 @@ class _CommentsDialogState extends ConsumerState<CommentsDialog> {
 
                       final comment = data.comments[index];
 
-                      return Column(
-                        children: [
-                          CommentTile(
-                            commentId: comment.id,
-                            name: comment.user.username,
-                            photoPath: comment.user.photoPath,
-                            comment: comment.text,
-                            onTapProfile: () => context.push(
-                              Paths.userProfile.route,
-                              extra: comment.user,
-                            ),
-                            onTapReply: () => ref
-                                .read(
-                                  commentsNotifierProvider(
-                                    widget.storyId,
-                                  ).notifier,
-                                )
-                                .setCommentToReply(comment),
-                          ),
-                          if (comment.replies.isNotEmpty)
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                top: AppDimens.m,
-                                left: AppDimens.l,
-                              ),
-                              child: ListView.separated(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) => CommentTile(
-                                  commentId: comment.replies[index].id,
-                                  name: comment.replies[index].user.username,
-                                  photoPath:
-                                      comment.replies[index].user.photoPath,
-                                  comment: comment.replies[index].text,
-                                  onTapProfile: () => context.push(
-                                    Paths.userProfile.route,
-                                    extra: comment.replies[index].user,
-                                  ),
-                                ),
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(height: AppDimens.s),
-                                itemCount: comment.replies.length,
-                              ),
-                            ),
-                        ],
+                      return CommentTile(
+                        comment: comment,
+                        onTapReply: () => ref
+                            .read(
+                              commentsNotifierProvider(widget.storyId).notifier,
+                            )
+                            .setCommentToReply(comment),
                       );
                     },
                     separatorBuilder: (context, index) =>

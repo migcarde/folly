@@ -140,5 +140,7 @@
                 "type": "String"
             }
         }
-    }
+    },
+    "more_replies": "Más respuestas",
+    "@more_replies": {}
 }
