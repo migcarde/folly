@@ -27,6 +27,9 @@ class StoryCardState extends Equatable {
     );
   }
 
-  StoryCardState removeLike() =>
-      StoryCardState(like: null, likesCount: likesCount - 1);
+  StoryCardState removeLike() => StoryCardState(
+    like: null,
+    likesCount: likesCount - 1,
+    commentsCount: commentsCount,
+  );
 }
