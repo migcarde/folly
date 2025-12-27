@@ -76,9 +76,7 @@ class CommentRow extends ConsumerWidget {
                         ? PhosphorIconsStyle.regular
                         : PhosphorIconsStyle.fill,
                   ),
-                  color: state.value?.like == null
-                      ? null
-                      : theme.colorScheme.error,
+                  color: state.value?.like == null ? null : Colors.red,
                 ),
               ),
             ),
