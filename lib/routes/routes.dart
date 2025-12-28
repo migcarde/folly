@@ -1,4 +1,5 @@
 import 'package:domain/users/models/user_entity.dart';
+import 'package:flutter/material.dart';
 import 'package:folly/features/change_language/change_language_page.dart';
 import 'package:folly/features/edit_profile/edit_profile_page.dart';
 import 'package:folly/features/friends/friends_page.dart';
@@ -15,6 +16,7 @@ import 'package:image_picker/image_picker.dart';
 
 class Routes {
   static List<GoRoute> get list => [
+    GoRoute(path: Paths.initial.route, builder: (context, state) => Scaffold()),
     GoRoute(
       path: Paths.home.route,
       builder: (context, state) => const HomePage(),

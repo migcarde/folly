@@ -1,6 +1,7 @@
 import 'package:domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/features/auth_notifier.dart';
 import 'package:folly/l10n/app_localizations.dart';
@@ -8,7 +9,8 @@ import 'package:folly/l10n/localization_notifier.dart';
 import 'package:folly/routes/go_router_config.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await dotenv.load();
   await DomainInitializer.init(
     anonKey: dotenv.env['ANON_KEY']!,
