@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/features/auth_notifier.dart';
 import 'package:folly/routes/paths.dart';
@@ -18,16 +19,23 @@ final goRouterProvider = Provider<GoRouter>((ref) {
 
   return GoRouter(
     routes: Routes.list,
-    initialLocation: Paths.login.route,
+    initialLocation: Paths.initial.route,
     refreshListenable: authStateListenable,
     redirect: (context, state) {
       final isConnected = ref.read(authNotifierProvider.notifier).user != null;
+      final isLoading = ref.watch(authNotifierProvider).isLoading;
 
-      if (!isConnected && state.fullPath != Paths.register.route) {
+      if (!isLoading &&
+          !isConnected &&
+          state.fullPath != Paths.register.route) {
+        FlutterNativeSplash.remove();
         return Paths.login.route;
-      } else if (isConnected &&
+      } else if (!isLoading &&
+          isConnected &&
           (state.fullPath == Paths.register.route ||
-              state.fullPath == Paths.login.route)) {
+              state.fullPath == Paths.login.route ||
+              state.fullPath == Paths.initial.route)) {
+        FlutterNativeSplash.remove();
         return Paths.home.route;
       } else {
         return null;

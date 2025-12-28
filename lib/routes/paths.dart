@@ -1,4 +1,5 @@
 enum Paths {
+  initial(route: '/'),
   home(route: '/home'),
   login(route: '/login'),
   register(route: '/register'),

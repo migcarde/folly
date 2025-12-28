@@ -1,0 +1,16 @@
+icons_launcher:
+  image_path: "assets/icons/app_icon.png"
+
+  platforms:
+    android:
+      enable: true
+      min_sdk_android: 21 # android min sdk min:16, default 21
+      adaptive_icon_background: "#53acf5"
+      adaptive_icon_foreground: "assets/icons/app_icon.png"
+      adaptive_icon_monochrome: "assets/icons/app_icon.png"
+
+    ios:
+      enable: true
+      remove_alpha_channel_ios: true
+      remove_alpha_ios: true
+      background_color_ios: "#53acf5"

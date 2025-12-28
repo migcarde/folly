@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/legacy.dart';
 
 class AuthNotifier extends ChangeNotifier {
   UserEntity? user;
+  bool isLoading = true;
   final AuthRepository authRepository;
   final UserRepository userRepository;
   final ChallengesRepository challengesRepository;
@@ -24,11 +25,15 @@ class AuthNotifier extends ChangeNotifier {
         final userResult = await userRepository.getUser(uid: event.uid);
 
         userResult.ifSuccess((data) {
+          isLoading = false;
           user = data;
           notifyListeners();
         });
       } else if (user != null && event == null) {
         user = null;
+        notifyListeners();
+      } else if (user == null && event == null) {
+        isLoading = false;
         notifyListeners();
       }
     });
