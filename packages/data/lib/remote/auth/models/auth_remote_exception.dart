@@ -5,6 +5,7 @@ enum AuthRemoteException {
   userBanned,
   userNotFound,
   weakPassword,
+  sessionMissing,
   unknown;
 
   factory AuthRemoteException.fromString({required String exception}) {
@@ -21,6 +22,8 @@ enum AuthRemoteException {
         return AuthRemoteException.userNotFound;
       case 'weak_password':
         return AuthRemoteException.weakPassword;
+      case 'session_missing':
+        return AuthRemoteException.sessionMissing;
       default:
         return AuthRemoteException.unknown;
     }

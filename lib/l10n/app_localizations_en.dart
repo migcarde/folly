@@ -203,4 +203,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get more_replies => 'More replies';
+
+  @override
+  String get send => 'Send';
+
+  @override
+  String get password_reset_email_sent_check_your_inbox =>
+      'Password reset email sent, check your inbox';
+
+  @override
+  String get does_not_remember_your_password =>
+      'Don\'t remember your password?';
+
+  @override
+  String get password_changed => 'Password changed';
 }

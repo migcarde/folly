@@ -11,7 +11,7 @@ class HomePage extends ConsumerWidget {
     return Scaffold(
       body: Stack(
         children: [
-          HomeMobileLayout(),
+          SafeArea(child: HomeMobileLayout()),
           Align(
             alignment: Alignment.bottomCenter,
             child: BottomBarMobileLayout(),

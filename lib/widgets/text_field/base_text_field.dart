@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:folly/core/app_dimens.dart';
 import 'package:folly/widgets/click_detector.dart';
 import 'package:folly/widgets/text_field/text_field_type.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 enum BaseTextFieldType {
   normal,
@@ -14,7 +15,7 @@ enum BaseTextFieldType {
   bool get isInlineTextArea => this == BaseTextFieldType.inlineTextArea;
 }
 
-class BaseTextField extends StatelessWidget {
+class BaseTextField extends StatefulWidget {
   const BaseTextField({
     super.key,
     required this.hint,
@@ -51,26 +52,43 @@ class BaseTextField extends StatelessWidget {
   final int? maxLines;
 
   @override
+  State<BaseTextField> createState() => _BaseTextFieldState();
+}
+
+class _BaseTextFieldState extends State<BaseTextField> {
+  bool isHide = false;
+
+  @override
+  void initState() {
+    setState(() {
+      isHide = widget.textType.isPassword;
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final style = type.getStyle(Theme.of(context));
+    final style = widget.type.getStyle(Theme.of(context));
 
     return TextField(
-      controller: controller,
-      obscureText: textType.isPassword,
-      enableSuggestions: !textType.isPassword,
-      autocorrect: !textType.isPassword,
-      onSubmitted: onSubmitted,
-      minLines: textType.isTextArea && !type.isNone ? 3 : 1,
-      maxLines: textType.isTextArea || textType.isInlineTextArea ? maxLines : 1,
-      style: textStyle,
+      controller: widget.controller,
+      obscureText: isHide,
+      enableSuggestions: !widget.textType.isPassword,
+      autocorrect: !widget.textType.isPassword,
+      onSubmitted: widget.onSubmitted,
+      minLines: widget.textType.isTextArea && !widget.type.isNone ? 3 : 1,
+      maxLines: widget.textType.isTextArea || widget.textType.isInlineTextArea
+          ? widget.maxLines
+          : 1,
+      style: widget.textStyle,
       decoration: InputDecoration(
-        hintText: hint,
-        prefixText: prefixText,
+        hintText: widget.hint,
+        prefixText: widget.prefixText,
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        enabled: enabled,
+        enabled: widget.enabled,
         suffixIcon: ClickDetector(
-          onTap: onTapIcon ?? () {},
-          child: Icon(icon, color: style.iconColor),
+          onTap: _onTap,
+          child: Icon(_iconData, color: style.iconColor),
         ),
         border: OutlineInputBorder(
           borderSide: style.borderColor != Colors.transparent
@@ -82,9 +100,27 @@ class BaseTextField extends StatelessWidget {
         ),
         filled: true,
         fillColor: style.backgroundColor,
-        errorText: errorText,
+        errorText: widget.errorText,
         errorMaxLines: 6,
       ),
     );
+  }
+
+  void _onTap() {
+    if (widget.textType.isPassword) {
+      setState(() {
+        isHide = !isHide;
+      });
+    } else {
+      widget.onTapIcon?.call();
+    }
+  }
+
+  IconData? get _iconData {
+    if (widget.textType.isPassword) {
+      return isHide ? PhosphorIcons.eyeSlash() : PhosphorIcons.eye();
+    } else {
+      return widget.icon;
+    }
   }
 }

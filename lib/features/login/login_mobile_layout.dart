@@ -63,6 +63,13 @@ class _RegisterMobileLayoutState extends ConsumerState<LoginMobileLayout> {
                   onTap: () => context.push(Paths.register.route),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(top: AppDimens.m),
+                child: PrimaryLink(
+                  text: l10n.does_not_remember_your_password,
+                  onTap: () => context.push(Paths.resetPasswordRequest.route),
+                ),
+              ),
             ],
           ),
         ),

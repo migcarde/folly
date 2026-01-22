@@ -1,4 +1,5 @@
 import 'package:data/remote/auth/models/auth_remote_entity.dart';
+import 'package:data/remote/auth/models/auth_remote_event.dart';
 
 abstract class AuthRemoteDatasource {
   Future<AuthRemoteEntity> loginWithEmailAndPassword({
@@ -10,7 +11,7 @@ abstract class AuthRemoteDatasource {
     required String email,
     required String password,
   });
-  Stream<AuthRemoteEntity?> listenChanges();
+  Stream<AuthRemoteEvent> listenChanges();
   bool get isLoggedIn;
   String get uid;
   Future<void> deleteAccount();
