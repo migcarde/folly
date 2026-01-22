@@ -5,9 +5,11 @@ import 'package:folly/features/edit_profile/edit_profile_page.dart';
 import 'package:folly/features/friends/friends_page.dart';
 import 'package:folly/features/friends/models/friends_view_model.dart';
 import 'package:folly/features/home/home_page.dart';
+import 'package:folly/features/home/reset_password_request/reset_password_request_page.dart';
 import 'package:folly/features/login/login_page.dart';
 import 'package:folly/features/profile/profile_page.dart';
 import 'package:folly/features/register/register_page.dart';
+import 'package:folly/features/reset_password/reset_password_page.dart';
 import 'package:folly/features/settings/settings_page.dart';
 import 'package:folly/features/upload_story/upload_story_page.dart';
 import 'package:folly/routes/paths.dart';
@@ -28,6 +30,14 @@ class Routes {
     GoRoute(
       path: Paths.register.route,
       builder: (context, state) => const RegisterPage(),
+    ),
+    GoRoute(
+      path: Paths.resetPasswordRequest.route,
+      builder: (context, state) => const ResetPasswordRequestPage(),
+    ),
+    GoRoute(
+      path: Paths.changePassword.route,
+      builder: (context, state) => const ResetPasswordPage(),
     ),
     GoRoute(
       path: Paths.uploadStory.route,

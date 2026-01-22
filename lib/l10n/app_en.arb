@@ -143,5 +143,13 @@
         }
     },
     "more_replies": "More replies",
-    "@more_replies": {}
+    "@more_replies": {},
+    "send": "Send",
+    "@send": {},
+    "password_reset_email_sent_check_your_inbox": "Password reset email sent, check your inbox",
+    "@password_reset_email_sent_check_your_inbox": {},
+    "does_not_remember_your_password": "Don't remember your password?",
+    "@does_not_remember_your_password": {},
+    "password_changed": "Password changed",
+    "@password_changed": {}
 }

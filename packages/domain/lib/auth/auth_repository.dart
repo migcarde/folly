@@ -1,3 +1,4 @@
+import 'package:domain/auth/models/auth_event_entity.dart';
 import 'package:domain/base/result.dart';
 import 'package:domain/dependency_injection/local_dependency_injection.dart';
 import 'package:domain/auth/auth_repository_impl.dart';
@@ -14,7 +15,7 @@ abstract class AuthRepository {
     required String email,
     required String password,
   });
-  Stream<AuthEntity?> listenChanges();
+  Stream<AuthEventEntity> listenChanges();
   bool get isLoggedIn;
   String get uid;
   Future<Result<void>> deleteAccount();
@@ -23,6 +24,7 @@ abstract class AuthRepository {
     required String password,
   });
   Future<Result<void>> sendPasswordResetEmail({required String email});
+  Future<Result<void>> updatePassword({required String password});
 }
 
 final authRepositoryProvider = Provider.autoDispose<AuthRepository>(

@@ -1,4 +1,6 @@
 import 'package:data/data.dart';
+import 'package:domain/auth/enums/auth_event_status.dart';
+import 'package:domain/auth/models/auth_event_entity.dart';
 import 'package:domain/auth/models/auth_exceptions.dart';
 import 'package:domain/base/result.dart';
 import 'package:domain/auth/auth_repository.dart';
@@ -45,9 +47,12 @@ class AuthRepositoryImpl extends AuthRepository {
   bool get isLoggedIn => remoteDatasource.isLoggedIn;
 
   @override
-  Stream<AuthEntity?> listenChanges() async* {
-    await for (final auth in remoteDatasource.listenChanges()) {
-      yield auth?.entity;
+  Stream<AuthEventEntity> listenChanges() async* {
+    await for (final event in remoteDatasource.listenChanges()) {
+      yield AuthEventEntity(
+        status: event.status.eventStatus,
+        auth: event.user?.entity,
+      );
     }
   }
 
@@ -106,6 +111,19 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<Result<void>> sendPasswordResetEmail({required String email}) async {
     try {
       await remoteDatasource.sendPasswordResetEmail(email: email);
+
+      return Result.success(null);
+    } on AuthRemoteException catch (e) {
+      return Result.failure(AuthException.fromRemoteException(exception: e));
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<void>> updatePassword({required String password}) async {
+    try {
+      await remoteDatasource.updatePassword(password: password);
 
       return Result.success(null);
     } on AuthRemoteException catch (e) {

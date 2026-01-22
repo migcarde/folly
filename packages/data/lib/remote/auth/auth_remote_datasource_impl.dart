@@ -1,3 +1,5 @@
+import 'package:data/remote/auth/enums/auth_remote_event_status.dart';
+import 'package:data/remote/auth/models/auth_remote_event.dart';
 import 'package:data/remote/auth/models/auth_remote_exception.dart';
 import 'package:data/remote/auth/auth_remote_datasource.dart';
 import 'package:data/remote/auth/models/auth_remote_entity.dart';
@@ -48,9 +50,12 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   }
 
   @override
-  Stream<AuthRemoteEntity?> listenChanges() async* {
+  Stream<AuthRemoteEvent> listenChanges() async* {
     await for (final auth in _supabase.client.auth.onAuthStateChange) {
-      yield auth.session?.user.remoteEntity;
+      yield AuthRemoteEvent(
+        status: auth.event.remoteEventStatus,
+        user: auth.session?.user.remoteEntity,
+      );
     }
   }
 
@@ -92,7 +97,10 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   @override
   Future<void> sendPasswordResetEmail({required String email}) async {
     try {
-      await _supabase.client.auth.resetPasswordForEmail(email);
+      await _supabase.client.auth.resetPasswordForEmail(
+        email,
+        redirectTo: 'folly://reset',
+      );
     } on AuthApiException catch (exception) {
       throw AuthRemoteException.fromString(exception: exception.code ?? '');
     } catch (e) {
@@ -106,7 +114,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
       await _supabase.client.auth.updateUser(
         UserAttributes(password: password),
       );
-    } on AuthApiException catch (exception) {
+    } on AuthSessionMissingException catch (exception) {
       throw AuthRemoteException.fromString(exception: exception.code ?? '');
     } catch (e) {
       throw AuthRemoteException.unknown;

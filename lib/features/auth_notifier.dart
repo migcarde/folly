@@ -1,4 +1,5 @@
 import 'package:domain/auth/auth_repository.dart';
+import 'package:domain/auth/enums/auth_event_status.dart';
 import 'package:domain/domain.dart';
 import 'package:domain/users/models/user_entity.dart';
 import 'package:domain/users/user_repository.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/legacy.dart';
 
 class AuthNotifier extends ChangeNotifier {
+  AuthEventStatus status;
   UserEntity? user;
   bool isLoading = true;
   final AuthRepository authRepository;
@@ -13,6 +15,7 @@ class AuthNotifier extends ChangeNotifier {
   final ChallengesRepository challengesRepository;
 
   AuthNotifier({
+    this.status = AuthEventStatus.none,
     this.user,
     required this.authRepository,
     required this.userRepository,
@@ -21,21 +24,20 @@ class AuthNotifier extends ChangeNotifier {
 
   Future<void> listen() async {
     authRepository.listenChanges().listen((event) async {
-      if (user == null && event != null && event.uid.isNotEmpty) {
-        final userResult = await userRepository.getUser(uid: event.uid);
+      status = event.status;
+      if (user == null && event.auth != null && event.auth!.uid.isNotEmpty) {
+        final userResult = await userRepository.getUser(uid: event.auth!.uid);
 
         userResult.ifSuccess((data) {
           isLoading = false;
           user = data;
-          notifyListeners();
         });
-      } else if (user != null && event == null) {
+      } else if (user != null && event.auth == null) {
         user = null;
-        notifyListeners();
-      } else if (user == null && event == null) {
+      } else if (user == null && event.auth == null) {
         isLoading = false;
-        notifyListeners();
       }
+      notifyListeners();
     });
   }
 

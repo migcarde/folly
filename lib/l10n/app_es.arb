@@ -142,5 +142,13 @@
         }
     },
     "more_replies": "Más respuestas",
-    "@more_replies": {}
+    "@more_replies": {},
+    "send": "Enviar",
+    "@send": {},
+    "password_reset_email_sent_check_your_inbox": "Correo de restablecimiento de contraseña enviado, revisa tu bandeja de entrada",
+    "@password_reset_email_sent_check_your_inbox": {},
+    "does_not_remember_your_password": "¿No recuerdas tu contraseña?",
+    "@does_not_remember_your_password": {},
+    "password_changed": "Contraseña cambiada",
+    "@password_changed": {}
 }

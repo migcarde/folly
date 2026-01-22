@@ -54,8 +54,6 @@ class StoryCard extends ConsumerWidget {
                   ),
                 ),
               ),
-              const Spacer(),
-              Icon(PhosphorIcons.bookmarkSimple(), size: _iconSize),
             ],
           ),
         ),

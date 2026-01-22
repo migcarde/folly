@@ -1,4 +1,4 @@
-package com.example.folly
+package com.micadev.folly
 
 import io.flutter.embedding.android.FlutterActivity
 

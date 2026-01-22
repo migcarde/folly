@@ -458,6 +458,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'More replies'**
   String get more_replies;
+
+  /// No description provided for @send.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get send;
+
+  /// No description provided for @password_reset_email_sent_check_your_inbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Password reset email sent, check your inbox'**
+  String get password_reset_email_sent_check_your_inbox;
+
+  /// No description provided for @does_not_remember_your_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t remember your password?'**
+  String get does_not_remember_your_password;
+
+  /// No description provided for @password_changed.
+  ///
+  /// In en, this message translates to:
+  /// **'Password changed'**
+  String get password_changed;
 }
 
 class _AppLocalizationsDelegate
