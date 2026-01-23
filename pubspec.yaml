@@ -5,6 +5,9 @@ version: 0.1.0
 
 environment:
   sdk: ^3.9.2
+workspace:
+  - packages/data
+  - packages/domain
 
 dependencies:
   equatable: ^2.0.7
@@ -35,6 +38,7 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   custom_lint: ^0.8.0
   riverpod_lint: ^3.0.3
+  melos: ^7.3.0
 
 flutter:
   uses-material-design: true
@@ -44,3 +48,8 @@ flutter:
 
 flutter_intl:
   enabled: true
+
+melos:
+  scripts:
+    generate: 
+      run: melos exec -c 1 --depends-on build_runner -- dart run build_runner build
