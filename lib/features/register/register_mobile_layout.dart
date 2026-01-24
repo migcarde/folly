@@ -7,6 +7,7 @@ import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
 import 'package:folly/features/register/models/register_state.dart';
 import 'package:folly/features/register/register_notifier.dart';
+import 'package:folly/services/messaging/messaging_notifier.dart';
 import 'package:folly/widgets/app_snackbar_type.dart';
 import 'package:folly/widgets/button/loading_button.dart';
 import 'package:folly/widgets/editable_profile_image.dart';
@@ -133,22 +134,28 @@ class _RegisterMobileLayoutState extends ConsumerState<RegisterMobileLayout> {
           child: LoadingButton(
             text: l10n.register,
             isLoading: state.status.isLoading,
-            onTap: () => ref
-                .read(registerNotifierProvider.notifier)
-                .register(
-                  user: UserEntity(
-                    uid: '',
-                    name: nameController.text,
-                    email: emailController.text,
-                    biography: bioController.text,
-                    username: usernameController.text,
-                    firebaseToken: '',
-                    locale: Platform.localeName,
-                    photoPath: '',
-                  ),
-                  password: passwordController.text,
-                  repeatPassword: repeatPasswordController.text,
-                ),
+            onTap: () async {
+              final firebaseToken = await ref
+                  .read(messagingNotifierProvider.notifier)
+                  .getToken();
+
+              ref
+                  .read(registerNotifierProvider.notifier)
+                  .register(
+                    user: UserEntity(
+                      uid: '',
+                      name: nameController.text,
+                      email: emailController.text,
+                      biography: bioController.text,
+                      username: usernameController.text,
+                      firebaseToken: firebaseToken ?? '',
+                      locale: Platform.localeName,
+                      photoPath: '',
+                    ),
+                    password: passwordController.text,
+                    repeatPassword: repeatPasswordController.text,
+                  );
+            },
           ),
         ),
       ],
