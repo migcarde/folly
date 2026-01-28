@@ -179,6 +179,7 @@ class _ProfileMobileLayoutState extends ConsumerState<ProfileMobileLayout> {
 
                     return StoryCard(
                       storyId: story.id,
+                      userId: widget.user.uid,
                       user: widget.user.name,
                       userProfileUrl: widget.user.photoPath,
                       title: story.title,

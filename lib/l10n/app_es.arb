@@ -150,5 +150,53 @@
     "does_not_remember_your_password": "¿No recuerdas tu contraseña?",
     "@does_not_remember_your_password": {},
     "password_changed": "Contraseña cambiada",
-    "@password_changed": {}
+    "@password_changed": {},
+    "likes_your_story": "Le gusta tu historia",
+    "@likes_your_story": {},
+    "comments_on_your_story": "Ha comentado tu historia",
+    "@comments_on_your_story": {},
+    "is_following_you": "Ha comenzado a seguirte",
+    "@is_following_you": {},
+    "year": "{count, plural, one{{count} año} other{{count} años}}",
+    "@year": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "month": "{count, plural, one{{count} mes} other{{count} meses}}",
+    "@month": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "day": "{count, plural, one{{count} día} other{{count} días}}",
+    "@day": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "hour": "{count, plural, one{{count} hora} other{{count} horas}}",
+    "@hour": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "minute": "{count, plural, one{{count} minuto} other{{count} minutos}}",
+    "@minute": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "now": "Now",
+    "@now": {}
 }

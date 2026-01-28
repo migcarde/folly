@@ -9,6 +9,7 @@ import 'package:folly/features/bottom_bar/bottom_bar_notifier.dart';
 import 'package:folly/features/bottom_bar/models/bottom_bar_state.dart';
 import 'package:folly/features/daily_challenge/daily_challenge_provider.dart';
 import 'package:folly/features/home/widget/upload_story_options_dialog.dart';
+import 'package:folly/features/notifications/notifications_notifier.dart';
 import 'package:folly/widgets/profile_image.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -53,6 +54,60 @@ class BottomBarMobileLayout extends ConsumerWidget {
                       ),
                     ),
                     child: ProfileImage(imageUrl: user?.photoPath),
+                  ),
+                );
+              } else if (item.isNotifications) {
+                final notificationsState = ref.watch(
+                  notificationsNotifierProvider,
+                );
+
+                final unreadNotifications =
+                    notificationsState.value?.notifications
+                        .where((notification) => !notification.isRead)
+                        .length ??
+                    0;
+
+                return IconButton(
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  onPressed: () {
+                    ref
+                        .read(bottomBarNotifierProvider.notifier)
+                        .selectItem(item);
+                  },
+                  icon: Stack(
+                    children: [
+                      Icon(
+                        isSelected
+                            ? PhosphorIcons.bell(PhosphorIconsStyle.fill)
+                            : PhosphorIcons.bell(),
+                        color: theme.iconTheme.color,
+                      ),
+                      if (unreadNotifications > 0)
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 2.0,
+                            ),
+                            decoration: BoxDecoration(
+                              color: theme.primaryColor,
+                              borderRadius: BorderRadius.circular(
+                                AppDimens.circularRadius,
+                              ),
+                            ),
+                            child: Text(
+                              unreadNotifications.toString(),
+                              style: theme.textTheme.labelSmall?.copyWith(
+                                color: Colors.white,
+                                fontSize: 10.0,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                 );
               }

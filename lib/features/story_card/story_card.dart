@@ -11,6 +11,7 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 class StoryCard extends ConsumerWidget {
   const StoryCard({
     super.key,
+    required this.userId,
     required this.storyId,
     required this.user,
     required this.userProfileUrl,
@@ -19,6 +20,7 @@ class StoryCard extends ConsumerWidget {
     required this.challenge,
   });
 
+  final String userId;
   final String storyId;
   final String user;
   final String userProfileUrl;
@@ -106,7 +108,7 @@ class StoryCard extends ConsumerWidget {
                   } else {
                     ref
                         .read(storyCardNotifierProvider(storyId).notifier)
-                        .like();
+                        .like(receiverUserId: userId);
                   }
                 },
                 child: Padding(

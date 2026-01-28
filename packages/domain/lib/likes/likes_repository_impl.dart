@@ -1,22 +1,43 @@
 import 'package:data/remote/likes/likes_remote_datasource.dart';
 import 'package:data/remote/likes/models/like_remote_entity.dart';
+import 'package:data/remote/notifications/models/notification_remote_entity.dart';
+import 'package:data/remote/notifications/notifications_remote_datasource.dart';
+import 'package:domain/base/domain_constants.dart';
 import 'package:domain/base/result.dart';
 import 'package:domain/likes/likes_repository.dart';
 import 'package:domain/likes/models/like_entity.dart';
+import 'package:domain/notifications/enums/notification_type.dart';
 
 class LikesRepositoryImpl implements LikesRepository {
   final LikesRemoteDatasource likesRemoteDatasource;
+  final NotificationsRemoteDatasource notificationsRemoteDatasource;
 
-  const LikesRepositoryImpl({required this.likesRemoteDatasource});
+  const LikesRepositoryImpl({
+    required this.likesRemoteDatasource,
+    required this.notificationsRemoteDatasource,
+  });
 
   @override
   Future<Result<LikeEntity>> likeStory({
     required String storyId,
     required String uid,
+    required String receiverUserId,
   }) async {
     try {
       final result = await likesRemoteDatasource.createLike(
         like: LikeRemoteEntity(id: storyId, uid: uid, storyId: storyId),
+      );
+
+      await notificationsRemoteDatasource.createNotification(
+        notification: NotificationRemoteEntity(
+          id: DomainConstants.noId,
+          type: NotificationType.like.value,
+          createdAt: DateTime.now(),
+          isRead: false,
+          receiverUserId: receiverUserId,
+          userId: uid,
+          contentId: storyId,
+        ),
       );
 
       return Result.success(result.entity);

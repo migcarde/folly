@@ -217,4 +217,71 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get password_changed => 'Contraseña cambiada';
+
+  @override
+  String get likes_your_story => 'Le gusta tu historia';
+
+  @override
+  String get comments_on_your_story => 'Ha comentado tu historia';
+
+  @override
+  String get is_following_you => 'Ha comenzado a seguirte';
+
+  @override
+  String year(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count años',
+      one: '$count año',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String month(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count meses',
+      one: '$count mes',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String day(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count días',
+      one: '$count día',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String hour(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count horas',
+      one: '$count hora',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String minute(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count minutos',
+      one: '$count minuto',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get now => 'Now';
 }

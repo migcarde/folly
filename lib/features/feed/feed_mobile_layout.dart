@@ -59,6 +59,7 @@ class _FeedMobileLayoutState extends ConsumerState<FeedMobileLayout> {
                 final story = state.stories[index];
 
                 return StoryCard(
+                  userId: story.user.uid,
                   storyId: story.id,
                   user: story.user.name,
                   userProfileUrl: story.user.photoPath,
