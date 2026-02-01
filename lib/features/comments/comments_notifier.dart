@@ -74,7 +74,10 @@ class CommentsNotifier extends AsyncNotifier<CommentsState> {
     );
   }
 
-  Future<void> createComment({required String text}) async {
+  Future<void> createComment({
+    required String text,
+    required String receiverUserId,
+  }) async {
     final user = ref.read(authNotifierProvider).user;
 
     if (user != null && state.value != null) {
@@ -89,7 +92,7 @@ class CommentsNotifier extends AsyncNotifier<CommentsState> {
 
       final result = await ref
           .read(commentsRepositoryProvider)
-          .createComment(comment: comment);
+          .createComment(comment: comment, receiverUserId: receiverUserId);
 
       result.when(
         (data) {

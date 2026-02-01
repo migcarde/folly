@@ -9,9 +9,14 @@ import 'package:folly/widgets/text_field/text_field_type.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class CommentsDialog extends ConsumerStatefulWidget {
-  const CommentsDialog({super.key, required this.storyId});
+  const CommentsDialog({
+    super.key,
+    required this.storyId,
+    required String this.storyUserId,
+  });
 
   final String storyId;
+  final String storyUserId;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _CommentsDialogState();
@@ -163,6 +168,7 @@ class _CommentsDialogState extends ConsumerState<CommentsDialog> {
                           )
                           .createComment(
                             text: _commentTextFieldController.text,
+                            receiverUserId: widget.storyUserId,
                           );
 
                       _commentTextFieldController.clear();

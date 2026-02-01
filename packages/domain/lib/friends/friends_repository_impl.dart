@@ -1,18 +1,24 @@
 import 'package:data/data.dart';
+import 'package:data/remote/notifications/models/notification_remote_entity.dart';
+import 'package:data/remote/notifications/notifications_remote_datasource.dart';
+import 'package:domain/base/domain_constants.dart';
 import 'package:domain/base/result.dart';
 import 'package:domain/friends/enums/friend_request_state.dart';
 import 'package:domain/friends/friends_repository.dart';
 import 'package:domain/friends/models/friend_entity.dart';
 import 'package:domain/models/page_entity.dart';
+import 'package:domain/notifications/enums/notification_type.dart';
 import 'package:domain/users/models/user_entity.dart';
 
 class FriendsRepositoryImpl implements FriendsRepository {
   final FriendsRemoteDatasource friendRemoteDatasource;
   final UserRemoteDataSource userRemoteDatasource;
+  final NotificationsRemoteDatasource notificationsRemoteDatasource;
 
   const FriendsRepositoryImpl({
     required this.friendRemoteDatasource,
     required this.userRemoteDatasource,
+    required this.notificationsRemoteDatasource,
   });
 
   @override
@@ -59,6 +65,17 @@ class FriendsRepositoryImpl implements FriendsRepository {
       final result = await friendRemoteDatasource.sendFriendRequest(
         senderId: senderId,
         receiverId: receiverId,
+      );
+
+      notificationsRemoteDatasource.createNotification(
+        notification: NotificationRemoteEntity(
+          id: DomainConstants.noId,
+          type: NotificationType.follow.value,
+          createdAt: DateTime.now(),
+          isRead: false,
+          receiverUserId: receiverId,
+          userId: senderId,
+        ),
       );
 
       return Result.success(result.entity);

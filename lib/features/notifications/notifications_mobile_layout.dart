@@ -1,8 +1,12 @@
+import 'package:domain/notifications/enums/notification_type.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/core/app_dimens.dart';
 import 'package:folly/features/notifications/notifications_notifier.dart';
 import 'package:folly/features/notifications/widgets/notification_tile.dart';
+import 'package:folly/routes/paths.dart';
+import 'package:folly/widgets/base_divider.dart';
+import 'package:go_router/go_router.dart';
 
 class NotificationsMobileLayout extends ConsumerWidget {
   const NotificationsMobileLayout({super.key});
@@ -27,6 +31,20 @@ class NotificationsMobileLayout extends ConsumerWidget {
                     .read(notificationsNotifierProvider.notifier)
                     .markAsRead(notification: notification);
               }
+
+              switch (notification.type) {
+                case NotificationType.like:
+                  // TODO: Handle this case.
+                  throw UnimplementedError();
+                case NotificationType.comment:
+                  // TODO: Handle this case.
+                  throw UnimplementedError();
+                case NotificationType.follow:
+                  context.push(
+                    Paths.userProfile.route,
+                    extra: notification.user,
+                  );
+              }
             },
             child: NotificationTile(
               user: notification.user,
@@ -36,7 +54,7 @@ class NotificationsMobileLayout extends ConsumerWidget {
             ),
           );
         },
-        separatorBuilder: (context, index) => const Divider(),
+        separatorBuilder: (context, index) => BaseDivider(),
         itemCount: data.notifications.length,
       ),
       error: (e, err) => const SizedBox(),

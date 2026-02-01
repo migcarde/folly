@@ -98,7 +98,9 @@ class BottomBarMobileLayout extends ConsumerWidget {
                               ),
                             ),
                             child: Text(
-                              unreadNotifications.toString(),
+                              unreadNotifications > 99
+                                  ? '99+'
+                                  : unreadNotifications.toString(),
                               style: theme.textTheme.labelSmall?.copyWith(
                                 color: Colors.white,
                                 fontSize: 10.0,

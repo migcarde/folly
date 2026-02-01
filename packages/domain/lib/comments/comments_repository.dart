@@ -6,7 +6,10 @@ import 'package:domain/models/page_entity.dart';
 import 'package:riverpod/riverpod.dart';
 
 abstract class CommentsRepository {
-  Future<Result<CommentEntity>> createComment({required CommentEntity comment});
+  Future<Result<CommentEntity>> createComment({
+    required CommentEntity comment,
+    required String receiverUserId,
+  });
   Future<Result<void>> deleteComment({required String id});
   Future<Result<PageEntity<CommentEntity>>> getComments({
     required String storyId,
@@ -29,5 +32,8 @@ final commentsRepositoryProvider = Provider<CommentsRepository>(
   (ref) => CommentsRepositoryImpl(
     commentsRemoteDatasource: ref.watch(commentsRemoteDatasourceProvider),
     userRemoteDatasource: ref.watch(userRemoteDatasourceProvider),
+    notificationsRemoteDatasource: ref.watch(
+      notificationsRemoteDatasourceProvider,
+    ),
   ),
 );

@@ -81,12 +81,14 @@ class StoryCard extends ConsumerWidget {
               Text(state.value?.commentsCount.toString() ?? '0'),
               GestureDetector(
                 onTap: () {
-                  // TODO: Show comments bottombar
                   showModalBottomSheet(
                     context: context,
                     backgroundColor: Colors.white,
                     builder: (context) {
-                      return CommentsDialog(storyId: storyId);
+                      return CommentsDialog(
+                        storyId: storyId,
+                        storyUserId: userId,
+                      );
                     },
                   );
                 },
