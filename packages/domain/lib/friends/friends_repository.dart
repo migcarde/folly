@@ -35,5 +35,8 @@ final friendsRepositoryProvider = Provider.autoDispose<FriendsRepository>(
   (ref) => FriendsRepositoryImpl(
     friendRemoteDatasource: ref.watch(friendsRemoteDatasurceProvider),
     userRemoteDatasource: ref.watch(userRemoteDatasourceProvider),
+    notificationsRemoteDatasource: ref.watch(
+      notificationsRemoteDatasourceProvider,
+    ),
   ),
 );

@@ -8,6 +8,7 @@ abstract class LikesRepository {
   Future<Result<LikeEntity>> likeStory({
     required String storyId,
     required String uid,
+    required String receiverUserId,
   });
   Future<Result<void>> unlikeStory({required String likeId});
   Future<Result<LikeEntity?>> getStoryLike({
@@ -30,5 +31,8 @@ abstract class LikesRepository {
 final likesRepositoryProvider = Provider.autoDispose<LikesRepository>(
   (ref) => LikesRepositoryImpl(
     likesRemoteDatasource: ref.read(likesRemoteDatasourceProvider),
+    notificationsRemoteDatasource: ref.read(
+      notificationsRemoteDatasourceProvider,
+    ),
   ),
 );

@@ -1,26 +1,45 @@
 import 'package:data/data.dart';
+import 'package:data/remote/notifications/models/notification_remote_entity.dart';
+import 'package:data/remote/notifications/notifications_remote_datasource.dart';
+import 'package:domain/base/domain_constants.dart';
 import 'package:domain/base/result.dart';
 import 'package:domain/comments/comments_repository.dart';
 import 'package:domain/comments/models/comment_entity.dart';
 import 'package:domain/models/page_entity.dart';
+import 'package:domain/notifications/enums/notification_type.dart';
 import 'package:domain/users/models/user_entity.dart';
 
 class CommentsRepositoryImpl implements CommentsRepository {
   final CommentsRemoteDatasource commentsRemoteDatasource;
   final UserRemoteDataSource userRemoteDatasource;
+  final NotificationsRemoteDatasource notificationsRemoteDatasource;
 
   const CommentsRepositoryImpl({
     required this.commentsRemoteDatasource,
     required this.userRemoteDatasource,
+    required this.notificationsRemoteDatasource,
   });
 
   @override
   Future<Result<CommentEntity>> createComment({
     required CommentEntity comment,
+    required String receiverUserId,
   }) async {
     try {
       final result = await commentsRemoteDatasource.createComment(
         comment: comment.remote,
+      );
+
+      await notificationsRemoteDatasource.createNotification(
+        notification: NotificationRemoteEntity(
+          id: DomainConstants.noId,
+          type: NotificationType.comment.value,
+          createdAt: DateTime.now(),
+          isRead: false,
+          receiverUserId: receiverUserId,
+          userId: comment.user.uid,
+          contentId: comment.storyId,
+        ),
       );
 
       return Result.success(result.toEntity(user: comment.user));

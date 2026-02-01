@@ -1,6 +1,8 @@
 import 'package:data/data.dart';
 import 'package:data/remote/challenges/challenges_remote_datasource.dart';
 import 'package:data/remote/challenges/challenges_remote_datasource_impl.dart';
+import 'package:data/remote/notifications/notifications_remote_datasource.dart';
+import 'package:data/remote/notifications/notifications_remote_datasource_impl.dart';
 import 'package:data/remote/stories/stories_remote_datasource.dart';
 import 'package:data/remote/stories/stories_remote_datasource_impl.dart';
 import 'package:data/remote/users/user_remote_datasource_impl.dart';
@@ -37,4 +39,9 @@ final likesRemoteDatasourceProvider =
 final commentsRemoteDatasourceProvider =
     Provider.autoDispose<CommentsRemoteDatasource>(
       (ref) => CommentsRemoteDatasourceImpl(),
+    );
+
+final notificationsRemoteDatasourceProvider =
+    Provider.autoDispose<NotificationsRemoteDatasource>(
+      (ref) => NotificationsRemoteDatasourceImpl(),
     );

@@ -151,5 +151,53 @@
     "does_not_remember_your_password": "Don't remember your password?",
     "@does_not_remember_your_password": {},
     "password_changed": "Password changed",
-    "@password_changed": {}
+    "@password_changed": {},
+    "likes_your_story": "Likes your story",
+    "@likes_your_story": {},
+    "comments_on_your_story": "Comments your story",
+    "@comments_on_your_story": {},
+    "is_following_you": "Is following you",
+    "@is_following_you": {},
+    "year": "{count, plural, one{{count} year} other{{count} years}}",
+    "@year": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "month": "{count, plural, one{{count} month} other{{count} months}}",
+    "@month": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "day": "{count, plural, one{{count} day} other{{count} days}}",
+    "@day": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "hour": "{count, plural, one{{count} hour} other{{count} hours}}",
+    "@hour": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "minute": "{count, plural, one{{count} minute} other{{count} minutes}}",
+    "@minute": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "now": "Now",
+    "@now": {}
 }

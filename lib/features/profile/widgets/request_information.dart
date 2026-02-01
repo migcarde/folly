@@ -35,7 +35,7 @@ class RequestInformation extends ConsumerWidget {
             right: AppDimens.screenPadding,
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               BaseButton(
                 text: l10n.accept,

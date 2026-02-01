@@ -482,6 +482,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password changed'**
   String get password_changed;
+
+  /// No description provided for @likes_your_story.
+  ///
+  /// In en, this message translates to:
+  /// **'Likes your story'**
+  String get likes_your_story;
+
+  /// No description provided for @comments_on_your_story.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments your story'**
+  String get comments_on_your_story;
+
+  /// No description provided for @is_following_you.
+  ///
+  /// In en, this message translates to:
+  /// **'Is following you'**
+  String get is_following_you;
+
+  /// No description provided for @year.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} year} other{{count} years}}'**
+  String year(int count);
+
+  /// No description provided for @month.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} month} other{{count} months}}'**
+  String month(int count);
+
+  /// No description provided for @day.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} day} other{{count} days}}'**
+  String day(int count);
+
+  /// No description provided for @hour.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} hour} other{{count} hours}}'**
+  String hour(int count);
+
+  /// No description provided for @minute.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} minute} other{{count} minutes}}'**
+  String minute(int count);
+
+  /// No description provided for @now.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get now;
 }
 
 class _AppLocalizationsDelegate
