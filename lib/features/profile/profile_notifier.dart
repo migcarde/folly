@@ -1,36 +1,29 @@
+import 'dart:async';
+
 import 'package:domain/base/result.dart';
-import 'package:domain/domain.dart';
 import 'package:domain/friends/enums/friend_request_state.dart';
+import 'package:domain/friends/friends_repository.dart';
 import 'package:domain/friends/models/friend_entity.dart';
 import 'package:domain/models/page_entity.dart';
-import 'package:domain/users/models/user_entity.dart';
-import 'package:flutter_riverpod/legacy.dart';
+import 'package:domain/stories/models/story_entity.dart';
+import 'package:domain/stories/stories_repository.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/features/auth_notifier.dart';
 import 'package:folly/features/profile/models/profile_state.dart';
 
-class ProfileNotifier extends StateNotifier<ProfileState> {
-  ProfileNotifier({
-    required this.storiesRepository,
-    required this.friendsRepository,
-    required this.authNotifier,
-  }) : super(const ProfileState());
+class ProfileAsyncNotifier extends AsyncNotifier<ProfileState> {
+  @override
+  FutureOr<ProfileState> build() async {
+    state = AsyncLoading();
 
-  final StoriesRepository storiesRepository;
-  final FriendsRepository friendsRepository;
-  final AuthNotifier authNotifier;
-
-  Future<void> init({
-    required UserEntity user,
-    required bool isCurrentUser,
-  }) async {
-    state = state.copyWith(status: ProfileStatus.loading);
+    final friendsRepository = ref.watch(friendsRepositoryProvider);
+    final storiesRepository = ref.watch(storiesRepositoryProvider);
+    final authNotifier = ref.watch(authNotifierProvider);
+    final user = authNotifier.user!;
+    final isCurrentUser = authNotifier.user!.uid == user.uid;
 
     final result = await Future.wait([
-      storiesRepository.getStoriesFromUser(
-        user: user,
-        page: state.page,
-        total: state.total,
-      ),
+      storiesRepository.getStoriesFromUser(user: user, page: 0),
       friendsRepository.getFollowersCount(uid: user.uid),
       friendsRepository.getFollowingCount(uid: user.uid),
       if (!isCurrentUser && authNotifier.user != null)
@@ -59,19 +52,26 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
         );
       }
 
-      state = state.copyWith(
-        status: ProfileStatus.success,
-        stories: stories.content,
-        friend: friendRequest,
-        followers: followersResult.when((value) => value, (_, __) => 0),
-        following: followingResult.when((value) => value, (_, __) => 0),
-        totalPages: stories.totalPages,
-        total: stories.total,
+      state = AsyncData(
+        ProfileState(
+          status: ProfileStatus.success,
+          stories: stories.content,
+          friend: friendRequest,
+          followers: followersResult.when((value) => value, (_, __) => 0),
+          following: followingResult.when((value) => value, (_, __) => 0),
+          totalPages: stories.totalPages,
+          total: stories.total,
+        ),
       );
-    }, (_, __) => state = state.copyWith(status: ProfileStatus.error));
+    }, (error, stackTrace) => state = AsyncError(error, stackTrace));
+
+    return state.value ?? ProfileState();
   }
 
   Future<void> sendRequest({required String receiverId}) async {
+    final friendsRepository = ref.watch(friendsRepositoryProvider);
+    final authNotifier = ref.watch(authNotifierProvider);
+
     if (authNotifier.user != null) {
       final result = await friendsRepository.sendRequest(
         senderId: authNotifier.user!.uid,
@@ -79,23 +79,33 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
       );
 
       result.when(
-        (data) => state = state.copyWith(
-          friend: data,
-          followers: state.followers + 1,
+        (data) => state = AsyncData(
+          state.value!.copyWith(
+            friend: data,
+            followers: (state.value?.followers ?? 0) + 1,
+          ),
         ),
-        (_, __) => state = state.copyWith(status: ProfileStatus.error),
+        (error, stackTrace) => AsyncError(error, stackTrace),
       );
     }
   }
 
   Future<void> acceptRequest() async {
-    if (state.friend != null) {
-      final result = await friendsRepository.accept(request: state.friend!);
+    final friendsRepository = ref.watch(friendsRepositoryProvider);
+
+    if (state.value?.friend != null) {
+      final result = await friendsRepository.accept(
+        request: state.value!.friend!,
+      );
 
       result.when(
-        (_) => state = state.copyWith(
-          friend: state.friend?.copyWith(state: FriendRequestState.friend),
-          following: state.following + 1,
+        (_) => state = AsyncData(
+          state.value!.copyWith(
+            friend: state.value!.friend?.copyWith(
+              state: FriendRequestState.friend,
+            ),
+            following: state.value!.following + 1,
+          ),
         ),
         (_, __) {},
       );
@@ -103,37 +113,44 @@ class ProfileNotifier extends StateNotifier<ProfileState> {
   }
 
   Future<void> rejectRequest() async {
-    if (state.friend != null) {
-      final result = await friendsRepository.reject(request: state.friend!);
+    final friendsRepository = ref.watch(friendsRepositoryProvider);
 
-      result.when((_) => state = state.clearRequest(), (_, __) {});
+    if (state.value?.friend != null) {
+      final result = await friendsRepository.reject(
+        request: state.value!.friend!,
+      );
+
+      result.when(
+        (_) => state = AsyncData(state.value!.clearRequest()),
+        (_, __) {},
+      );
     }
   }
 
   Future<void> nextPage() async {
-    if (!state.isLast) {
-      state = state.copyWith(page: state.page + 1);
+    final storiesRepository = ref.watch(storiesRepositoryProvider);
+    final authNotifier = ref.watch(authNotifierProvider);
+
+    if (state.value != null && !state.value!.isLast) {
+      state = AsyncData(state.value!.copyWith(page: state.value!.page + 1));
 
       final result = await storiesRepository.getStoriesFromUser(
         user: authNotifier.user!,
-        page: state.page,
-        total: state.total,
+        page: state.value!.page,
+        total: state.value!.total,
       );
 
       result.when(
-        (data) =>
-            state = ProfileState(stories: [...state.stories, ...data.content]),
-        (_, __) => state = state.copyWith(status: ProfileStatus.error),
+        (data) => state = AsyncData(
+          ProfileState(stories: [...state.value!.stories, ...data.content]),
+        ),
+        (error, stackTrace) => AsyncError(error, stackTrace),
       );
     }
   }
 }
 
 final profileNotifierProvider =
-    StateNotifierProvider.autoDispose<ProfileNotifier, ProfileState>(
-      (ref) => ProfileNotifier(
-        storiesRepository: ref.watch(storiesRepositoryProvider),
-        friendsRepository: ref.watch(friendsRepositoryProvider),
-        authNotifier: ref.watch(authNotifierProvider),
-      ),
+    AsyncNotifierProvider.autoDispose<ProfileAsyncNotifier, ProfileState>(
+      () => ProfileAsyncNotifier(),
     );

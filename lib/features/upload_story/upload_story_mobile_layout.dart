@@ -4,6 +4,7 @@ import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
 import 'package:folly/features/daily_challenge/daily_challenge_provider.dart';
 import 'package:folly/features/feed/feed_notifier.dart';
+import 'package:folly/features/profile/profile_notifier.dart';
 import 'package:folly/features/upload_story/models/upload_story_state.dart';
 import 'package:folly/features/upload_story/upload_story_notifier.dart';
 import 'package:folly/routes/paths.dart';
@@ -39,6 +40,8 @@ class UploadStoryMobileLayout extends ConsumerWidget {
           context.go(Paths.home.route);
           ref.read(feedNotifierProvider.notifier).init();
           ref.read(dailyChallengeNotifierProvider.notifier).init();
+          ref.read(profileNotifierProvider.notifier).build();
+
           break;
         case UploadStoryStatus.error:
           context.showSnackBar(

@@ -199,5 +199,15 @@
         }
     },
     "now": "Now",
-    "@now": {}
+    "@now": {},
+    "no_stories_yet": "No stories yet",
+    "@no_stories_yet": {},
+    "tap_to_search_friends_and_start_sharing_your_stories_toguether": "Tap to search friends and start sharing your stories toguether!",
+    "@tap_to_search_friends_and_start_sharing_your_stories_toguether": {},
+    "search": "Search",
+    "@search": {},
+    "unleash_your_creativity_tap_to_upload_your_stories": "Unleash your creativity! Tap to upload your stories ",
+    "@unleash_your_creativity_tap_to_upload_your_stories": {},
+    "this_user_does_not_publish_any_story_yet": "This user does not publish any story yet",
+    "@this_user_does_not_publish_any_story_yet": {}
 }

@@ -197,6 +197,16 @@
             }
         }
     },
-    "now": "Now",
-    "@now": {}
+    "now": "Ahora",
+    "@now": {},
+    "no_stories_yet": "No hay historias aún",
+    "@no_stories_yet": {},
+    "tap_to_search_friends_and_start_sharing_your_stories_toguether": "Pulsa para buscar amigos y empezar a compartir vuesatras historias!",
+    "@tap_to_search_friends_and_start_sharing_your_stories_toguether": {},
+    "search": "Buscar",
+    "@search": {},
+    "unleash_your_creativity_tap_to_upload_your_stories": "Sube tus histories y sesata tu creatividad!",
+    "@unleash_your_creativity_tap_to_upload_your_stories": {},
+    "this_user_does_not_publish_any_story_yet": "Este usuario no ha publicado ninguna historia aun.",
+    "@this_user_does_not_publish_any_story_yet": {}
 }
