@@ -4,11 +4,14 @@ import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
 import 'package:folly/features/edit_profile/edit_profile_notifier.dart';
 import 'package:folly/widgets/app_snackbar_type.dart';
+import 'package:folly/widgets/base_dialog.dart';
 import 'package:folly/widgets/button/loading_button.dart';
 import 'package:folly/widgets/editable_profile_image.dart';
 import 'package:folly/widgets/photo_dialog.dart';
 import 'package:folly/widgets/text_field/base_text_field.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class EditProfileMobileLayout extends ConsumerStatefulWidget {
   const EditProfileMobileLayout({super.key});
@@ -44,6 +47,7 @@ class _EditProfileMobileLayoutState
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final theme = context.theme;
     final state = ref.watch(editProfileProvider);
 
     ref.listen(editProfileProvider, (previous, next) {
@@ -122,14 +126,61 @@ class _EditProfileMobileLayoutState
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(
-                        top: AppDimens.m,
-                        bottom: AppDimens.xl,
-                      ),
+                      padding: const EdgeInsets.only(top: AppDimens.m),
                       child: BaseTextField(
                         hint: l10n.tell_something_about_you,
                         controller: _biographyController,
                         textType: BaseTextFieldType.textArea,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: AppDimens.m,
+                        bottom: AppDimens.xl,
+                      ),
+                      child: GestureDetector(
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (dialogContext) => BaseDialog(
+                            parentContext: context,
+                            title: l10n.are_you_sure,
+                            cancelButtonText: l10n.cancel,
+                            onTapCancel: () => dialogContext.pop(),
+                            confirmButtonText: l10n.delete,
+                            onTapConfirm: () async {
+                              dialogContext.pop();
+                              context.loaderOverlay.show();
+
+                              await ref
+                                  .read(editProfileProvider.notifier)
+                                  .deleteAccount();
+
+                              if (context.mounted) {
+                                context.loaderOverlay.hide();
+                              }
+                            },
+                            body: l10n
+                                .all_data_related_to_this_account_will_be_deleted_and_cannot_be_recovered,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              PhosphorIcons.trash(),
+                              color: theme.colorScheme.error,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: AppDimens.s),
+                              child: Text(
+                                l10n.delete_account,
+                                style: theme.textTheme.bodyLarge?.copyWith(
+                                  color: theme.colorScheme.error,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],

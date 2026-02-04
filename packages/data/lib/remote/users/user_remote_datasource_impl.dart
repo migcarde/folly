@@ -11,7 +11,10 @@ class UserRemoteDatasourceImpl extends UserRemoteDataSource {
   final Supabase _instance = Supabase.instance;
 
   @override
-  Future<void> createUser({required UserRemoteEntity user, File? photo}) async {
+  Future<UserRemoteEntity> createUser({
+    required UserRemoteEntity user,
+    File? photo,
+  }) async {
     UserRemoteEntity userToCreate = user;
     if (photo != null) {
       final fileBytes = await photo.readAsBytes();
@@ -24,7 +27,12 @@ class UserRemoteDatasourceImpl extends UserRemoteDataSource {
       userToCreate = user.copyWith(photoPath: path);
     }
 
-    await _instance.client.from(_usersCollection).insert(userToCreate.toJson());
+    final result = await _instance.client
+        .from(_usersCollection)
+        .insert(userToCreate.toJson())
+        .single();
+
+    return UserRemoteEntity.fromJson(json: result);
   }
 
   @override

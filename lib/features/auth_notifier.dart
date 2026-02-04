@@ -31,13 +31,15 @@ class AuthNotifier extends ChangeNotifier {
         userResult.ifSuccess((data) {
           isLoading = false;
           user = data;
+          notifyListeners();
         });
       } else if (user != null && event.auth == null) {
         user = null;
+        notifyListeners();
       } else if (user == null && event.auth == null) {
         isLoading = false;
+        notifyListeners();
       }
-      notifyListeners();
     });
   }
 

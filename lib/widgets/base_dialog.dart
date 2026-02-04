@@ -69,7 +69,7 @@ class BaseDialog extends StatelessWidget {
                     ),
                     BaseButton(
                       text: confirmButtonText,
-                      onTap: onTapCancel,
+                      onTap: onTapConfirm,
                       size: ButtonSize.small,
                     ),
                   ],

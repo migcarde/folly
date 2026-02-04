@@ -55,7 +55,7 @@ class EditProfileNotifier extends StateNotifier<EditProfileState> {
         error: EditProfileError.passwordNotMatch,
       );
     } else {
-      final result = await userRepository.saveUser(
+      final result = await userRepository.editUser(
         user: state.user!.copyWith(name: name, biography: biography),
         photo: file,
         password: password,
@@ -93,6 +93,17 @@ class EditProfileNotifier extends StateNotifier<EditProfileState> {
   }
 
   void reset() => state = state.copyWith(status: EditProfileStatus.data);
+
+  Future<void> deleteAccount() async {
+    if (authNotifier.user != null) {
+      await Future.wait([
+        userRepository.deleteUser(uid: authNotifier.user!.uid),
+        authRepository.deleteAccount(),
+      ]);
+
+      authNotifier.logout();
+    }
+  }
 }
 
 final editProfileProvider =
