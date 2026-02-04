@@ -14,7 +14,7 @@ abstract class UserRepository {
     File? photo,
   });
   Future<Result<UserEntity>> getUser({required String uid});
-  Future<Result<void>> saveUser({
+  Future<Result<void>> editUser({
     required UserEntity user,
     File? photo,
     String? password,

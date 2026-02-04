@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:folly/core/app_dimens.dart';
 import 'package:folly/features/auth_notifier.dart';
 import 'package:folly/firebase_options.dart';
 import 'package:folly/l10n/app_localizations.dart';
 import 'package:folly/l10n/localization_notifier.dart';
 import 'package:folly/routes/go_router_config.dart';
 import 'package:folly/services/messaging/messaging_notifier.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -47,14 +49,27 @@ class _MainAppState extends ConsumerState<MainApp> {
     final locale = ref.watch(localizationProvider);
     ref.watch(messagingNotifierProvider);
 
-    return MaterialApp.router(
-      supportedLocales: AppLocalizations.supportedLocales,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      locale: locale,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+    return GlobalLoaderOverlay(
+      closeOnBackButton: false,
+      overlayWidgetBuilder: (progress) => Center(
+        child: Container(
+          padding: const EdgeInsets.all(AppDimens.m),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(AppDimens.cardRadius),
+          ),
+          child: CircularProgressIndicator(color: Color(0xFF006874)),
+        ),
       ),
-      routerConfig: goRouterNotifier,
+      child: MaterialApp.router(
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        locale: locale,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+        ),
+        routerConfig: goRouterNotifier,
+      ),
     );
   }
 }

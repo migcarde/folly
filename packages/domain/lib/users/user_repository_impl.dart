@@ -39,7 +39,7 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<Result<void>> saveUser({
+  Future<Result<void>> editUser({
     required UserEntity user,
     File? photo,
     String? password,

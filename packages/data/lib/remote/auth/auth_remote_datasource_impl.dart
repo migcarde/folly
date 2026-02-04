@@ -71,7 +71,10 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
       final id = _supabase.client.auth.currentSession?.user.id;
 
       if (id != null) {
-        await _supabase.client.auth.admin.deleteUser(id);
+        await _supabase.client.functions.invoke(
+          'delete-user',
+          body: {'name': 'Functions'},
+        );
       }
     } on AuthApiException catch (exception) {
       throw AuthRemoteException.fromString(exception: exception.code ?? '');

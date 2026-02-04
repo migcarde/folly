@@ -44,7 +44,7 @@ class FeedNotifier extends StateNotifier<FeedNotifierState> {
 }
 
 final feedNotifierProvider =
-    StateNotifierProvider.autoDispose<FeedNotifier, FeedNotifierState>(
+    StateNotifierProvider<FeedNotifier, FeedNotifierState>(
       (ref) => FeedNotifier(
         authNotifier: ref.watch(authNotifierProvider),
         storiesRepository: ref.watch(storiesRepositoryProvider),

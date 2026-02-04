@@ -22,7 +22,7 @@ class ChangeLanguageNotifier extends StateNotifier<ChangeLanguageState> {
       state = state.copyWith(status: ChangeLanguageStatus.loading);
       final user = authNotifier.user!;
 
-      final result = await userRepository.saveUser(
+      final result = await userRepository.editUser(
         user: user.copyWith(
           photoPath: user.photoPath,
           locale: state.selectedLocale.toString(),
