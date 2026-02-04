@@ -30,16 +30,19 @@ class FeedNotifier extends StateNotifier<FeedNotifierState> {
       page: state.page,
     );
 
-    result.when(
-      (stories) => state = state.copyWith(
-        status: FeedNotifierStatus.success,
-        stories: [...state.stories, ...stories.content],
-        page: stories.page,
-        totalPages: stories.totalPages,
-        total: stories.total,
-      ),
-      (_, __) => state = state.copyWith(status: FeedNotifierStatus.error),
-    );
+    result.when((data) {
+      final stories = [...state.stories, ...data.content];
+
+      state = state.copyWith(
+        status: stories.isEmpty
+            ? FeedNotifierStatus.empty
+            : FeedNotifierStatus.success,
+        stories: stories,
+        page: data.page,
+        totalPages: data.totalPages,
+        total: data.total,
+      );
+    }, (_, __) => state = state.copyWith(status: FeedNotifierStatus.error));
   }
 }
 

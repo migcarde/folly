@@ -1,7 +1,7 @@
 import 'package:domain/domain.dart';
 import 'package:equatable/equatable.dart';
 
-enum FeedNotifierStatus { loading, success, error }
+enum FeedNotifierStatus { loading, success, error, empty }
 
 class FeedNotifierState extends Equatable {
   final FeedNotifierStatus status;

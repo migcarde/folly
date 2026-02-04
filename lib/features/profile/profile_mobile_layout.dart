@@ -5,16 +5,17 @@ import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
 import 'package:folly/features/friends/enums/friend_type.dart';
 import 'package:folly/features/friends/models/friends_view_model.dart';
-import 'package:folly/features/profile/models/profile_state.dart';
+import 'package:folly/features/home/widget/upload_story_options_dialog.dart';
 import 'package:folly/features/profile/profile_notifier.dart';
 import 'package:folly/features/profile/widgets/request_information.dart';
 import 'package:folly/routes/paths.dart';
+import 'package:folly/widgets/empty_widget.dart';
 import 'package:folly/widgets/profile_image.dart';
 import 'package:folly/features/story_card/story_card.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-class ProfileMobileLayout extends ConsumerStatefulWidget {
+class ProfileMobileLayout extends ConsumerWidget {
   const ProfileMobileLayout({
     super.key,
     required this.user,
@@ -24,164 +25,136 @@ class ProfileMobileLayout extends ConsumerStatefulWidget {
   final UserEntity user;
   final bool isCurrentUser;
 
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _ProfileMobileLayoutState();
-}
-
-class _ProfileMobileLayoutState extends ConsumerState<ProfileMobileLayout> {
   static const _profileImageSize = 100.0;
 
   @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref
-          .read(profileNotifierProvider.notifier)
-          .init(user: widget.user, isCurrentUser: widget.isCurrentUser);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
     final theme = context.theme;
     final state = ref.watch(profileNotifierProvider);
 
-    switch (state.status) {
-      case ProfileStatus.loading:
-        return const Center(child: CircularProgressIndicator());
-      case ProfileStatus.success:
-        return SingleChildScrollView(
-          padding: const EdgeInsets.only(
-            top: AppDimens.screenPadding,
-            bottom: 120.0,
-          ),
-          child: Column(
-            children: [
-              if (widget.isCurrentUser)
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      right: AppDimens.screenPadding,
-                    ),
-                    child: GestureDetector(
-                      child: Icon(PhosphorIcons.gear()),
-                      onTap: () => context.push(Paths.settings.route),
-                    ),
-                  ),
-                ),
-              ProfileImage(
-                imageUrl: widget.user.photoPath,
-                size: _profileImageSize,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: AppDimens.m),
-                child: Text(
-                  widget.user.name,
-                  style: theme.textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Text(
-                '@${widget.user.username}',
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.disabledColor,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: AppDimens.m),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () => context.push(
-                        Paths.friends.route,
-                        extra: FriendsViewModel(
-                          friendType: FriendType.followers,
-                          uid: widget.user.uid,
-                        ),
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                            l10n.followers,
-                            style: theme.textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(state.followers.toString()),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: AppDimens.l,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppDimens.m,
-                      ),
-                      child: VerticalDivider(
-                        indent: AppDimens.xs,
-                        endIndent: AppDimens.xs,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () => context.push(
-                        Paths.friends.route,
-                        extra: FriendsViewModel(
-                          friendType: FriendType.following,
-                          uid: widget.user.uid,
-                        ),
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                            l10n.following,
-                            style: theme.textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(state.following.toString()),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              if (!widget.isCurrentUser)
-                RequestInformation(
-                  uid: widget.user.uid,
-                  friendRequest: state.friend,
-                ),
-              // TODO: Add biography text limit and show more button
-              if (widget.user.biography.isNotEmpty)
-                Padding(
+    return state.when(
+      data: (data) => SingleChildScrollView(
+        padding: const EdgeInsets.only(
+          top: AppDimens.screenPadding,
+          bottom: 120.0,
+        ),
+        child: Column(
+          children: [
+            if (isCurrentUser)
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
                   padding: const EdgeInsets.only(
-                    top: AppDimens.m,
-                    left: AppDimens.screenPadding,
                     right: AppDimens.screenPadding,
                   ),
-                  child: Text(
-                    widget.user.biography,
-                    textAlign: TextAlign.center,
+                  child: GestureDetector(
+                    child: Icon(PhosphorIcons.gear()),
+                    onTap: () => context.push(Paths.settings.route),
                   ),
                 ),
+              ),
+            ProfileImage(imageUrl: user.photoPath, size: _profileImageSize),
+            Padding(
+              padding: const EdgeInsets.only(top: AppDimens.m),
+              child: Text(
+                user.name,
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Text(
+              '@${user.username}',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.disabledColor,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: AppDimens.m),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () => context.push(
+                      Paths.friends.route,
+                      extra: FriendsViewModel(
+                        friendType: FriendType.followers,
+                        uid: user.uid,
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          l10n.followers,
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(data.followers.toString()),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    height: AppDimens.l,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppDimens.m,
+                    ),
+                    child: VerticalDivider(
+                      indent: AppDimens.xs,
+                      endIndent: AppDimens.xs,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => context.push(
+                      Paths.friends.route,
+                      extra: FriendsViewModel(
+                        friendType: FriendType.following,
+                        uid: user.uid,
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          l10n.following,
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(data.following.toString()),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (!isCurrentUser)
+              RequestInformation(uid: user.uid, friendRequest: data.friend),
+            // TODO: Add biography text limit and show more button
+            if (user.biography.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: AppDimens.m,
+                  left: AppDimens.screenPadding,
+                  right: AppDimens.screenPadding,
+                ),
+                child: Text(user.biography, textAlign: TextAlign.center),
+              ),
+            if (data.stories.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(top: AppDimens.l),
                 child: ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    final story = state.stories[index];
+                    final story = data.stories[index];
 
                     return StoryCard(
                       storyId: story.id,
-                      userId: widget.user.uid,
-                      user: widget.user.name,
-                      userProfileUrl: widget.user.photoPath,
+                      userId: user.uid,
+                      user: user.name,
+                      userProfileUrl: user.photoPath,
                       title: story.title,
                       mediaUrl: story.imageUrl,
                       challenge: story.challenge,
@@ -189,16 +162,39 @@ class _ProfileMobileLayoutState extends ConsumerState<ProfileMobileLayout> {
                   },
                   separatorBuilder: (context, index) =>
                       const SizedBox(height: AppDimens.l),
-                  itemCount: state.stories.length,
+                  itemCount: data.stories.length,
                 ),
               ),
-            ],
-          ),
-        );
-      case ProfileStatus.error:
-        return Center(
-          child: Text(l10n.sorry_we_have_problems_please_try_again_later),
-        );
-    }
+            if (data.stories.isEmpty)
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: AppDimens.m,
+                  left: AppDimens.screenPadding,
+                  right: AppDimens.screenPadding,
+                ),
+                child: EmptyWidget(
+                  title: l10n.no_stories_yet,
+                  message: isCurrentUser
+                      ? l10n.unleash_your_creativity_tap_to_upload_your_stories
+                      : l10n.this_user_does_not_publish_any_story_yet,
+                  buttonText: isCurrentUser ? l10n.publish_a_story : null,
+                  onTap: () {
+                    if (isCurrentUser) {
+                      UploadStoryOptionsDialog.checkAvailability(
+                        context: context,
+                        isCompleted: false,
+                      );
+                    }
+                  },
+                ),
+              ),
+          ],
+        ),
+      ),
+      error: (error, stackTrace) => Center(
+        child: Text(l10n.sorry_we_have_problems_please_try_again_later),
+      ),
+      loading: () => const Center(child: CircularProgressIndicator()),
+    );
   }
 }

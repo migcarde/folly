@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
+import 'package:folly/features/bottom_bar/bottom_bar_notifier.dart';
+import 'package:folly/features/bottom_bar/models/bottom_bar_state.dart';
 import 'package:folly/features/daily_challenge/daily_challenge_mobile_layout.dart';
 import 'package:folly/features/feed/feed_notifier.dart';
 import 'package:folly/features/feed/models/feed_notifier_state.dart';
 import 'package:folly/features/story_card/story_card.dart';
+import 'package:folly/widgets/empty_widget.dart';
 
 class FeedMobileLayout extends ConsumerStatefulWidget {
   const FeedMobileLayout({super.key});
@@ -71,6 +74,22 @@ class _FeedMobileLayoutState extends ConsumerState<FeedMobileLayout> {
             ),
             FeedNotifierStatus.error => Text(
               l10n.sorry_we_have_problems_please_try_again_later,
+            ),
+            FeedNotifierStatus.empty => Center(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppDimens.screenPadding,
+                ),
+                child: EmptyWidget(
+                  title: l10n.no_stories_yet,
+                  message: l10n
+                      .tap_to_search_friends_and_start_sharing_your_stories_toguether,
+                  buttonText: l10n.search,
+                  onTap: () => ref
+                      .read(bottomBarNotifierProvider.notifier)
+                      .selectItem(BottomBarItem.search),
+                ),
+              ),
             ),
           },
         ],

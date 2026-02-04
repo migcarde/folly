@@ -536,6 +536,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Now'**
   String get now;
+
+  /// No description provided for @no_stories_yet.
+  ///
+  /// In en, this message translates to:
+  /// **'No stories yet'**
+  String get no_stories_yet;
+
+  /// No description provided for @tap_to_search_friends_and_start_sharing_your_stories_toguether.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to search friends and start sharing your stories toguether!'**
+  String get tap_to_search_friends_and_start_sharing_your_stories_toguether;
+
+  /// No description provided for @search.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get search;
+
+  /// No description provided for @unleash_your_creativity_tap_to_upload_your_stories.
+  ///
+  /// In en, this message translates to:
+  /// **'Unleash your creativity! Tap to upload your stories '**
+  String get unleash_your_creativity_tap_to_upload_your_stories;
+
+  /// No description provided for @this_user_does_not_publish_any_story_yet.
+  ///
+  /// In en, this message translates to:
+  /// **'This user does not publish any story yet'**
+  String get this_user_does_not_publish_any_story_yet;
 }
 
 class _AppLocalizationsDelegate

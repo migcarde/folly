@@ -283,5 +283,23 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get now => 'Now';
+  String get now => 'Ahora';
+
+  @override
+  String get no_stories_yet => 'No hay historias aún';
+
+  @override
+  String get tap_to_search_friends_and_start_sharing_your_stories_toguether =>
+      'Pulsa para buscar amigos y empezar a compartir vuesatras historias!';
+
+  @override
+  String get search => 'Buscar';
+
+  @override
+  String get unleash_your_creativity_tap_to_upload_your_stories =>
+      'Sube tus histories y sesata tu creatividad!';
+
+  @override
+  String get this_user_does_not_publish_any_story_yet =>
+      'Este usuario no ha publicado ninguna historia aun.';
 }
