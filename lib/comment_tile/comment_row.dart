@@ -1,3 +1,4 @@
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/comment_tile/comment_notifier.dart';
@@ -50,8 +51,16 @@ class CommentRow extends ConsumerWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    // TODO: Add read more when text has more than 5 lines
-                    Text(comment),
+                    ExpandableText(
+                      comment,
+                      maxLines: 5,
+                      expandText: l10n.show_more,
+                      collapseText: l10n.show_less,
+                      textAlign: TextAlign.center,
+                      animation: true,
+                      style: theme.textTheme.bodySmall,
+                      linkColor: theme.primaryColor,
+                    ),
                   ],
                 ),
               ),

@@ -208,5 +208,9 @@
     "unleash_your_creativity_tap_to_upload_your_stories": "Sube tus histories y sesata tu creatividad!",
     "@unleash_your_creativity_tap_to_upload_your_stories": {},
     "this_user_does_not_publish_any_story_yet": "Este usuario no ha publicado ninguna historia aun.",
-    "@this_user_does_not_publish_any_story_yet": {}
+    "@this_user_does_not_publish_any_story_yet": {},
+    "show_more": "Mostrar más",
+    "@show_more": {},
+    "show_less": "Mostrar menos",
+    "@show_less": {}
 }

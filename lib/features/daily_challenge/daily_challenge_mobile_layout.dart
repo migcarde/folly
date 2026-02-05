@@ -6,7 +6,7 @@ import 'package:folly/extensions/build_context_extensions.dart';
 import 'package:folly/features/daily_challenge/daily_challenge_provider.dart';
 import 'package:folly/features/daily_challenge/models/daily_challenge_state.dart';
 import 'package:folly/features/home/widget/upload_story_options_dialog.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:lottie/lottie.dart';
 
 class DailyChallengeMobileLayout extends ConsumerStatefulWidget {
   const DailyChallengeMobileLayout({super.key});
@@ -50,11 +50,7 @@ class _DailyChallengeMobileLayoutState
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(
-                PhosphorIcons.lightbulb(),
-                color: theme.colorScheme.onPrimaryContainer,
-                size: 60.0,
-              ),
+              Lottie.asset('assets/lotties/lemony.json', height: 80.0),
               Flexible(
                 child: Padding(
                   padding: const EdgeInsets.only(left: AppDimens.s),
