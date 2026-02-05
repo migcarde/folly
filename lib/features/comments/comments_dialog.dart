@@ -12,7 +12,7 @@ class CommentsDialog extends ConsumerStatefulWidget {
   const CommentsDialog({
     super.key,
     required this.storyId,
-    required String this.storyUserId,
+    required this.storyUserId,
   });
 
   final String storyId;

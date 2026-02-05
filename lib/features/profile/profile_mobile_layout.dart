@@ -1,4 +1,5 @@
 import 'package:domain/users/models/user_entity.dart';
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/core/app_dimens.dart';
@@ -131,7 +132,6 @@ class ProfileMobileLayout extends ConsumerWidget {
             ),
             if (!isCurrentUser)
               RequestInformation(uid: user.uid, friendRequest: data.friend),
-            // TODO: Add biography text limit and show more button
             if (user.biography.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(
@@ -139,7 +139,18 @@ class ProfileMobileLayout extends ConsumerWidget {
                   left: AppDimens.screenPadding,
                   right: AppDimens.screenPadding,
                 ),
-                child: Text(user.biography, textAlign: TextAlign.center),
+                child: ExpandableText(
+                  user.biography,
+                  maxLines: 3,
+                  expandText:
+                      '\n${l10n.show_more}', // Added \n to separate it from biography
+                  collapseText:
+                      '\n${l10n.show_less}', // Added \n to separate it from biography
+                  textAlign: TextAlign.center,
+                  animation: true,
+                  style: theme.textTheme.bodySmall,
+                  linkColor: theme.primaryColor,
+                ),
               ),
             if (data.stories.isNotEmpty)
               Padding(

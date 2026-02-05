@@ -302,4 +302,10 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get this_user_does_not_publish_any_story_yet =>
       'Este usuario no ha publicado ninguna historia aun.';
+
+  @override
+  String get show_more => 'Mostrar más';
+
+  @override
+  String get show_less => 'Mostrar menos';
 }

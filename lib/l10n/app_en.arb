@@ -209,5 +209,9 @@
     "unleash_your_creativity_tap_to_upload_your_stories": "Unleash your creativity! Tap to upload your stories ",
     "@unleash_your_creativity_tap_to_upload_your_stories": {},
     "this_user_does_not_publish_any_story_yet": "This user does not publish any story yet",
-    "@this_user_does_not_publish_any_story_yet": {}
+    "@this_user_does_not_publish_any_story_yet": {},
+    "show_more": "Show more",
+    "@show_more": {},
+    "show_less": "Show less",
+    "@show_less": {}
 }

@@ -566,6 +566,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This user does not publish any story yet'**
   String get this_user_does_not_publish_any_story_yet;
+
+  /// No description provided for @show_more.
+  ///
+  /// In en, this message translates to:
+  /// **'Show more'**
+  String get show_more;
+
+  /// No description provided for @show_less.
+  ///
+  /// In en, this message translates to:
+  /// **'Show less'**
+  String get show_less;
 }
 
 class _AppLocalizationsDelegate
