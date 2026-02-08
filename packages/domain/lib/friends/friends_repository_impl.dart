@@ -67,7 +67,7 @@ class FriendsRepositoryImpl implements FriendsRepository {
         receiverId: receiverId,
       );
 
-      notificationsRemoteDatasource.createNotification(
+      await notificationsRemoteDatasource.createNotification(
         notification: NotificationRemoteEntity(
           id: DomainConstants.noId,
           type: NotificationType.follow.value,
