@@ -76,6 +76,7 @@ class ProfileAsyncNotifier extends AsyncNotifier<ProfileState> {
         ProfileState(
           status: ProfileStatus.success,
           user: user,
+          isCurrentUser: isCurrentUser,
           stories: stories.content,
           friend: friendRequest,
           followers: followersResult.when((value) => value, (_, __) => 0),

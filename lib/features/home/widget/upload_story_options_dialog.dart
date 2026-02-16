@@ -49,7 +49,7 @@ class UploadStoryOptionsDialog extends StatelessWidget {
 
                 if (context.mounted && image != null) {
                   context.pop();
-                  parentContext.push(Paths.uploadStory.route, extra: image);
+                  parentContext.pushNamed(Paths.uploadStory.name, extra: image);
                 }
               },
             ),
@@ -61,7 +61,7 @@ class UploadStoryOptionsDialog extends StatelessWidget {
 
                 if (context.mounted && image != null) {
                   context.pop();
-                  parentContext.push(Paths.uploadStory.route, extra: image);
+                  parentContext.pushNamed(Paths.uploadStory.name, extra: image);
                 }
               },
             ),
@@ -75,7 +75,10 @@ class UploadStoryOptionsDialog extends StatelessWidget {
                   (image) {
                     if (context.mounted) {
                       context.pop();
-                      parentContext.push(Paths.uploadStory.route, extra: image);
+                      parentContext.pushNamed(
+                        Paths.uploadStory.name,
+                        extra: image,
+                      );
                     }
                   },
                   (error, __) {

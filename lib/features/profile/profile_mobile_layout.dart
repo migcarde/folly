@@ -47,7 +47,7 @@ class ProfileMobileLayout extends ConsumerWidget {
                   ),
                   child: GestureDetector(
                     child: Icon(PhosphorIcons.gear()),
-                    onTap: () => context.push(Paths.settings.route),
+                    onTap: () => context.pushNamed(Paths.settings.name),
                   ),
                 ),
               ),
@@ -77,8 +77,8 @@ class ProfileMobileLayout extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
-                    onTap: () => context.push(
-                      Paths.friends.route,
+                    onTap: () => context.pushNamed(
+                      Paths.friends.name,
                       extra: FriendsViewModel(
                         friendType: FriendType.followers,
                         uid: data.user?.uid ?? '',
@@ -107,8 +107,8 @@ class ProfileMobileLayout extends ConsumerWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => context.push(
-                      Paths.friends.route,
+                    onTap: () => context.pushNamed(
+                      Paths.friends.name,
                       extra: FriendsViewModel(
                         friendType: FriendType.following,
                         uid: data.user?.uid ?? '',
