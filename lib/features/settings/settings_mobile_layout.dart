@@ -21,13 +21,13 @@ class SettingsMobileLayout extends ConsumerWidget {
         SettingsTile(
           icon: PhosphorIcons.userGear(),
           text: l10n.user_settings,
-          onTap: () => context.push(Paths.editProfile.route),
+          onTap: () => context.pushNamed(Paths.editProfile.name),
         ),
         const Divider(),
         SettingsTile(
           icon: PhosphorIcons.translate(),
           text: l10n.change_language,
-          onTap: () => context.push(Paths.changeLanguage.route),
+          onTap: () => context.pushNamed(Paths.changeLanguage.name),
         ),
         const Spacer(),
         GestureDetector(
