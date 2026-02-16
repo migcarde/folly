@@ -5,6 +5,7 @@ import 'package:folly/comment_tile/comment_row.dart';
 import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
 import 'package:folly/features/comment_tile/comment_tile_notifier.dart';
+import 'package:folly/features/profile/models/profile_params.dart';
 import 'package:folly/routes/paths.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -31,8 +32,10 @@ class CommentTile extends ConsumerWidget {
           name: comment.user.username,
           photoPath: comment.user.photoPath,
           comment: comment.text,
-          onTapProfile: () =>
-              context.push(Paths.userProfile.route, extra: comment.user),
+          onTapProfile: () => context.pushNamed(
+            Paths.userProfile.name,
+            extra: ProfileParams(user: comment.user),
+          ),
           onTapReply: onTapReply,
         ),
         if (state.value?.replies.isNotEmpty == true)
@@ -49,8 +52,10 @@ class CommentTile extends ConsumerWidget {
                   name: reply.user.username,
                   photoPath: reply.user.photoPath,
                   comment: reply.text,
-                  onTapProfile: () =>
-                      context.push(Paths.userProfile.route, extra: reply.user),
+                  onTapProfile: () => context.pushNamed(
+                    Paths.userProfile.name,
+                    extra: ProfileParams(user: reply.user),
+                  ),
                 );
               },
               separatorBuilder: (context, index) =>

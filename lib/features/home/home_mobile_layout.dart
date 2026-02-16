@@ -5,6 +5,7 @@ import 'package:folly/features/bottom_bar/bottom_bar_notifier.dart';
 import 'package:folly/features/bottom_bar/models/bottom_bar_state.dart';
 import 'package:folly/features/feed/feed_mobile_layout.dart';
 import 'package:folly/features/notifications/notifications_mobile_layout.dart';
+import 'package:folly/features/profile/models/profile_params.dart';
 import 'package:folly/features/profile/profile_mobile_layout.dart';
 import 'package:folly/features/search_users/search_users_mobile_layout.dart';
 
@@ -56,8 +57,7 @@ class _HomeMobileLayoutState extends ConsumerState<HomeMobileLayout>
         SearchUsersMobileLayout(),
         NotificationsMobileLayout(),
         ProfileMobileLayout(
-          user: ref.watch(authNotifierProvider).user!,
-          isCurrentUser: true,
+          params: ProfileParams(user: ref.watch(authNotifierProvider).user!),
         ),
       ],
     );

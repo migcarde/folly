@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -6,7 +7,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:folly/services/messaging/app_messaging_types.dart';
 import 'package:folly/services/messaging/message_handlers.dart';
 import 'package:folly/services/messaging/messaging_service.dart';
 
@@ -41,9 +41,11 @@ class MessagingNotifier extends AsyncNotifier<void>
           requestSoundPermission: true,
         ),
       ),
-      onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
+      onDidReceiveBackgroundNotificationResponse: openNotification,
       onDidReceiveNotificationResponse: (details) {
         debugPrint('notification response: $details');
+
+        openNotification(details);
       },
     );
 
@@ -87,9 +89,10 @@ class MessagingNotifier extends AsyncNotifier<void>
         DateTime.now().millisecond,
         message.notification?.title,
         message.notification?.body,
+        payload: jsonEncode(message.data),
         const NotificationDetails(
           android: AndroidNotificationDetails(
-            'com.bamboo.birthdayReminder',
+            'com.micadeb.folly',
             'push_notification',
             importance: Importance.max,
             priority: Priority.high,
@@ -112,15 +115,8 @@ class MessagingNotifier extends AsyncNotifier<void>
 
   Future<void> _onTapBackgroundMessage(RemoteMessage message) async {
     debugPrint('onMessageOpenedApp: $message');
-    final type = AppMessagingTypes.fromString(message.data['type']);
 
-    switch (type) {
-      case AppMessagingTypes.challengeReminder:
-        // TODO: Handle challenge reminder
-        break;
-      case AppMessagingTypes.none:
-        break;
-    }
+    handleTapNotification(message: message.data);
   }
 }
 
@@ -133,8 +129,13 @@ Future<void> _onReceiveBackgroundMessage(RemoteMessage message) async {
 }
 
 @pragma('vm:entry-point')
-void notificationTapBackground(NotificationResponse notificationResponse) {
-  debugPrint('notificationTapBackground: $notificationResponse');
+void openNotification(NotificationResponse notificationResponse) {
+  if (notificationResponse.payload != null &&
+      notificationResponse.payload!.isNotEmpty) {
+    debugPrint('openNotification payload: ${notificationResponse.payload}');
+
+    handleTapNotification(message: jsonDecode(notificationResponse.payload!));
+  }
 }
 
 final messagingNotifierProvider =

@@ -6,6 +6,8 @@ import 'package:folly/routes/paths.dart';
 import 'package:folly/routes/routes.dart';
 import 'package:go_router/go_router.dart';
 
+final globalNavigationKey = GlobalKey<NavigatorState>();
+
 final goRouterProvider = Provider<GoRouter>((ref) {
   final allowedPaths = [
     Paths.register.route,
@@ -23,6 +25,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
   });
 
   return GoRouter(
+    navigatorKey: globalNavigationKey,
     routes: Routes.list,
     initialLocation: Paths.initial.route,
     refreshListenable: authStateListenable,

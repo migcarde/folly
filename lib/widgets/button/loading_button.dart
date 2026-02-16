@@ -10,12 +10,14 @@ class LoadingButton extends StatelessWidget {
     required this.onTap,
     required this.isLoading,
     this.type = ButtonType.normal,
+    this.leftIcon,
   });
 
   final String text;
   final VoidCallback onTap;
   final bool isLoading;
   final ButtonType type;
+  final IconData? leftIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +38,23 @@ class LoadingButton extends StatelessWidget {
               ? FittedBox(
                   child: CircularProgressIndicator(color: style.textColor),
                 )
-              : Text(
-                  text,
-                  style: theme.textTheme.bodyLarge?.copyWith(
-                    color: style.textColor,
-                  ),
+              : Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+
+                  children: [
+                    if (leftIcon != null)
+                      Padding(
+                        padding: const EdgeInsets.only(right: AppDimens.s),
+                        child: Icon(leftIcon, color: style.textColor),
+                      ),
+                    Text(
+                      text,
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        color: style.textColor,
+                      ),
+                    ),
+                  ],
                 ),
         ),
       ),

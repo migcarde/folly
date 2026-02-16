@@ -7,6 +7,8 @@ enum ProfileStatus { loading, success, error }
 
 class ProfileState extends Equatable {
   final ProfileStatus status;
+  final UserEntity? user;
+  final bool isCurrentUser;
   final List<StoryEntity> stories;
   final FriendEntity? friend;
   final int followers;
@@ -17,6 +19,8 @@ class ProfileState extends Equatable {
 
   const ProfileState({
     this.status = ProfileStatus.loading,
+    this.user,
+    this.isCurrentUser = false,
     this.stories = const [],
     this.friend,
     this.followers = 0,
@@ -29,6 +33,8 @@ class ProfileState extends Equatable {
   @override
   List<Object?> get props => [
     status,
+    user,
+    isCurrentUser,
     stories,
     friend,
     followers,
@@ -40,8 +46,9 @@ class ProfileState extends Equatable {
 
   ProfileState copyWith({
     ProfileStatus? status,
-    List<StoryEntity>? stories,
     UserEntity? user,
+    bool? isCurrentUser,
+    List<StoryEntity>? stories,
     FriendEntity? friend,
     int? followers,
     int? following,
@@ -50,6 +57,8 @@ class ProfileState extends Equatable {
     int? total,
   }) => ProfileState(
     status: status ?? this.status,
+    user: user ?? this.user,
+    isCurrentUser: isCurrentUser ?? this.isCurrentUser,
     stories: stories ?? this.stories,
     friend: friend ?? this.friend,
     followers: followers ?? this.followers,
@@ -61,6 +70,8 @@ class ProfileState extends Equatable {
 
   ProfileState clearRequest() => ProfileState(
     status: status,
+    user: user,
+    isCurrentUser: isCurrentUser,
     stories: stories,
     friend: null,
     followers: followers,

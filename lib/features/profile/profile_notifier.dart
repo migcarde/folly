@@ -7,19 +7,39 @@ import 'package:domain/friends/models/friend_entity.dart';
 import 'package:domain/models/page_entity.dart';
 import 'package:domain/stories/models/story_entity.dart';
 import 'package:domain/stories/stories_repository.dart';
+import 'package:domain/users/models/user_entity.dart';
+import 'package:domain/users/user_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/features/auth_notifier.dart';
+import 'package:folly/features/profile/models/profile_params.dart';
 import 'package:folly/features/profile/models/profile_state.dart';
 
 class ProfileAsyncNotifier extends AsyncNotifier<ProfileState> {
+  final ProfileParams params;
+
+  ProfileAsyncNotifier({required this.params});
+
   @override
   FutureOr<ProfileState> build() async {
+    // TODO: Change this to get uid or user entity from parameters and get user if is uid or set it directle
+    late UserEntity user;
+
     state = AsyncLoading();
+
+    if (params.user != null) {
+      user = params.user!;
+    } else if (params.uid != null) {
+      final userRepository = ref.watch(userRepositoryProvider);
+      final userResult = await userRepository.getUser(uid: params.uid!);
+
+      userResult.when((value) => user = value, (error, stackTrace) {
+        state = AsyncError(error, stackTrace);
+      });
+    }
 
     final friendsRepository = ref.watch(friendsRepositoryProvider);
     final storiesRepository = ref.watch(storiesRepositoryProvider);
     final authNotifier = ref.watch(authNotifierProvider);
-    final user = authNotifier.user!;
     final isCurrentUser = authNotifier.user!.uid == user.uid;
 
     final result = await Future.wait([
@@ -55,6 +75,7 @@ class ProfileAsyncNotifier extends AsyncNotifier<ProfileState> {
       state = AsyncData(
         ProfileState(
           status: ProfileStatus.success,
+          user: user,
           stories: stories.content,
           friend: friendRequest,
           followers: followersResult.when((value) => value, (_, __) => 0),
@@ -150,7 +171,7 @@ class ProfileAsyncNotifier extends AsyncNotifier<ProfileState> {
   }
 }
 
-final profileNotifierProvider =
-    AsyncNotifierProvider.autoDispose<ProfileAsyncNotifier, ProfileState>(
-      () => ProfileAsyncNotifier(),
+final profileNotifierProvider = AsyncNotifierProvider.autoDispose
+    .family<ProfileAsyncNotifier, ProfileState, ProfileParams>(
+      (params) => ProfileAsyncNotifier(params: params),
     );

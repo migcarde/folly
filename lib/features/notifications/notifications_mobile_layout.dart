@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/core/app_dimens.dart';
 import 'package:folly/features/notifications/notifications_notifier.dart';
 import 'package:folly/features/notifications/widgets/notification_tile.dart';
+import 'package:folly/features/profile/models/profile_params.dart';
 import 'package:folly/routes/paths.dart';
 import 'package:folly/widgets/base_divider.dart';
 import 'package:go_router/go_router.dart';
@@ -40,9 +41,9 @@ class NotificationsMobileLayout extends ConsumerWidget {
                   // TODO: Handle this case.
                   throw UnimplementedError();
                 case NotificationType.follow:
-                  context.push(
-                    Paths.userProfile.route,
-                    extra: notification.user,
+                  context.pushNamed(
+                    Paths.userProfile.name,
+                    extra: ProfileParams(user: notification.user),
                   );
               }
             },

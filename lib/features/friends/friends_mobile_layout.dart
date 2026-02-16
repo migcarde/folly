@@ -50,7 +50,8 @@ class _FriendsMobileLayoutState extends ConsumerState<FriendsMobileLayout> {
             name: friend.name,
             username: friend.username,
             imageUrl: friend.photoPath,
-            onTap: () => context.push(Paths.userProfile.route, extra: friend),
+            onTap: () =>
+                context.pushNamed(Paths.userProfile.name, extra: friend),
           );
         },
         separatorBuilder: (context, index) => const Divider(),

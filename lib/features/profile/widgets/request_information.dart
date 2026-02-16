@@ -4,26 +4,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
-import 'package:folly/features/profile/profile_notifier.dart';
 import 'package:folly/widgets/button/base_button.dart';
 import 'package:folly/widgets/button/button_size.dart';
 import 'package:folly/widgets/button/button_type.dart';
+import 'package:folly/widgets/button/loading_button.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-class RequestInformation extends ConsumerWidget {
+class RequestInformation extends ConsumerStatefulWidget {
   const RequestInformation({
     super.key,
     required this.uid,
+    required this.onAccept,
+    required this.onReject,
+    required this.onSend,
     required this.friendRequest,
   });
 
   final String uid;
+  final VoidCallback onAccept;
+  final VoidCallback onReject;
+  final Future<void> Function() onSend;
   final FriendEntity? friendRequest;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _RequestInformationState();
+}
+
+class _RequestInformationState extends ConsumerState<RequestInformation> {
+  bool _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    switch (friendRequest?.state) {
+    switch (widget.friendRequest?.state) {
       case FriendRequestState.friend:
       case FriendRequestState.following:
         return const SizedBox();
@@ -40,15 +55,13 @@ class RequestInformation extends ConsumerWidget {
               BaseButton(
                 text: l10n.accept,
                 size: ButtonSize.small,
-                onTap: () =>
-                    ref.read(profileNotifierProvider.notifier).acceptRequest(),
+                onTap: widget.onAccept,
               ),
               BaseButton(
                 text: l10n.decline,
                 size: ButtonSize.small,
                 type: ButtonType.alternative,
-                onTap: () =>
-                    ref.read(profileNotifierProvider.notifier).rejectRequest(),
+                onTap: widget.onReject,
               ),
             ],
           ),
@@ -61,12 +74,21 @@ class RequestInformation extends ConsumerWidget {
             left: AppDimens.screenPadding,
             right: AppDimens.screenPadding,
           ),
-          child: BaseButton(
+          child: LoadingButton(
             text: l10n.follow,
-            size: ButtonSize.small,
-            onTap: () => ref
-                .read(profileNotifierProvider.notifier)
-                .sendRequest(receiverId: uid),
+            leftIcon: PhosphorIcons.userPlus(),
+            isLoading: _isLoading,
+            onTap: () async {
+              setState(() {
+                _isLoading = true;
+              });
+
+              await widget.onSend();
+
+              setState(() {
+                _isLoading = false;
+              });
+            },
           ),
         );
     }
