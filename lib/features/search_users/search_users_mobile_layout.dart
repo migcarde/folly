@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
+import 'package:folly/features/profile/models/profile_params.dart';
 import 'package:folly/features/search_users/models/search_users_state.dart';
 import 'package:folly/features/search_users/search_users_notifier.dart';
 import 'package:folly/routes/paths.dart';
@@ -90,8 +91,10 @@ class _SearchUsersMobileLayoutState
                       name: user.name,
                       username: user.username,
                       imageUrl: user.photoPath,
-                      onTap: () =>
-                          context.push(Paths.userProfile.route, extra: user),
+                      onTap: () => context.pushNamed(
+                        Paths.userProfile.name,
+                        extra: ProfileParams(user: user),
+                      ),
                     );
                   },
                   separatorBuilder: (context, index) => const Divider(),

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
-import 'package:folly/features/profile/profile_notifier.dart';
 import 'package:folly/widgets/button/base_button.dart';
 import 'package:folly/widgets/button/button_size.dart';
 import 'package:folly/widgets/button/button_type.dart';
@@ -15,10 +14,16 @@ class RequestInformation extends ConsumerStatefulWidget {
   const RequestInformation({
     super.key,
     required this.uid,
+    required this.onAccept,
+    required this.onReject,
+    required this.onSend,
     required this.friendRequest,
   });
 
   final String uid;
+  final VoidCallback onAccept;
+  final VoidCallback onReject;
+  final Future<void> Function() onSend;
   final FriendEntity? friendRequest;
 
   @override
@@ -50,15 +55,13 @@ class _RequestInformationState extends ConsumerState<RequestInformation> {
               BaseButton(
                 text: l10n.accept,
                 size: ButtonSize.small,
-                onTap: () =>
-                    ref.read(profileNotifierProvider.notifier).acceptRequest(),
+                onTap: widget.onAccept,
               ),
               BaseButton(
                 text: l10n.decline,
                 size: ButtonSize.small,
                 type: ButtonType.alternative,
-                onTap: () =>
-                    ref.read(profileNotifierProvider.notifier).rejectRequest(),
+                onTap: widget.onReject,
               ),
             ],
           ),
@@ -80,9 +83,7 @@ class _RequestInformationState extends ConsumerState<RequestInformation> {
                 _isLoading = true;
               });
 
-              await ref
-                  .read(profileNotifierProvider.notifier)
-                  .sendRequest(receiverId: widget.uid);
+              await widget.onSend();
 
               setState(() {
                 _isLoading = false;

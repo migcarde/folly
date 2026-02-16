@@ -1,49 +1,46 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:folly/features/auth_notifier.dart';
+import 'package:folly/features/profile/models/profile_params.dart';
+import 'package:folly/routes/go_router_config.dart';
+import 'package:folly/routes/paths.dart';
 import 'package:folly/services/messaging/app_messaging_types.dart';
+import 'package:go_router/go_router.dart';
 
 Future<void> manageMessage(Map<String, dynamic> message) async {
   final type = AppMessagingTypes.fromString(message['type']);
   switch (type) {
     case AppMessagingTypes.challengeReminder:
-      // final messageEntity = ChallengeReminderNotificationEntity.fromJson(
-      //   message,
-      // );
-      // _handleChallengeNotification(messageEntity);
       break;
     case AppMessagingTypes.none:
+      break;
+    case AppMessagingTypes.follow:
       break;
   }
 }
 
-// Future<void> _handleChallengeNotification(
-//   BirthdayReminderNotificationEntity birthdayReminder,
-// ) async {
-//   final (result, l10n) = await (
-//     getIt<GetBirthday>().call(birthdayReminder.birthdayId),
-//     AppLocalizations.delegate.load(birthdayReminder.locale),
-//   ).wait;
+Future<void> handleTapNotification({
+  required Map<String, dynamic> message,
+}) async {
+  final type = AppMessagingTypes.fromString(message['type']);
+  switch (type) {
+    case AppMessagingTypes.challengeReminder:
+      break;
+    case AppMessagingTypes.none:
+      break;
+    case AppMessagingTypes.follow:
+      final String uid = message['uid'];
 
-//   result.when(
-//     (birthday) async {
-//       if (birthday != null) {
-//         final greeting = await getIt<GeminiService>().generateGreeting(
-//           name: birthday.name,
-//           characteristics: birthday.characteristics,
-//           userGender: birthdayReminder.userGender.getText(l10n),
-//           l10n: l10n,
-//         );
-//         await getIt<SaveBirthdayGreeting>().call(
-//           SaveBirthdayGreetingParams(
-//             birthdayId: birthday.id,
-//             date: DateTime.now(),
-//             text: greeting,
-//             uid: birthday.uid,
-//           ),
-//         );
-//         await getIt<TodayCubit>().init();
-//       }
-//     },
-//     (_) {
-//       // Does not do nothing
-//     },
-//   );
-// }
+      await _handleFollowNotification(uid: uid);
+      break;
+  }
+}
+
+Future<void> _handleFollowNotification({required String uid}) async {
+  final provider = ProviderContainer();
+  provider.read(authNotifierProvider.notifier).listen();
+
+  globalNavigationKey.currentContext?.goNamed(
+    Paths.userProfile.name,
+    extra: ProfileParams(uid: uid),
+  );
+}

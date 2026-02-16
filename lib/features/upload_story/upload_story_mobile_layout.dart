@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
+import 'package:folly/features/auth_notifier.dart';
 import 'package:folly/features/daily_challenge/daily_challenge_provider.dart';
 import 'package:folly/features/feed/feed_notifier.dart';
+import 'package:folly/features/profile/models/profile_params.dart';
 import 'package:folly/features/profile/profile_notifier.dart';
 import 'package:folly/features/upload_story/models/upload_story_state.dart';
 import 'package:folly/features/upload_story/upload_story_notifier.dart';
@@ -40,7 +42,13 @@ class UploadStoryMobileLayout extends ConsumerWidget {
           context.go(Paths.home.route);
           ref.read(feedNotifierProvider.notifier).init();
           ref.read(dailyChallengeNotifierProvider.notifier).init();
-          ref.read(profileNotifierProvider.notifier).build();
+          ref
+              .read(
+                profileNotifierProvider(
+                  ProfileParams(user: ref.watch(authNotifierProvider).user!),
+                ).notifier,
+              )
+              .build();
 
           break;
         case UploadStoryStatus.error:
