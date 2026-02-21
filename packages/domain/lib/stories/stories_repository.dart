@@ -27,6 +27,7 @@ abstract class StoriesRepository {
     int size = 10,
     int? total,
   });
+  Future<Result<StoryEntity>> getStory({required String storyId});
   Future<Result<StoryEntity>> updateStory({required StoryEntity story});
 }
 

@@ -1,54 +1,44 @@
+import 'package:data/remote/notifications/models/comment_notification_remote_entity.dart';
+import 'package:data/remote/notifications/models/follow_notification_remote_entity.dart';
+import 'package:data/remote/notifications/models/like_notification_remote_entity.dart';
 import 'package:equatable/equatable.dart';
 
-class NotificationRemoteEntity extends Equatable {
-  const NotificationRemoteEntity({
-    required this.id,
-    required this.type,
-    required this.createdAt,
-    required this.isRead,
-    required this.receiverUserId,
-    this.userId,
-    this.contentId,
-  });
-
+abstract class NotificationRemoteEntity extends Equatable {
   final String id;
+  final String receiverUserId;
   final int type;
   final DateTime createdAt;
   final bool isRead;
-  final String receiverUserId;
-  final String? userId;
+  final String? senderUserId;
   final String? contentId;
+
+  const NotificationRemoteEntity({
+    required this.id,
+    required this.receiverUserId,
+    required this.type,
+    required this.createdAt,
+    this.isRead = false,
+    this.senderUserId,
+    this.contentId,
+  });
+
+  Map<String, dynamic> toJson();
+  Map<String, dynamic> toRemoteNotificationJson();
 
   factory NotificationRemoteEntity.fromJson({
     required Map<String, dynamic> json,
   }) {
-    return NotificationRemoteEntity(
-      id: json['id'],
-      type: json['type'],
-      createdAt: DateTime.parse(json['created_at']),
-      isRead: json['is_read'],
-      receiverUserId: json['receiver_user_id'],
-      userId: json['user_id'],
-      contentId: json['content_id'],
-    );
+    final type = json['type'] as int;
+
+    switch (type) {
+      case 0:
+        return LikeNotificationRemoteEntity.fromJson(json: json);
+      case 1:
+        return CommentNotificationRemoteEntity.fromJson(json: json);
+      case 2:
+        return FollowNotificationRemoteEntity.fromJson(json: json);
+      default:
+        throw UnimplementedError('Notification type $type is not implemented');
+    }
   }
-
-  Map<String, dynamic> toJson() => {
-    'type': type,
-    'is_read': isRead,
-    'receiver_user_id': receiverUserId,
-    if (userId != null) 'user_id': userId,
-    if (contentId != null) 'content_id': contentId,
-  };
-
-  @override
-  List<Object?> get props => [
-    id,
-    type,
-    createdAt,
-    isRead,
-    receiverUserId,
-    userId,
-    contentId,
-  ];
 }

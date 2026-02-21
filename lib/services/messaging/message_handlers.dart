@@ -15,6 +15,8 @@ Future<void> manageMessage(Map<String, dynamic> message) async {
       break;
     case AppMessagingTypes.follow:
       break;
+    case AppMessagingTypes.comment:
+      break;
   }
 }
 
@@ -32,6 +34,11 @@ Future<void> handleTapNotification({
 
       await _handleFollowNotification(uid: uid);
       break;
+    case AppMessagingTypes.comment:
+      final storyId = message['storyId'];
+
+      await _handleCommentNotification(storyId: storyId);
+      break;
   }
 }
 
@@ -43,4 +50,8 @@ Future<void> _handleFollowNotification({required String uid}) async {
     Paths.userProfile.name,
     extra: ProfileParams(uid: uid),
   );
+}
+
+Future<void> _handleCommentNotification({required String storyId}) async {
+  globalNavigationKey.currentContext?.goNamed(Paths.story.name, extra: storyId);
 }

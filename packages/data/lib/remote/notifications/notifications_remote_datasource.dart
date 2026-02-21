@@ -4,6 +4,7 @@ import 'package:data/remote/notifications/models/notification_remote_entity.dart
 abstract class NotificationsRemoteDatasource {
   Future<void> createNotification({
     required NotificationRemoteEntity notification,
+    required String functionName,
   });
   Future<void> deleteNotification({required String id});
   Future<NotificationRemoteEntity> updateNotification({

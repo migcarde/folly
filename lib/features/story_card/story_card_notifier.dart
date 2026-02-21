@@ -78,6 +78,14 @@ class StoryCardNotifier extends AsyncNotifier<StoryCardState> {
       result.ifSuccess((_) => state = AsyncData(state.value!.removeLike()));
     }
   }
+
+  Future<void> addCommentCount() async {
+    if (state.value != null) {
+      state = AsyncData(
+        state.value!.copyWith(commentsCount: state.value!.commentsCount + 1),
+      );
+    }
+  }
 }
 
 final storyCardNotifierProvider = AsyncNotifierProvider.autoDispose

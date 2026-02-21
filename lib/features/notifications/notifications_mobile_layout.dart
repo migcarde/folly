@@ -43,12 +43,12 @@ class NotificationsMobileLayout extends ConsumerWidget {
                 case NotificationType.follow:
                   context.pushNamed(
                     Paths.userProfile.name,
-                    extra: ProfileParams(user: notification.user),
+                    extra: ProfileParams(user: notification.senderUser),
                   );
               }
             },
             child: NotificationTile(
-              user: notification.user,
+              user: notification.senderUser,
               date: notification.createdAt,
               type: notification.type,
               isRead: notification.isRead,

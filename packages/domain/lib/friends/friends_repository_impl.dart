@@ -1,5 +1,5 @@
 import 'package:data/data.dart';
-import 'package:data/remote/notifications/models/notification_remote_entity.dart';
+import 'package:data/remote/notifications/models/follow_notification_remote_entity.dart';
 import 'package:data/remote/notifications/notifications_remote_datasource.dart';
 import 'package:domain/base/domain_constants.dart';
 import 'package:domain/base/result.dart';
@@ -68,13 +68,13 @@ class FriendsRepositoryImpl implements FriendsRepository {
       );
 
       await notificationsRemoteDatasource.createNotification(
-        notification: NotificationRemoteEntity(
+        functionName: NotificationType.follow.functionName,
+        notification: FollowNotificationRemoteEntity(
           id: DomainConstants.noId,
           type: NotificationType.follow.value,
           createdAt: DateTime.now(),
-          isRead: false,
           receiverUserId: receiverId,
-          userId: senderId,
+          senderUserId: senderId,
         ),
       );
 

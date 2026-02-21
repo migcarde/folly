@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 enum CommentsErrorMessages { createCommentError, deleteCommentError, none }
 
 class CommentsState extends Equatable {
+  final bool commentIsSending;
   final CommentsErrorMessages error;
   final List<CommentEntity> comments;
   final int page;
@@ -12,6 +13,7 @@ class CommentsState extends Equatable {
   final CommentEntity? commentToReply;
 
   const CommentsState({
+    this.commentIsSending = false,
     this.error = CommentsErrorMessages.none,
     this.comments = const [],
     this.page = 0,
@@ -22,6 +24,7 @@ class CommentsState extends Equatable {
 
   @override
   List<Object?> get props => [
+    commentIsSending,
     error,
     comments,
     page,
@@ -31,6 +34,7 @@ class CommentsState extends Equatable {
   ];
 
   CommentsState copyWith({
+    bool? commentIsSending,
     CommentsErrorMessages? error,
     List<CommentEntity>? comments,
     int? page,
@@ -38,6 +42,7 @@ class CommentsState extends Equatable {
     int? total,
     CommentEntity? commentToReply,
   }) => CommentsState(
+    commentIsSending: commentIsSending ?? this.commentIsSending,
     error: error ?? this.error,
     comments: comments ?? this.comments,
     page: page ?? this.page,
@@ -47,6 +52,7 @@ class CommentsState extends Equatable {
   );
 
   CommentsState clearCommentToReply() => CommentsState(
+    commentIsSending: commentIsSending,
     error: error,
     comments: comments,
     page: page,

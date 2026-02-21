@@ -1,6 +1,7 @@
 enum AppMessagingTypes {
   challengeReminder,
   follow,
+  comment,
   none;
 
   factory AppMessagingTypes.fromString(String type) {
@@ -9,6 +10,8 @@ enum AppMessagingTypes {
         return AppMessagingTypes.challengeReminder;
       case 'follow':
         return AppMessagingTypes.follow;
+      case 'comment':
+        return AppMessagingTypes.comment;
       default:
         return AppMessagingTypes.none;
     }

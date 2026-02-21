@@ -16,20 +16,6 @@ class NotificationsRepositoryImpl implements NotificationsRepository {
   });
 
   @override
-  Future<Result<void>> createNotification({
-    required NotificationEntity notification,
-  }) async {
-    try {
-      await notificationsRemoteDatasource.createNotification(
-        notification: notification.remoteEntity,
-      );
-      return Result.success(null);
-    } catch (e) {
-      return Result.failure(e);
-    }
-  }
-
-  @override
   Future<Result<void>> deleteNotification({required String id}) async {
     try {
       await notificationsRemoteDatasource.deleteNotification(id: id);
@@ -63,9 +49,9 @@ class NotificationsRepositoryImpl implements NotificationsRepository {
           uid: notificationRemote.receiverUserId,
         );
 
-        if (notificationRemote.userId != null) {
+        if (notificationRemote.senderUserId != null) {
           final userData = await userRemoteDatasource.getUser(
-            uid: notificationRemote.userId!,
+            uid: notificationRemote.senderUserId!,
           );
           user = userData.entity;
         }
@@ -101,7 +87,7 @@ class NotificationsRepositoryImpl implements NotificationsRepository {
       return Result.success(
         result.toEntity(
           receiverUser: notification.receiverUser,
-          user: notification.user,
+          user: notification.senderUser,
         ),
       );
     } catch (e) {

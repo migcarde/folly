@@ -3,14 +3,15 @@ enum Paths {
   home(route: '/home'),
   login(route: '/login'),
   register(route: '/register'),
-  resetPasswordRequest(route: '/reset-password-request'),
-  changePassword(route: '/change-password'),
-  uploadStory(route: '/upload-story'),
+  resetPasswordRequest(route: '/resetPasswordRequest'),
+  changePassword(route: '/changePassword'),
+  uploadStory(route: '/uploadStory'),
   settings(route: '/settings'),
-  editProfile(route: '/edit-profile'),
-  changeLanguage(route: '/change-language'),
-  userProfile(route: '/user-profile'),
-  friends(route: '/friends');
+  editProfile(route: '/editProfile'),
+  changeLanguage(route: '/changeLanguage'),
+  userProfile(route: '/userProfile'),
+  friends(route: '/friends'),
+  story(route: '/story');
 
   final String route;
 

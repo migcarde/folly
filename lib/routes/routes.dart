@@ -11,6 +11,7 @@ import 'package:folly/features/profile/profile_page.dart';
 import 'package:folly/features/register/register_page.dart';
 import 'package:folly/features/reset_password/reset_password_page.dart';
 import 'package:folly/features/settings/settings_page.dart';
+import 'package:folly/features/stories/story_page.dart';
 import 'package:folly/features/upload_story/upload_story_page.dart';
 import 'package:folly/routes/paths.dart';
 import 'package:go_router/go_router.dart';
@@ -66,6 +67,15 @@ class Routes {
               builder: (context, state) => const ChangeLanguagePage(),
             ),
           ],
+        ),
+        GoRoute(
+          path: Paths.story.route,
+          name: Paths.story.name,
+          builder: (context, state) {
+            final storyId = state.extra as String;
+
+            return StoryPage(storyId: storyId);
+          },
         ),
       ],
     ),

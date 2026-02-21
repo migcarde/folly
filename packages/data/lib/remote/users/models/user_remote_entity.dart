@@ -34,6 +34,7 @@ class UserRemoteEntity extends Equatable {
       );
 
   Map<String, dynamic> toJson() => {
+    //! TODO: Something is wrong on JSON
     'id': uid.isNotEmpty ? uid : null,
     'email': email,
     'display_name': name,

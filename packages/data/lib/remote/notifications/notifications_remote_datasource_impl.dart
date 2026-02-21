@@ -11,20 +11,16 @@ class NotificationsRemoteDatasourceImpl extends NotificationsRemoteDatasource {
   @override
   Future<void> createNotification({
     required NotificationRemoteEntity notification,
+    required String functionName,
   }) async {
-    await _supabase.client.functions.invoke(
-      'notify-firebase-on-friend-create',
+    _supabase.client.functions.invoke(
+      functionName,
       method: HttpMethod.post,
-      body: {
-        'receiver_id': notification.receiverUserId,
-        'user_id': notification.userId,
-      },
+      body: notification.toRemoteNotificationJson(),
     );
-    await Future.wait<dynamic>([
-      _supabase.client
-          .from(_notificationsCollection)
-          .insert(notification.toJson()),
-    ]);
+    await _supabase.client
+        .from(_notificationsCollection)
+        .insert(notification.toJson());
   }
 
   @override

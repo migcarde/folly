@@ -5,4 +5,5 @@ extension StringExtensions on String {
   bool get isStrongPassword => RegExp(
     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$',
   ).hasMatch(this);
+  String get lastUrlSegment => split('/').last;
 }

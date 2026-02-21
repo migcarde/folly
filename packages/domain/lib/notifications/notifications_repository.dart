@@ -6,9 +6,6 @@ import 'package:domain/notifications/notifications_repository_impl.dart';
 import 'package:riverpod/riverpod.dart';
 
 abstract class NotificationsRepository {
-  Future<Result<void>> createNotification({
-    required NotificationEntity notification,
-  });
   Future<Result<void>> deleteNotification({required String id});
   Future<Result<NotificationEntity>> updateNotification({
     required NotificationEntity notification,

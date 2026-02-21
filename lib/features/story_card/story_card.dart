@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
-import 'package:folly/features/comments/comments_dialog.dart';
+import 'package:folly/features/comments/comments_mobile_layout.dart';
 import 'package:folly/features/story_card/story_card_notifier.dart';
 import 'package:folly/widgets/media_viewer.dart';
 import 'package:folly/widgets/profile_image.dart';
@@ -84,12 +84,16 @@ class StoryCard extends ConsumerWidget {
                   showModalBottomSheet(
                     context: context,
                     backgroundColor: Colors.white,
-                    builder: (context) {
-                      return CommentsDialog(
-                        storyId: storyId,
-                        storyUserId: userId,
-                      );
-                    },
+                    builder: (context) => SafeArea(
+                      child: Padding(
+                        padding: const EdgeInsets.all(AppDimens.screenPadding),
+                        child: CommentsMobileLayout(
+                          storyId: storyId,
+                          userStoryId: userId,
+                          isExpanded: false,
+                        ),
+                      ),
+                    ),
                   );
                 },
                 child: Padding(

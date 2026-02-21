@@ -22,5 +22,6 @@ abstract class StoriesRemoteDatasource {
     int size,
     int? total,
   });
+  Future<StoryRemoteEntity> getStory({required String storyId});
   Future<StoryRemoteEntity> updateStory({required StoryRemoteEntity story});
 }
