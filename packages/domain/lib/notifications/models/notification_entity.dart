@@ -1,15 +1,18 @@
 import 'package:data/remote/notifications/models/notification_remote_entity.dart';
 import 'package:domain/notifications/enums/notification_type.dart';
+import 'package:domain/notifications/models/comment_notification_entity.dart';
+import 'package:domain/notifications/models/follow_notification_entity.dart';
+import 'package:domain/notifications/models/like_notification_entity.dart';
 import 'package:domain/users/models/user_entity.dart';
 import 'package:equatable/equatable.dart';
 
-class NotificationEntity extends Equatable {
+abstract class NotificationEntity extends Equatable {
   final String id;
   final NotificationType type;
   final DateTime createdAt;
   final bool isRead;
   final UserEntity receiverUser;
-  final UserEntity? user;
+  final UserEntity? senderUser;
   final String? contentId;
 
   const NotificationEntity({
@@ -18,20 +21,9 @@ class NotificationEntity extends Equatable {
     required this.createdAt,
     required this.isRead,
     required this.receiverUser,
-    this.user,
+    this.senderUser,
     this.contentId,
   });
-
-  @override
-  List<Object?> get props => [
-    id,
-    type,
-    createdAt,
-    isRead,
-    receiverUser,
-    user,
-    contentId,
-  ];
 
   NotificationEntity copyWith({
     String? id,
@@ -39,42 +31,51 @@ class NotificationEntity extends Equatable {
     DateTime? createdAt,
     bool? isRead,
     UserEntity? receiverUser,
-    UserEntity? user,
+    UserEntity? senderUser,
     String? contentId,
-  }) {
-    return NotificationEntity(
-      id: id ?? this.id,
-      type: type ?? this.type,
-      createdAt: createdAt ?? this.createdAt,
-      isRead: isRead ?? this.isRead,
-      receiverUser: receiverUser ?? this.receiverUser,
-      user: user ?? this.user,
-      contentId: contentId ?? this.contentId,
-    );
-  }
+  });
 
-  NotificationRemoteEntity get remoteEntity => NotificationRemoteEntity(
-    id: id,
-    type: type.value,
-    createdAt: createdAt,
-    isRead: isRead,
-    receiverUserId: receiverUser.uid,
-    userId: user?.uid,
-    contentId: contentId,
-  );
+  NotificationRemoteEntity get remoteEntity;
 }
 
 extension NotificationRemoteEntityExtensions on NotificationRemoteEntity {
   NotificationEntity toEntity({
     required UserEntity receiverUser,
     UserEntity? user,
-  }) => NotificationEntity(
-    id: id,
-    type: NotificationType.fromInt(type),
-    createdAt: createdAt,
-    isRead: isRead,
-    receiverUser: receiverUser,
-    user: user,
-    contentId: contentId,
-  );
+  }) {
+    final type = NotificationType.fromInt(this.type);
+
+    switch (type) {
+      case NotificationType.like:
+        return LikeNotificationEntity(
+          id: id,
+          type: type,
+          createdAt: createdAt,
+          isRead: isRead,
+          receiverUser: receiverUser,
+          senderUser: user,
+          contentId: contentId,
+        );
+      case NotificationType.comment:
+        return CommentNotificationEntity(
+          id: id,
+          type: type,
+          createdAt: createdAt,
+          isRead: isRead,
+          receiverUser: receiverUser,
+          senderUser: user,
+          contentId: contentId,
+          commentId: contentId ?? '',
+        );
+      case NotificationType.follow:
+        return FollowNotificationEntity(
+          id: id,
+          type: type,
+          createdAt: createdAt,
+          isRead: isRead,
+          receiverUser: receiverUser,
+          senderUser: user,
+        );
+    }
+  }
 }

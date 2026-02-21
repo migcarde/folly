@@ -1,5 +1,5 @@
 import 'package:data/data.dart';
-import 'package:data/remote/notifications/models/notification_remote_entity.dart';
+import 'package:data/remote/notifications/models/comment_notification_remote_entity.dart';
 import 'package:data/remote/notifications/notifications_remote_datasource.dart';
 import 'package:domain/base/domain_constants.dart';
 import 'package:domain/base/result.dart';
@@ -30,17 +30,20 @@ class CommentsRepositoryImpl implements CommentsRepository {
         comment: comment.remote,
       );
 
-      await notificationsRemoteDatasource.createNotification(
-        notification: NotificationRemoteEntity(
-          id: DomainConstants.noId,
-          type: NotificationType.comment.value,
-          createdAt: DateTime.now(),
-          isRead: false,
-          receiverUserId: receiverUserId,
-          userId: comment.user.uid,
-          contentId: comment.storyId,
-        ),
-      );
+      if (comment.user.uid != receiverUserId) {
+        await notificationsRemoteDatasource.createNotification(
+          functionName: NotificationType.comment.functionName,
+          notification: CommentNotificationRemoteEntity(
+            id: DomainConstants.noId,
+            type: NotificationType.comment.value,
+            createdAt: DateTime.now(),
+            receiverUserId: receiverUserId,
+            commentId: result.id,
+            senderUserId: comment.user.uid,
+            contentId: comment.storyId,
+          ),
+        );
+      }
 
       return Result.success(result.toEntity(user: comment.user));
     } catch (e) {

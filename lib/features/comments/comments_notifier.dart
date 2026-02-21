@@ -78,6 +78,7 @@ class CommentsNotifier extends AsyncNotifier<CommentsState> {
     required String text,
     required String receiverUserId,
   }) async {
+    state = AsyncData(state.value!.copyWith(commentIsSending: true));
     final user = ref.read(authNotifierProvider).user;
 
     if (user != null && state.value != null) {
@@ -108,6 +109,7 @@ class CommentsNotifier extends AsyncNotifier<CommentsState> {
 
           state = AsyncData(
             state.value!.copyWith(
+              commentIsSending: false,
               comments: [
                 if (state.value?.commentToReply == null) data,
                 ...state.value!.comments,
@@ -118,6 +120,7 @@ class CommentsNotifier extends AsyncNotifier<CommentsState> {
         },
         (failure, __) => state = AsyncData(
           state.value!.copyWith(
+            commentIsSending: false,
             error: CommentsErrorMessages.createCommentError,
           ),
         ),

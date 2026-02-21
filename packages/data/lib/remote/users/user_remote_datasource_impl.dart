@@ -30,6 +30,7 @@ class UserRemoteDatasourceImpl extends UserRemoteDataSource {
     final result = await _instance.client
         .from(_usersCollection)
         .insert(userToCreate.toJson())
+        .select()
         .single();
 
     return UserRemoteEntity.fromJson(json: result);

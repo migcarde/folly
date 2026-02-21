@@ -20,6 +20,7 @@ class BaseTextField extends StatefulWidget {
     super.key,
     required this.hint,
     this.enabled = true,
+    this.isLoading = false,
     this.icon,
     this.errorText,
     this.controller,
@@ -40,6 +41,7 @@ class BaseTextField extends StatefulWidget {
   final String hint;
   final bool enabled;
   final TextFieldType type;
+  final bool isLoading;
 
   final IconData? icon;
   final String? errorText;
@@ -56,12 +58,15 @@ class BaseTextField extends StatefulWidget {
 }
 
 class _BaseTextFieldState extends State<BaseTextField> {
-  bool isHide = false;
+  bool _isHide = false;
+  static const _loadingSize = 20.0;
+  static const _loadingPadding = 12.0;
+  static const _borderSize = 2.0;
 
   @override
   void initState() {
     setState(() {
-      isHide = widget.textType.isPassword;
+      _isHide = widget.textType.isPassword;
     });
     super.initState();
   }
@@ -72,7 +77,7 @@ class _BaseTextFieldState extends State<BaseTextField> {
 
     return TextField(
       controller: widget.controller,
-      obscureText: isHide,
+      obscureText: _isHide,
       enableSuggestions: !widget.textType.isPassword,
       autocorrect: !widget.textType.isPassword,
       onSubmitted: widget.onSubmitted,
@@ -81,18 +86,29 @@ class _BaseTextFieldState extends State<BaseTextField> {
           ? widget.maxLines
           : 1,
       style: widget.textStyle,
+
       decoration: InputDecoration(
         hintText: widget.hint,
         prefixText: widget.prefixText,
         floatingLabelBehavior: FloatingLabelBehavior.always,
         enabled: widget.enabled,
-        suffixIcon: ClickDetector(
-          onTap: _onTap,
-          child: Icon(_iconData, color: style.iconColor),
-        ),
+        suffixIcon: widget.isLoading
+            ? Padding(
+                padding: const EdgeInsets.all(_loadingPadding),
+                child: SizedBox(
+                  width: _loadingSize,
+                  height: _loadingSize,
+                  child: CircularProgressIndicator(strokeWidth: _borderSize),
+                ),
+              )
+            : ClickDetector(
+                onTap: _onTap,
+                child: Icon(_iconData, color: style.iconColor),
+              ),
+
         border: OutlineInputBorder(
           borderSide: style.borderColor != Colors.transparent
-              ? BorderSide(color: style.borderColor, width: 2.0)
+              ? BorderSide(color: style.borderColor, width: _borderSize)
               : BorderSide.none,
           borderRadius: const BorderRadius.all(
             Radius.circular(AppDimens.cardRadius),
@@ -109,7 +125,7 @@ class _BaseTextFieldState extends State<BaseTextField> {
   void _onTap() {
     if (widget.textType.isPassword) {
       setState(() {
-        isHide = !isHide;
+        _isHide = !_isHide;
       });
     } else {
       widget.onTapIcon?.call();
@@ -118,7 +134,7 @@ class _BaseTextFieldState extends State<BaseTextField> {
 
   IconData? get _iconData {
     if (widget.textType.isPassword) {
-      return isHide ? PhosphorIcons.eyeSlash() : PhosphorIcons.eye();
+      return _isHide ? PhosphorIcons.eyeSlash() : PhosphorIcons.eye();
     } else {
       return widget.icon;
     }

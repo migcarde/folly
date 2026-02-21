@@ -1,11 +1,12 @@
 enum NotificationType {
-  like(value: 0),
-  comment(value: 1),
-  follow(value: 2);
+  like(value: 0, functionName: 'notify-firebase-on-like-create'),
+  comment(value: 1, functionName: 'notify-firebase-on-comment-create'),
+  follow(value: 2, functionName: 'notify-firebase-on-friend-create');
 
   final int value;
+  final String functionName;
 
-  const NotificationType({required this.value});
+  const NotificationType({required this.value, required this.functionName});
 
   factory NotificationType.fromInt(int value) {
     switch (value) {

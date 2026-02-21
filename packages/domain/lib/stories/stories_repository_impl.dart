@@ -152,4 +152,25 @@ class StoriesRepositoryImpl implements StoriesRepository {
       return Result.failure(e);
     }
   }
+
+  @override
+  Future<Result<StoryEntity>> getStory({required String storyId}) async {
+    try {
+      final story = await storiesRemoteDatasource.getStory(storyId: storyId);
+
+      final results = await Future.wait([
+        userRemoteDatasource.getUser(uid: story.uid),
+        challengesRemoteDatasource.getChallenge(id: story.challengeId),
+      ]);
+
+      final user = results[0] as UserRemoteEntity;
+      final challenge = results[1] as ChallengeRemoteEntity;
+
+      return Result.success(
+        story.toEntity(user: user.entity, challenge: challenge.text),
+      );
+    } catch (e) {
+      return Result.failure(e);
+    }
+  }
 }

@@ -1,6 +1,6 @@
 import 'package:data/remote/likes/likes_remote_datasource.dart';
 import 'package:data/remote/likes/models/like_remote_entity.dart';
-import 'package:data/remote/notifications/models/notification_remote_entity.dart';
+import 'package:data/remote/notifications/models/like_notification_remote_entity.dart';
 import 'package:data/remote/notifications/notifications_remote_datasource.dart';
 import 'package:domain/base/domain_constants.dart';
 import 'package:domain/base/result.dart';
@@ -29,13 +29,13 @@ class LikesRepositoryImpl implements LikesRepository {
       );
 
       await notificationsRemoteDatasource.createNotification(
-        notification: NotificationRemoteEntity(
+        functionName: NotificationType.like.functionName,
+        notification: LikeNotificationRemoteEntity(
           id: DomainConstants.noId,
           type: NotificationType.like.value,
           createdAt: DateTime.now(),
-          isRead: false,
           receiverUserId: receiverUserId,
-          userId: uid,
+          senderUserId: uid,
           contentId: storyId,
         ),
       );

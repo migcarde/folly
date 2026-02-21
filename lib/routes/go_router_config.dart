@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:folly/extensions/string_extensions.dart';
 import 'package:folly/features/auth_notifier.dart';
 import 'package:folly/routes/paths.dart';
 import 'package:folly/routes/routes.dart';
@@ -10,9 +11,10 @@ final globalNavigationKey = GlobalKey<NavigatorState>();
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   final allowedPaths = [
-    Paths.register.route,
-    Paths.resetPasswordRequest.route,
-    Paths.changePassword.route,
+    Paths.register.name,
+    Paths.resetPasswordRequest.name,
+    Paths.changePassword.name,
+    Paths.initial.name,
   ];
   final authStateListenable = ValueNotifier<bool>(false);
 
@@ -33,20 +35,17 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       final authState = ref.watch(authNotifierProvider);
       final isConnected = ref.read(authNotifierProvider.notifier).user != null;
       final isLoading = ref.watch(authNotifierProvider).isLoading;
+      final isAllowed = allowedPaths.contains(state.fullPath?.lastUrlSegment);
 
       if (authState.status.isPasswordRecovery) {
         FlutterNativeSplash.remove();
         return Paths.changePassword.route;
-      } else if (!isLoading &&
-          !isConnected &&
-          !allowedPaths.contains(state.fullPath)) {
+      } else if (!isLoading && !isConnected && !isAllowed) {
         FlutterNativeSplash.remove();
         return Paths.login.route;
       } else if (!isLoading &&
           isConnected &&
-          (state.fullPath == Paths.register.route ||
-              state.fullPath == Paths.login.route ||
-              state.fullPath == Paths.initial.route)) {
+          (isAllowed || state.fullPath == '/')) {
         FlutterNativeSplash.remove();
         return Paths.home.route;
       } else {
