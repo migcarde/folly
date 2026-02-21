@@ -126,7 +126,7 @@ class ProfileAsyncNotifier extends AsyncNotifier<ProfileState> {
             friend: state.value!.friend?.copyWith(
               state: FriendRequestState.friend,
             ),
-            following: state.value!.following + 1,
+            followers: state.value!.followers + 1,
           ),
         ),
         (_, __) {},

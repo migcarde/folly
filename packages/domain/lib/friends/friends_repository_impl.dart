@@ -24,9 +24,7 @@ class FriendsRepositoryImpl implements FriendsRepository {
   @override
   Future<Result<void>> accept({required FriendEntity request}) async {
     try {
-      await friendRemoteDatasource.updateFriend(
-        friend: request.copyWith(state: FriendRequestState.friend).remoteEntity,
-      );
+      await friendRemoteDatasource.updateFriend(friend: request.remoteEntity);
       return Result.success(null);
     } catch (e) {
       return Result.failure(e);
