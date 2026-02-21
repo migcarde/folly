@@ -35,11 +35,11 @@ class NotificationsMobileLayout extends ConsumerWidget {
 
               switch (notification.type) {
                 case NotificationType.like:
-                  // TODO: Handle this case.
-                  throw UnimplementedError();
                 case NotificationType.comment:
-                  // TODO: Handle this case.
-                  throw UnimplementedError();
+                  context.pushNamed(
+                    Paths.story.name,
+                    extra: notification.contentId,
+                  );
                 case NotificationType.follow:
                   context.pushNamed(
                     Paths.userProfile.name,

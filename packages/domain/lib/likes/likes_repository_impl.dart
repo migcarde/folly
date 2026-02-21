@@ -28,6 +28,7 @@ class LikesRepositoryImpl implements LikesRepository {
         like: LikeRemoteEntity(id: storyId, uid: uid, storyId: storyId),
       );
 
+      //! TODO: Add notification edge function for likes
       await notificationsRemoteDatasource.createNotification(
         functionName: NotificationType.like.functionName,
         notification: LikeNotificationRemoteEntity(
