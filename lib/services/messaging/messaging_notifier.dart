@@ -4,14 +4,15 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/services/messaging/message_handlers.dart';
 import 'package:folly/services/messaging/messaging_service.dart';
+import 'package:logging_service/logging_service.dart';
 
 class MessagingNotifier extends AsyncNotifier<void>
     implements MessagingService {
+  final _log = LoggingService.getLogger('MessagingNotifier');
   late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
 
   @override
@@ -43,7 +44,10 @@ class MessagingNotifier extends AsyncNotifier<void>
       ),
       onDidReceiveBackgroundNotificationResponse: openNotification,
       onDidReceiveNotificationResponse: (details) {
-        debugPrint('notification response: $details');
+        _log.logInfo(
+          title: 'Notification response',
+          message: 'Details: $details',
+        );
 
         openNotification(details);
       },
@@ -71,7 +75,7 @@ class MessagingNotifier extends AsyncNotifier<void>
   Future<String?> getToken() async {
     if (Platform.isIOS) {
       final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
-      debugPrint('APNS Token: $apnsToken');
+      _log.info('APNS Token: $apnsToken');
 
       if (apnsToken != null) {
         return FirebaseMessaging.instance.getToken();
@@ -108,13 +112,19 @@ class MessagingNotifier extends AsyncNotifier<void>
       );
 
   Future<void> _onRecieveForegroundMessage(RemoteMessage message) async {
-    debugPrint('onReceiveForegroundMessage: $message');
+    _log.logInfo(
+      title: 'Received foreground message',
+      message: 'Message: $message',
+    );
     showNotification(message);
     await manageMessage(message.data);
   }
 
   Future<void> _onTapBackgroundMessage(RemoteMessage message) async {
-    debugPrint('onMessageOpenedApp: $message');
+    _log.logInfo(
+      title: 'On tap background message',
+      message: 'Message: $message',
+    );
 
     handleTapNotification(message: message.data);
   }
@@ -122,7 +132,11 @@ class MessagingNotifier extends AsyncNotifier<void>
 
 @pragma('vm:entry-point')
 Future<void> _onReceiveBackgroundMessage(RemoteMessage message) async {
-  debugPrint('onReceiveBackgroundMessage: $message');
+  final log = LoggingService.getLogger('MessagingBackgroundHandler');
+  log.logInfo(
+    title: 'Received foreground message',
+    message: 'Message: $message',
+  );
   await Firebase.initializeApp();
   // TODO: Initialize injection here
   manageMessage(message.data);
@@ -132,7 +146,11 @@ Future<void> _onReceiveBackgroundMessage(RemoteMessage message) async {
 void openNotification(NotificationResponse notificationResponse) {
   if (notificationResponse.payload != null &&
       notificationResponse.payload!.isNotEmpty) {
-    debugPrint('openNotification payload: ${notificationResponse.payload}');
+    final log = LoggingService.getLogger('MessagingBackgroundHandler');
+    log.logInfo(
+      title: 'Open notification',
+      message: 'Payload: ${notificationResponse.payload}',
+    );
 
     handleTapNotification(message: jsonDecode(notificationResponse.payload!));
   }
