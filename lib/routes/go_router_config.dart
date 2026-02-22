@@ -6,6 +6,7 @@ import 'package:folly/features/auth_notifier.dart';
 import 'package:folly/routes/paths.dart';
 import 'package:folly/routes/routes.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logging_service/logging_service.dart';
 
 final globalNavigationKey = GlobalKey<NavigatorState>();
 
@@ -31,6 +32,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     routes: Routes.list,
     initialLocation: Paths.initial.route,
     refreshListenable: authStateListenable,
+    onException: (context, state, router) {
+      final log = LoggingService.getLogger('go_router');
+      log.severe('GoRouter exception: ${state.uri}');
+    },
     redirect: (context, state) {
       final authState = ref.watch(authNotifierProvider);
       final isConnected = ref.read(authNotifierProvider.notifier).user != null;

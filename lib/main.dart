@@ -12,10 +12,12 @@ import 'package:folly/l10n/localization_notifier.dart';
 import 'package:folly/routes/go_router_config.dart';
 import 'package:folly/services/messaging/messaging_notifier.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:logging_service/logging_service.dart';
 
 void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  LoggingService.init();
   await dotenv.load();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await DomainInitializer.init(
