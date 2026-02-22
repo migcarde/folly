@@ -1,0 +1,12 @@
+include: package:flutter_lints/flutter.yaml
+
+linter: 
+  rules:
+    # Enforce the use of const constructors where possible.
+    - prefer_const_constructors
+    - avoid_print
+    # Enforce the use of const literals where possible.
+    - prefer_const_literals_to_create_immutables
+
+# Additional information about this file can be found at
+# https://dart.dev/guides/language/analysis-options

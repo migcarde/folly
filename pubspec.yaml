@@ -21,6 +21,8 @@ dependencies:
 
   domain:
     path: packages/domain
+  logging_service:
+    path: packages/logging_service
   go_router: ^16.3.0
   phosphor_flutter: ^2.1.0
   file_picker: ^10.3.6
