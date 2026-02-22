@@ -17,6 +17,8 @@ Future<void> manageMessage(Map<String, dynamic> message) async {
       break;
     case AppMessagingTypes.comment:
       break;
+    case AppMessagingTypes.like:
+      break;
   }
 }
 
@@ -35,6 +37,7 @@ Future<void> handleTapNotification({
       await _handleFollowNotification(uid: uid);
       break;
     case AppMessagingTypes.comment:
+    case AppMessagingTypes.like:
       final storyId = message['storyId'];
 
       await _handleCommentNotification(storyId: storyId);

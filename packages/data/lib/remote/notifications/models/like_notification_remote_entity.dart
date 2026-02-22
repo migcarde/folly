@@ -23,7 +23,7 @@ class LikeNotificationRemoteEntity extends NotificationRemoteEntity {
 
   @override
   Map<String, dynamic> toJson() => {
-    'id': id,
+    if (id != '-1') 'id': id,
     'receiver_user_id': receiverUserId,
     'type': type,
     'created_at': createdAt.toIso8601String(),
