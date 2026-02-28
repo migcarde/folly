@@ -18,9 +18,14 @@ class RegisterNotifier extends StateNotifier<RegisterState> {
     required String password,
     required String repeatPassword,
   }) async {
+    state = state.copyWith(errors: []);
     List<RegisterError> errors = [
       if (!user.email.isValidEmail) RegisterError.emailNotValid,
-      if (!password.isStrongPassword) RegisterError.passwordMustBeStronger,
+      if (user.name.isEmpty) RegisterError.nameEmpty,
+      if (user.username.isEmpty) RegisterError.usernameRequired,
+      if (password.isEmpty) RegisterError.passwordRequired,
+      if (password.isNotEmpty && !password.isStrongPassword)
+        RegisterError.passwordMustBeStronger,
       if (password != repeatPassword) RegisterError.passwordNotMatch,
     ];
 
@@ -29,9 +34,21 @@ class RegisterNotifier extends StateNotifier<RegisterState> {
     } else {
       state = state.copyWith(status: RegisterStatus.loading);
 
-      _createUser(
-        user: CreateUserEntity(data: user, password: password),
-      );
+      final isUsernameAvailableResult = await userRepository
+          .isUsernameAvailable(username: user.username);
+
+      await isUsernameAvailableResult.when((isAvailable) async {
+        if (isAvailable) {
+          await _createUser(
+            user: CreateUserEntity(data: user, password: password),
+          );
+        } else {
+          state = state.copyWith(
+            status: RegisterStatus.initial,
+            errors: [RegisterError.usernameAlreadyInUse],
+          );
+        }
+      }, (failure, __) async => _onError(failure));
     }
   }
 
@@ -45,8 +62,7 @@ class RegisterNotifier extends StateNotifier<RegisterState> {
 
     result.when(
       (user) => state = state.copyWith(status: RegisterStatus.success),
-      (failure, __) =>
-          _onError(failure), // TODO: Check userename availability error
+      (failure, __) => _onError(failure),
     );
   }
 

@@ -151,4 +151,15 @@ class UserRemoteDatasourceImpl extends UserRemoteDataSource {
 
     return users;
   }
+
+  @override
+  Future<bool> isUsernameAvailable({required String username}) async {
+    final result = await _instance.client.functions.invoke(
+      'check-username',
+      method: HttpMethod.post,
+      body: {'username': username},
+    );
+
+    return result.data['exists'] == false;
+  }
 }

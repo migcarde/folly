@@ -84,10 +84,7 @@ class _RegisterMobileLayoutState extends ConsumerState<RegisterMobileLayout> {
                 padding: const EdgeInsets.only(top: AppDimens.m),
                 child: BaseTextField(
                   hint: l10n.username.toLowerCase(),
-                  errorText:
-                      state.errors.contains(RegisterError.usernameAlreadyInUse)
-                      ? l10n.username_already_in_use
-                      : null,
+                  errorText: state.errors.getUsernameErrorMessage(context),
                   controller: usernameController,
                   prefixText: '@',
                 ),
@@ -97,12 +94,7 @@ class _RegisterMobileLayoutState extends ConsumerState<RegisterMobileLayout> {
                 child: BaseTextField(
                   hint: l10n.password,
                   textType: BaseTextFieldType.password,
-                  errorText:
-                      state.errors.contains(
-                        RegisterError.passwordMustBeStronger,
-                      )
-                      ? l10n.passwords_is_weak
-                      : null,
+                  errorText: state.errors.getPasswordErrorMessage(context),
                   controller: passwordController,
                 ),
               ),

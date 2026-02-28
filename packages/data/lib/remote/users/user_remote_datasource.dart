@@ -18,4 +18,5 @@ abstract class UserRemoteDataSource {
     int? total,
   });
   Future<List<UserRemoteEntity>> getUsers({required List<String> uids});
+  Future<bool> isUsernameAvailable({required String username});
 }

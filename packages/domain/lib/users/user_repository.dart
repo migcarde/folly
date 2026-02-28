@@ -26,6 +26,7 @@ abstract class UserRepository {
     int size = 10,
     int? total,
   });
+  Future<Result<bool>> isUsernameAvailable({required String username});
 }
 
 final userRepositoryProvider = Provider.autoDispose<UserRepository>(

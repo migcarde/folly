@@ -17,6 +17,7 @@ enum AuthException {
       case AuthRemoteException.invalidEmail:
         return AuthException.invalidEmail;
       case AuthRemoteException.emailAlreadyInUse:
+      case AuthRemoteException.userAlreadyExists:
         return AuthException.emailAlreadyInUse;
       case AuthRemoteException.invalidCredentials:
         return AuthException.invalidCredentials;
@@ -28,7 +29,7 @@ enum AuthException {
         return AuthException.weakPassword;
       case AuthRemoteException.sessionMissing:
         return AuthException.sessionMissing;
-      default:
+      case AuthRemoteException.unknown:
         return AuthException.unknown;
     }
   }
