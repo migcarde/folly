@@ -16,7 +16,9 @@ enum LoginError {
   alreadyRegistered,
   invalidCredentials,
   invalidEmail,
+  emailRequired,
   userBanned,
+  passwordRequired,
   unknown,
   none;
 
@@ -37,6 +39,9 @@ enum LoginError {
         return '';
       case LoginError.userBanned:
         return l10n.user_banned;
+      case LoginError.passwordRequired:
+      case LoginError.emailRequired:
+        return l10n.required_field;
     }
   }
 
@@ -60,26 +65,51 @@ enum LoginError {
 class LoginState extends Equatable {
   const LoginState({
     this.status = LoginStatus.disconnected,
-    this.error = LoginError.none,
+    this.errors = const [],
     this.info = '',
   });
 
   final LoginStatus status;
-  final LoginError error;
+  final List<LoginError> errors;
   final String info;
 
   @override
-  List<Object?> get props => [status, error, info];
+  List<Object?> get props => [status, errors, info];
 
-  LoginState copyWith({LoginStatus? status, LoginError? error, String? info}) =>
-      LoginState(
-        status: status ?? this.status,
-        error: error ?? this.error,
-        info: info ?? this.info,
-      );
-
-  LoginState logout() => const LoginState(
-    status: LoginStatus.disconnected,
-    error: LoginError.none,
+  LoginState copyWith({
+    LoginStatus? status,
+    List<LoginError>? errors,
+    String? info,
+  }) => LoginState(
+    status: status ?? this.status,
+    errors: errors ?? this.errors,
+    info: info ?? this.info,
   );
+
+  LoginState logout() =>
+      const LoginState(status: LoginStatus.disconnected, errors: []);
+}
+
+extension LoginErrorsExtensions on List<LoginError> {
+  bool get hasEmailErrors =>
+      contains(LoginError.emailRequired) ||
+      contains(LoginError.invalidEmail) ||
+      contains(LoginError.invalidCredentials) ||
+      contains(LoginError.userBanned);
+
+  String getEmailErrorMessage(BuildContext context) {
+    final l10n = context.l10n;
+
+    if (contains(LoginError.emailRequired)) {
+      return l10n.required_field;
+    } else if (contains(LoginError.invalidEmail)) {
+      return l10n.email_not_valid;
+    } else if (contains(LoginError.invalidCredentials)) {
+      return l10n.invalid_credentials_please_try_again;
+    } else if (contains(LoginError.userBanned)) {
+      return l10n.user_banned;
+    } else {
+      return '';
+    }
+  }
 }
