@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/core/app_dimens.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
 import 'package:folly/features/login/login_notifier.dart';
+import 'package:folly/features/login/models/login_state.dart';
 import 'package:folly/routes/paths.dart';
 import 'package:folly/widgets/app_snackbar_type.dart';
 import 'package:folly/widgets/button/loading_button.dart';
@@ -27,9 +28,8 @@ class _RegisterMobileLayoutState extends ConsumerState<LoginMobileLayout> {
     final l10n = context.l10n;
 
     final state = ref.watch(loginNotifierProvider);
-
     ref.listen(loginNotifierProvider, (previous, next) {
-      if (next.error.isUnknown) {
+      if (next.errors.contains(LoginError.unknown)) {
         context.showSnackBar(
           message: context.l10n.sorry_we_have_problems_please_try_again_later,
           type: AppSnackbarType.negative,
@@ -44,15 +44,21 @@ class _RegisterMobileLayoutState extends ConsumerState<LoginMobileLayout> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              BaseTextField(hint: l10n.email, controller: emailController),
+              BaseTextField(
+                hint: l10n.email,
+                controller: emailController,
+                errorText: state.errors.hasEmailErrors
+                    ? state.errors.getEmailErrorMessage(context)
+                    : null,
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: AppDimens.m),
                 child: BaseTextField(
                   hint: l10n.password,
                   textType: BaseTextFieldType.password,
-                  errorText: state.error.isUnknown
-                      ? null
-                      : state.error.getMessage(context),
+                  errorText: state.errors.contains(LoginError.passwordRequired)
+                      ? LoginError.passwordRequired.getMessage(context)
+                      : null,
                   controller: passwordController,
                 ),
               ),
