@@ -16,7 +16,7 @@ class SearchUsersNotifier extends StateNotifier<SearchUsersState> {
     } else {
       state = state.copyWith(status: SearchUsersStatus.loading, query: query);
 
-      _searchUsers(query: query);
+      await _searchUsers(query: query);
     }
   }
 

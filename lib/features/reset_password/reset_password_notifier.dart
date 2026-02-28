@@ -33,7 +33,7 @@ class ResetPasswordNotifier extends AsyncNotifier<ResetPasswordStatus> {
 
       result.when(
         (_) => state = AsyncValue.data(ResetPasswordStatus.success),
-        (failure, stackTrace) => AsyncValue<ResetPasswordStatus>.error(
+        (failure, stackTrace) => state = AsyncValue<ResetPasswordStatus>.error(
           ResetPasswordStatus.unknownError,
           stackTrace,
         ),

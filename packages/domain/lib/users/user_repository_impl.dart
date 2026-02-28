@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:data/data.dart';
+import 'package:domain/auth/models/auth_exceptions.dart';
 import 'package:domain/base/result.dart';
 import 'package:domain/models/page_entity.dart';
 import 'package:domain/users/models/create_user_entity.dart';
@@ -22,6 +23,8 @@ class UserRepositoryImpl implements UserRepository {
       final result = await userRemoteDataSource.deleteUser(uid: uid);
 
       return Result.success(result);
+    } on AuthRemoteException catch (e) {
+      return Result.failure(AuthException.fromRemoteException(exception: e));
     } catch (e) {
       return Result.failure(e);
     }
@@ -33,6 +36,8 @@ class UserRepositoryImpl implements UserRepository {
       final result = await userRemoteDataSource.getUser(uid: uid);
 
       return Result.success(result.entity);
+    } on AuthRemoteException catch (e) {
+      return Result.failure(AuthException.fromRemoteException(exception: e));
     } catch (e) {
       return Result.failure(e);
     }
@@ -55,6 +60,8 @@ class UserRepositoryImpl implements UserRepository {
       );
 
       return Result.success(result);
+    } on AuthRemoteException catch (e) {
+      return Result.failure(AuthException.fromRemoteException(exception: e));
     } catch (e) {
       return Result.failure(e);
     }
@@ -80,6 +87,8 @@ class UserRepositoryImpl implements UserRepository {
       );
 
       return Result.success(newUser);
+    } on AuthRemoteException catch (e) {
+      return Result.failure(AuthException.fromRemoteException(exception: e));
     } catch (e) {
       return Result.failure(e);
     }
@@ -108,6 +117,23 @@ class UserRepositoryImpl implements UserRepository {
           total: result.total,
         ),
       );
+    } on AuthRemoteException catch (e) {
+      return Result.failure(AuthException.fromRemoteException(exception: e));
+    } catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  @override
+  Future<Result<bool>> isUsernameAvailable({required String username}) async {
+    try {
+      final result = await userRemoteDataSource.isUsernameAvailable(
+        username: username,
+      );
+
+      return Result.success(result);
+    } on AuthRemoteException catch (e) {
+      return Result.failure(AuthException.fromRemoteException(exception: e));
     } catch (e) {
       return Result.failure(e);
     }
