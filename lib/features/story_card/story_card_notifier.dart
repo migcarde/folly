@@ -46,6 +46,7 @@ class StoryCardNotifier extends AsyncNotifier<StoryCardState> {
 
   Future<void> like({required String receiverUserId}) async {
     final user = ref.read(authNotifierProvider).user;
+
     if (user != null) {
       final result = await ref
           .read(likesRepositoryProvider)
