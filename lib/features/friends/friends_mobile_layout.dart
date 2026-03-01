@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:folly/extensions/build_context_extensions.dart';
 import 'package:folly/features/friends/friends_notifier.dart';
 import 'package:folly/features/friends/models/friends_view_model.dart';
+import 'package:folly/features/profile/models/profile_params.dart';
 import 'package:folly/routes/paths.dart';
 import 'package:folly/widgets/empty_widget.dart';
 import 'package:folly/widgets/exception_widget.dart';
@@ -58,8 +59,10 @@ class _FriendsMobileLayoutState extends ConsumerState<FriendsMobileLayout> {
                 name: friend.name,
                 username: friend.username,
                 imageUrl: friend.photoPath,
-                onTap: () =>
-                    context.pushNamed(Paths.userProfile.name, extra: friend),
+                onTap: () => context.pushNamed(
+                  Paths.userProfile.name,
+                  extra: ProfileParams(user: friend),
+                ),
               );
             },
             separatorBuilder: (context, index) => const Divider(),
