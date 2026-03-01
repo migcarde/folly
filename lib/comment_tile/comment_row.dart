@@ -56,7 +56,7 @@ class CommentRow extends ConsumerWidget {
                       maxLines: 5,
                       expandText: l10n.show_more,
                       collapseText: l10n.show_less,
-                      textAlign: TextAlign.center,
+                      textAlign: TextAlign.start,
                       animation: true,
                       style: theme.textTheme.bodySmall,
                       linkColor: theme.primaryColor,
