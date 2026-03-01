@@ -14,7 +14,7 @@ class FriendsNotifier extends AsyncNotifier<FriendsState> {
 
   @override
   FutureOr<FriendsState> build() async {
-    state = const AsyncValue.loading();
+    state = const AsyncLoading();
     final user = ref.read(authNotifierProvider).user;
     if (user != null) {
       await _getFriends();
@@ -24,10 +24,7 @@ class FriendsNotifier extends AsyncNotifier<FriendsState> {
   }
 
   Future<void> _getFriends() async {
-    state = AsyncValue.data(
-      state.value?.copyWith(status: FriendsStatus.loading) ??
-          FriendsState(status: FriendsStatus.loading),
-    );
+    state = AsyncLoading();
 
     final result = switch (viewModel.friendType) {
       FriendType.followers =>
@@ -49,24 +46,21 @@ class FriendsNotifier extends AsyncNotifier<FriendsState> {
     };
 
     result.when(
-      (data) => state = AsyncValue.data(
+      (data) => state = AsyncData(
         FriendsState(
-          status: FriendsStatus.data,
           friends: [...state.value?.friends ?? [], ...data.content],
           page: data.page,
           totalPages: data.totalPages,
           total: data.total,
         ),
       ),
-      (error, stackTrace) => state = AsyncValue.error(error, stackTrace),
+      (error, stackTrace) => state = AsyncError(error, stackTrace),
     );
   }
 
   Future<void> nextPage() async {
     if (state.value?.isLast == false && state.value != null) {
-      state = AsyncValue.data(
-        state.value!.copyWith(page: state.value!.page + 1),
-      );
+      state = AsyncData(state.value!.copyWith(page: state.value!.page + 1));
       await _getFriends();
     }
   }
