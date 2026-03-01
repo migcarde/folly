@@ -213,5 +213,15 @@
     "show_more": "Show more",
     "@show_more": {},
     "show_less": "Show less",
-    "@show_less": {}
+    "@show_less": {},
+    "user": "{count, plural, =0{No users found} =1{User} other{Users}}",
+    "@user": {
+        "description": "A label for users, changes based on count",
+        "placeholders": {
+            "count": {
+                "type": "num",
+                "format": "compact"
+            }
+        }
+    }
 }

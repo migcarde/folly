@@ -9,13 +9,13 @@ class EmptyWidget extends StatelessWidget {
   const EmptyWidget({
     super.key,
     required this.title,
-    required this.message,
+    this.message,
     this.buttonText,
     this.onTap,
   });
 
   final String title;
-  final String message;
+  final String? message;
   final String? buttonText;
   final VoidCallback? onTap;
 
@@ -33,7 +33,8 @@ class EmptyWidget extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        Text(message, textAlign: TextAlign.center),
+        if (message?.isNotEmpty ?? false)
+          Text(message ?? '', textAlign: TextAlign.center),
         if (buttonText != null && onTap != null)
           Padding(
             padding: const EdgeInsets.only(top: AppDimens.m),

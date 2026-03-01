@@ -46,30 +46,31 @@ class _FeedMobileLayoutState extends ConsumerState<FeedMobileLayout> {
         ),
         switch (state.status) {
           FeedNotifierStatus.loading => const CircularProgressIndicator(),
-          FeedNotifierStatus.success => ListView.separated(
-            itemCount: state.stories.length,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.only(bottom: AppDimens.xl),
-            separatorBuilder: (context, index) =>
-                const SizedBox(height: AppDimens.l),
-            itemBuilder: (context, index) {
-              if (index == state.stories.length && !state.isLast) {
-                return const Center(child: CircularProgressIndicator());
-              }
+          FeedNotifierStatus.success => Expanded(
+            child: ListView.separated(
+              itemCount: state.stories.length,
+              shrinkWrap: true,
+              padding: const EdgeInsets.only(bottom: AppDimens.xl),
+              separatorBuilder: (context, index) =>
+                  const SizedBox(height: AppDimens.l),
+              itemBuilder: (context, index) {
+                if (index == state.stories.length && !state.isLast) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-              final story = state.stories[index];
+                final story = state.stories[index];
 
-              return StoryCard(
-                userId: story.user.uid,
-                storyId: story.id,
-                user: story.user.name,
-                userProfileUrl: story.user.photoPath,
-                title: story.title,
-                mediaUrl: story.imageUrl,
-                challenge: story.challenge,
-              );
-            },
+                return StoryCard(
+                  userId: story.user.uid,
+                  storyId: story.id,
+                  user: story.user.name,
+                  userProfileUrl: story.user.photoPath,
+                  title: story.title,
+                  mediaUrl: story.imageUrl,
+                  challenge: story.challenge,
+                );
+              },
+            ),
           ),
           FeedNotifierStatus.error => Text(
             l10n.sorry_we_have_problems_please_try_again_later,
