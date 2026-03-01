@@ -24,7 +24,9 @@ class _FeedMobileLayoutState extends ConsumerState<FeedMobileLayout> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(feedNotifierProvider.notifier).init();
+      if (ref.read(feedNotifierProvider).status == FeedNotifierStatus.loading) {
+        ref.read(feedNotifierProvider.notifier).init();
+      }
     });
   }
 
