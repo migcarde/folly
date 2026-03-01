@@ -11,7 +11,7 @@ class FeedNotifier extends StateNotifier<FeedNotifierState> {
   final StoriesRepository storiesRepository;
 
   Future<void> init() async {
-    state = state.copyWith(status: FeedNotifierStatus.loading);
+    state = state.copyWith(status: FeedNotifierStatus.loading, stories: []);
     if (authNotifier.user?.uid.isNotEmpty == true) {
       await _getStories();
     }
