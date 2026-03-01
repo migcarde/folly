@@ -6,6 +6,7 @@ import 'package:folly/features/profile/models/profile_params.dart';
 import 'package:folly/features/search_users/models/search_users_state.dart';
 import 'package:folly/features/search_users/search_users_notifier.dart';
 import 'package:folly/routes/paths.dart';
+import 'package:folly/widgets/empty_widget.dart';
 import 'package:folly/widgets/text_field/base_text_field.dart';
 import 'package:folly/widgets/user_tile.dart';
 import 'package:go_router/go_router.dart';
@@ -104,8 +105,8 @@ class _SearchUsersMobileLayoutState
                 ),
               ),
             ),
-            SearchUsersStatus.empty => const Expanded(
-              child: Center(child: Text('No users found')),
+            SearchUsersStatus.empty => Expanded(
+              child: Center(child: EmptyWidget(title: context.l10n.user(0))),
             ),
             SearchUsersStatus.error => const Expanded(
               child: Center(child: Text('Error')),
