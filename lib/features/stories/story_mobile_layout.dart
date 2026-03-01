@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:folly/core/app_dimens.dart';
 import 'package:folly/features/comments/comments_mobile_layout.dart';
 import 'package:folly/features/stories/story_notifier.dart';
 import 'package:folly/features/story_card/story_card.dart';
@@ -26,10 +27,15 @@ class StoryMobileLayout extends ConsumerWidget {
             challenge: data.story.challenge,
           ),
           Expanded(
-            child: CommentsMobileLayout(
-              storyId: storyId,
-              userStoryId: data.story.user.uid,
-              isExpanded: true,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppDimens.screenPadding,
+              ),
+              child: CommentsMobileLayout(
+                storyId: storyId,
+                userStoryId: data.story.user.uid,
+                isExpanded: true,
+              ),
             ),
           ),
         ],
