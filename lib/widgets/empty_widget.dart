@@ -24,6 +24,7 @@ class EmptyWidget extends StatelessWidget {
     final theme = context.theme;
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Lottie.asset('assets/lotties/empty.json', height: 200.0, repeat: false),
         Text(

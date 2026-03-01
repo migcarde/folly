@@ -33,52 +33,54 @@ class _FeedMobileLayoutState extends ConsumerState<FeedMobileLayout> {
     final l10n = context.l10n;
     final state = ref.watch(feedNotifierProvider);
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.only(bottom: 80.0),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              left: AppDimens.screenPadding,
-              right: AppDimens.screenPadding,
-              top: AppDimens.screenPadding,
-              bottom: AppDimens.l,
-            ),
-            child: DailyChallengeMobileLayout(),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            left: AppDimens.screenPadding,
+            right: AppDimens.screenPadding,
+            top: AppDimens.screenPadding,
+            bottom: AppDimens.l,
           ),
-          switch (state.status) {
-            FeedNotifierStatus.loading => const CircularProgressIndicator(),
-            FeedNotifierStatus.success => ListView.separated(
-              itemCount: state.stories.length,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              separatorBuilder: (context, index) =>
-                  const SizedBox(height: AppDimens.l),
-              itemBuilder: (context, index) {
-                if (index == state.stories.length && !state.isLast) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+          child: DailyChallengeMobileLayout(),
+        ),
+        switch (state.status) {
+          FeedNotifierStatus.loading => const CircularProgressIndicator(),
+          FeedNotifierStatus.success => ListView.separated(
+            itemCount: state.stories.length,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.only(bottom: AppDimens.xl),
+            separatorBuilder: (context, index) =>
+                const SizedBox(height: AppDimens.l),
+            itemBuilder: (context, index) {
+              if (index == state.stories.length && !state.isLast) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-                final story = state.stories[index];
+              final story = state.stories[index];
 
-                return StoryCard(
-                  userId: story.user.uid,
-                  storyId: story.id,
-                  user: story.user.name,
-                  userProfileUrl: story.user.photoPath,
-                  title: story.title,
-                  mediaUrl: story.imageUrl,
-                  challenge: story.challenge,
-                );
-              },
-            ),
-            FeedNotifierStatus.error => Text(
-              l10n.sorry_we_have_problems_please_try_again_later,
-            ),
-            FeedNotifierStatus.empty => Center(
+              return StoryCard(
+                userId: story.user.uid,
+                storyId: story.id,
+                user: story.user.name,
+                userProfileUrl: story.user.photoPath,
+                title: story.title,
+                mediaUrl: story.imageUrl,
+                challenge: story.challenge,
+              );
+            },
+          ),
+          FeedNotifierStatus.error => Text(
+            l10n.sorry_we_have_problems_please_try_again_later,
+          ),
+          FeedNotifierStatus.empty => Expanded(
+            child: Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppDimens.screenPadding,
+                padding: const EdgeInsets.only(
+                  left: AppDimens.screenPadding,
+                  right: AppDimens.screenPadding,
+                  bottom: AppDimens.xl,
                 ),
                 child: EmptyWidget(
                   title: l10n.no_stories_yet,
@@ -91,9 +93,9 @@ class _FeedMobileLayoutState extends ConsumerState<FeedMobileLayout> {
                 ),
               ),
             ),
-          },
-        ],
-      ),
+          ),
+        },
+      ],
     );
   }
 }
