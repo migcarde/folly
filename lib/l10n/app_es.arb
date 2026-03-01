@@ -222,5 +222,9 @@
                 "format": "compact"
             }
         }
-    }
+    },
+    "oops_something_went_wrong": "Ha ocurrido un error",
+    "@oops_something_went_wrong": {},
+    "please_try_again_later": "Por favor, inténtelo más tarde",
+    "@please_try_again_later": {}
 }
