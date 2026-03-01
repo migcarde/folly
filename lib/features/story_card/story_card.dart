@@ -76,9 +76,17 @@ class StoryCard extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(title),
-              const Spacer(),
-              Text(state.value?.commentsCount.toString() ?? '0'),
+              Expanded(
+                child: Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: AppDimens.m),
+                child: Text(state.value?.commentsCount.toString() ?? '0'),
+              ),
               GestureDetector(
                 onTap: () {
                   showModalBottomSheet(
@@ -126,9 +134,7 @@ class StoryCard extends ConsumerWidget {
                           : PhosphorIconsStyle.regular,
                     ),
                     size: _iconSize,
-                    color: state.value?.like != null
-                        ? Colors.red
-                        : null, // TODO: Check color
+                    color: state.value?.like != null ? Colors.red : null,
                   ),
                 ),
               ),
@@ -144,7 +150,6 @@ class StoryCard extends ConsumerWidget {
           child: RichText(
             text: TextSpan(
               style: theme.textTheme.bodyMedium,
-
               children: [
                 TextSpan(
                   text: '${context.l10n.challenge}: ',
