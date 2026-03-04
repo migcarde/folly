@@ -82,7 +82,7 @@ class FriendsRemoteDatasourceImpl implements FriendsRemoteDatasource {
     final result = await _instance.client
         .from(_friendsCollections)
         .select()
-        .eq('receiver_uid', uid)
+        .or(_getFollowersExpression(uid: uid).join(','))
         .count(CountOption.exact);
 
     return result.count;
@@ -93,7 +93,7 @@ class FriendsRemoteDatasourceImpl implements FriendsRemoteDatasource {
     final result = await _instance.client
         .from(_friendsCollections)
         .select()
-        .eq('uid', uid)
+        .or(_getFollowingExpression(uid: uid).join(','))
         .count(CountOption.exact);
 
     return result.count;
@@ -115,7 +115,7 @@ class FriendsRemoteDatasourceImpl implements FriendsRemoteDatasource {
     final result = await _instance.client
         .from(_friendsCollections)
         .select()
-        .eq('receiver_uid', uid)
+        .or(_getFollowersExpression(uid: uid).join(','))
         .range(startIndex, endIndex)
         .count(CountOption.exact);
 
@@ -145,7 +145,7 @@ class FriendsRemoteDatasourceImpl implements FriendsRemoteDatasource {
     final result = await _instance.client
         .from(_friendsCollections)
         .select()
-        .eq('uid', uid)
+        .or(_getFollowingExpression(uid: uid).join(','))
         .range(startIndex, endIndex)
         .count(CountOption.exact);
 
@@ -158,4 +158,16 @@ class FriendsRemoteDatasourceImpl implements FriendsRemoteDatasource {
       total: result.count,
     );
   }
+
+  List<String> _getFollowersExpression({required String uid}) => [
+    'receiver_uid.eq.$uid,state.eq.3',
+    'uid.eq.$uid,state.eq.2',
+    'receiver_uid.eq.$uid,state.eq.2',
+  ];
+
+  List<String> _getFollowingExpression({required String uid}) => [
+    'uid.eq.$uid,state.eq.3',
+    'uid.eq.$uid,state.eq.2',
+    'receiver_uid.eq.$uid,state.eq.2',
+  ];
 }

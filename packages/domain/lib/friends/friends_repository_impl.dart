@@ -132,7 +132,7 @@ class FriendsRepositoryImpl implements FriendsRepository {
         total: total,
       );
 
-      final uids = followersResult.content.map((friend) => friend.uid).toList();
+      final uids = _getUids(uid: uid, friends: followersResult.content);
 
       final result = await userRemoteDatasource.getUsers(uids: uids);
 
@@ -164,9 +164,7 @@ class FriendsRepositoryImpl implements FriendsRepository {
         total: total,
       );
 
-      final uids = followingResult.content
-          .map((friend) => friend.receiverUid)
-          .toList();
+      final uids = _getUids(uid: uid, friends: followingResult.content);
 
       final result = await userRemoteDatasource.getUsers(uids: uids);
 
@@ -182,4 +180,15 @@ class FriendsRepositoryImpl implements FriendsRepository {
       return Result.failure(e);
     }
   }
+
+  List<String> _getUids({
+    required String uid,
+    required List<FriendRemoteEntity> friends,
+  }) => friends.map((friend) {
+    if (friend.uid == uid) {
+      return friend.receiverUid;
+    } else {
+      return friend.uid;
+    }
+  }).toList();
 }
