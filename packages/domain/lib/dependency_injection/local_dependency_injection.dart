@@ -45,3 +45,7 @@ final notificationsRemoteDatasourceProvider =
     Provider.autoDispose<NotificationsRemoteDatasource>(
       (ref) => NotificationsRemoteDatasourceImpl(),
     );
+
+final feedRemoteDatasourceProvider = Provider.autoDispose<FeedRemoteDatasource>(
+  (ref) => FeedRemoteDatasourceImpl(),
+);

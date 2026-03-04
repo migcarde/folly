@@ -12,7 +12,7 @@ class StoriesRemoteDatasourceImpl extends StoriesRemoteDatasource {
   static const _storiesCollection = 'Stories';
 
   @override
-  Future<void> uploadStory({
+  Future<StoryRemoteEntity> uploadStory({
     required String uid,
     required String title,
     required File file,
@@ -34,7 +34,13 @@ class StoriesRemoteDatasourceImpl extends StoriesRemoteDatasource {
       challengeId: challengeId,
     );
 
-    await _supabase.client.from(_storiesCollection).insert(story.toJson());
+    final result = await _supabase.client
+        .from(_storiesCollection)
+        .insert(story.toJson())
+        .select()
+        .single();
+
+    return StoryRemoteEntity.fromJson(json: result);
   }
 
   @override

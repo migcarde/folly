@@ -14,11 +14,13 @@ class StoriesRepositoryImpl implements StoriesRepository {
   final StoriesRemoteDatasource storiesRemoteDatasource;
   final ChallengesRemoteDatasource challengesRemoteDatasource;
   final UserRemoteDataSource userRemoteDatasource;
+  final FeedRemoteDatasource feedRemoteDatasource;
 
   const StoriesRepositoryImpl({
     required this.storiesRemoteDatasource,
     required this.challengesRemoteDatasource,
     required this.userRemoteDatasource,
+    required this.feedRemoteDatasource,
   });
 
   @override
@@ -36,24 +38,31 @@ class StoriesRepositoryImpl implements StoriesRepository {
         challengeId: challengeId,
       );
 
-      final challenge = await challengesRemoteDatasource.getChallenge(
-        id: challengeId,
-      );
+      await Future.wait([
+        _updateChallenge(challengeId: challengeId),
+        feedRemoteDatasource.createFeed(uid: uid, storyId: result.id),
+      ]);
 
-      await challengesRemoteDatasource.updateChallenge(
-        challenge: ChallengeRemoteEntity(
-          id: challenge.id,
-          uid: challenge.uid,
-          text: challenge.text,
-          date: challenge.date,
-          isCompleted: true,
-        ),
-      );
-
-      return Result.success(result);
+      return Result.success(null);
     } catch (e) {
       return Result.failure(e);
     }
+  }
+
+  Future<void> _updateChallenge({required String challengeId}) async {
+    final challenge = await challengesRemoteDatasource.getChallenge(
+      id: challengeId,
+    );
+
+    await challengesRemoteDatasource.updateChallenge(
+      challenge: ChallengeRemoteEntity(
+        id: challenge.id,
+        uid: challenge.uid,
+        text: challenge.text,
+        date: challenge.date,
+        isCompleted: true,
+      ),
+    );
   }
 
   @override

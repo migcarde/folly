@@ -14,7 +14,8 @@ enum FriendRequestState {
         return FriendRequestState.following;
       case 2:
         return FriendRequestState.friend;
-
+      case 3:
+        return FriendRequestState.requested;
       default:
         return FriendRequestState.none;
     }
