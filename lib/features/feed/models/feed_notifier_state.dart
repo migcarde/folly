@@ -23,13 +23,13 @@ class FeedNotifierState extends Equatable {
 
   FeedNotifierState copyWith({
     FeedNotifierStatus? status,
-    List<FeedEntity>? stories,
+    List<FeedEntity>? feed,
     int? page,
     int? totalPages,
     int? total,
   }) => FeedNotifierState(
     status: status ?? this.status,
-    feed: stories ?? this.feed,
+    feed: feed ?? this.feed,
     page: page ?? this.page,
     totalPages: totalPages ?? this.totalPages,
     total: total ?? this.total,

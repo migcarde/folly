@@ -129,7 +129,9 @@ class ProfileAsyncNotifier extends AsyncNotifier<ProfileState> {
             followers: state.value!.followers + 1,
           ),
         ),
-        (_, __) {},
+        (_, __) {
+          // TODO: Handle error
+        },
       );
     }
   }
