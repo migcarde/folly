@@ -9,13 +9,16 @@ import 'package:domain/friends/models/friend_entity.dart';
 import 'package:domain/models/page_entity.dart';
 import 'package:domain/notifications/enums/notification_type.dart';
 import 'package:domain/users/models/user_entity.dart';
+import 'package:logging_service/logging_service.dart';
 
 class FriendsRepositoryImpl implements FriendsRepository {
   final FriendsRemoteDatasource friendRemoteDatasource;
   final UserRemoteDataSource userRemoteDatasource;
   final NotificationsRemoteDatasource notificationsRemoteDatasource;
 
-  const FriendsRepositoryImpl({
+  final _log = LoggingService.getLogger('FriendsRepository');
+
+  FriendsRepositoryImpl({
     required this.friendRemoteDatasource,
     required this.userRemoteDatasource,
     required this.notificationsRemoteDatasource,
@@ -24,7 +27,9 @@ class FriendsRepositoryImpl implements FriendsRepository {
   @override
   Future<Result<void>> accept({required FriendEntity request}) async {
     try {
-      await friendRemoteDatasource.updateFriend(friend: request.remoteEntity);
+      await friendRemoteDatasource.updateFriend(
+        friend: request.copyWith(state: FriendRequestState.friend).remoteEntity,
+      );
       return Result.success(null);
     } catch (e) {
       return Result.failure(e);
@@ -143,6 +148,7 @@ class FriendsRepositoryImpl implements FriendsRepository {
         ),
       );
     } catch (e) {
+      _log.severe(e);
       return Result.failure(e);
     }
   }
@@ -175,6 +181,7 @@ class FriendsRepositoryImpl implements FriendsRepository {
         ),
       );
     } catch (e) {
+      _log.severe(e);
       return Result.failure(e);
     }
   }

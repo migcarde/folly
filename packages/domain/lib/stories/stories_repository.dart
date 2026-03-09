@@ -36,5 +36,6 @@ final storiesRepositoryProvider = Provider.autoDispose<StoriesRepository>(
     storiesRemoteDatasource: ref.watch(storiesRemoteDatasourceProvider),
     challengesRemoteDatasource: ref.watch(challengeRemoteDatasourceProvider),
     userRemoteDatasource: ref.watch(userRemoteDatasourceProvider),
+    feedRemoteDatasource: ref.watch(feedRemoteDatasourceProvider),
   ),
 );

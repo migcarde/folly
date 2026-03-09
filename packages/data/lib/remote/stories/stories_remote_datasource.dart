@@ -4,7 +4,7 @@ import 'package:data/remote/models/page_remote_entity.dart';
 import 'package:data/remote/stories/models/story_remote_entity.dart';
 
 abstract class StoriesRemoteDatasource {
-  Future<void> uploadStory({
+  Future<StoryRemoteEntity> uploadStory({
     required String uid,
     required String title,
     required File file,

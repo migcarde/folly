@@ -50,26 +50,26 @@ class _FeedMobileLayoutState extends ConsumerState<FeedMobileLayout> {
           FeedNotifierStatus.loading => const CircularProgressIndicator(),
           FeedNotifierStatus.success => Expanded(
             child: ListView.separated(
-              itemCount: state.stories.length,
+              itemCount: state.feed.length,
               shrinkWrap: true,
               padding: const EdgeInsets.only(bottom: AppDimens.xl),
               separatorBuilder: (context, index) =>
                   const SizedBox(height: AppDimens.l),
               itemBuilder: (context, index) {
-                if (index == state.stories.length && !state.isLast) {
+                if (index == state.feed.length && !state.isLast) {
                   return const Center(child: CircularProgressIndicator());
                 }
 
-                final story = state.stories[index];
+                final feed = state.feed[index];
 
                 return StoryCard(
-                  userId: story.user.uid,
-                  storyId: story.id,
-                  user: story.user.name,
-                  userProfileUrl: story.user.photoPath,
-                  title: story.title,
-                  mediaUrl: story.imageUrl,
-                  challenge: story.challenge,
+                  userId: feed.story.user.uid,
+                  storyId: feed.story.id,
+                  user: feed.story.user.name,
+                  userProfileUrl: feed.story.user.photoPath,
+                  title: feed.story.title,
+                  mediaUrl: feed.story.imageUrl,
+                  challenge: feed.story.challenge,
                 );
               },
             ),
