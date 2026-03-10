@@ -5,10 +5,13 @@ import 'package:domain/models/page_entity.dart';
 import 'package:domain/notifications/models/notification_entity.dart';
 import 'package:domain/notifications/notifications_repository.dart';
 import 'package:domain/users/models/user_entity.dart';
+import 'package:logging_service/logging_service.dart';
 
 class NotificationsRepositoryImpl implements NotificationsRepository {
   final NotificationsRemoteDatasource notificationsRemoteDatasource;
   final UserRemoteDataSource userRemoteDatasource;
+
+  final _log = LoggingService.getLogger('NotificationsRepository');
 
   NotificationsRepositoryImpl({
     required this.notificationsRemoteDatasource,
@@ -21,6 +24,7 @@ class NotificationsRepositoryImpl implements NotificationsRepository {
       await notificationsRemoteDatasource.deleteNotification(id: id);
       return Result.success(null);
     } catch (e) {
+      _log.severe(e);
       return Result.failure(e);
     }
   }
@@ -72,6 +76,7 @@ class NotificationsRepositoryImpl implements NotificationsRepository {
         ),
       );
     } catch (e) {
+      _log.severe(e);
       return Result.failure(e);
     }
   }
@@ -91,6 +96,7 @@ class NotificationsRepositoryImpl implements NotificationsRepository {
         ),
       );
     } catch (e) {
+      _log.severe(e);
       return Result.failure(e);
     }
   }
