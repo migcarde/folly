@@ -51,9 +51,11 @@ class NotificationsRemoteDatasourceImpl extends NotificationsRemoteDatasource {
         .order('created_at', ascending: false)
         .count(CountOption.exact);
 
-    return PageRemoteEntity(
+    return PageRemoteEntity<NotificationRemoteEntity>(
       content: result.data
-          .map((json) => NotificationRemoteEntity.fromJson(json: json))
+          .map<NotificationRemoteEntity>(
+            (json) => NotificationRemoteEntity.fromJson(json: json),
+          )
           .toList(),
       page: page,
       totalPages: (result.count / size).ceil(),

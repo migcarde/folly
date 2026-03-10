@@ -27,13 +27,12 @@ class CommentNotificationRemoteEntity extends NotificationRemoteEntity {
 
   @override
   Map<String, dynamic> toJson() => {
-    'id': id,
+    if (id != '-1') 'id': id,
     'receiver_user_id': receiverUserId,
     'type': type,
     'created_at': createdAt.toIso8601String(),
     'content_id': contentId,
     'is_read': isRead,
-    'comment_id': commentId,
     if (senderUserId != null) 'sender_user_id': senderUserId,
   };
 
@@ -55,7 +54,7 @@ class CommentNotificationRemoteEntity extends NotificationRemoteEntity {
     createdAt: DateTime.parse(json['created_at']),
     contentId: json['content_id'],
     isRead: json['is_read'],
-    commentId: json['comment_id'],
+    commentId: json['content_id'],
     senderUserId: json['sender_user_id'],
   );
 }
