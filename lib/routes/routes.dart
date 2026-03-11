@@ -29,7 +29,15 @@ class Routes {
           path: Paths.userProfile.route,
           name: Paths.userProfile.name,
           builder: (context, state) {
-            final params = state.extra! as ProfileParams;
+            final profileParams = state.extra as ProfileParams?;
+
+            late ProfileParams params;
+
+            if (profileParams == null) {
+              params = ProfileParams(uid: state.pathParameters['id']);
+            } else {
+              params = profileParams;
+            }
 
             return ProfilePage(params: params);
           },
