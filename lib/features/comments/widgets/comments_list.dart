@@ -22,8 +22,9 @@ class CommentsList extends StatelessWidget {
     return ListView.separated(
       controller: scrollController,
       shrinkWrap: true,
+      padding: const EdgeInsets.symmetric(vertical: AppDimens.m),
       itemBuilder: (context, index) {
-        if (index == comments.length && !isLast) {
+        if (index == comments.length - 1 && !isLast) {
           return const Center(child: CircularProgressIndicator());
         }
 
