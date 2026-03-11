@@ -42,7 +42,7 @@ class UserRemoteEntity extends Equatable {
     'biography': biography,
     'token': token,
     'locale': locale,
-    'photo_path': photoPath,
+    if (photoPath != null && photoPath!.isNotEmpty) 'photo_path': photoPath,
   };
 
   @override

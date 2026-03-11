@@ -55,7 +55,7 @@ class UserRepositoryImpl implements UserRepository {
       }
 
       final result = await userRemoteDataSource.saveUser(
-        user: user.remoteEntity,
+        user: user.copyWith(photoPath: '').remoteEntity,
         photo: photo,
       );
 

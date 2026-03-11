@@ -5,6 +5,7 @@ import 'package:folly/extensions/build_context_extensions.dart';
 import 'package:folly/features/login/login_notifier.dart';
 import 'package:folly/features/login/models/login_state.dart';
 import 'package:folly/routes/paths.dart';
+import 'package:folly/services/messaging/messaging_notifier.dart';
 import 'package:folly/widgets/app_snackbar_type.dart';
 import 'package:folly/widgets/button/loading_button.dart';
 import 'package:folly/widgets/primary_link.dart';
@@ -85,12 +86,18 @@ class _RegisterMobileLayoutState extends ConsumerState<LoginMobileLayout> {
           child: LoadingButton(
             text: l10n.login,
             isLoading: state.status.isLoading,
-            onTap: () => ref
-                .read(loginNotifierProvider.notifier)
-                .login(
-                  email: emailController.text,
-                  password: passwordController.text,
-                ),
+            onTap: () async {
+              final firebaseToken = await ref
+                  .read(messagingNotifierProvider.notifier)
+                  .getToken();
+              await ref
+                  .read(loginNotifierProvider.notifier)
+                  .login(
+                    email: emailController.text,
+                    password: passwordController.text,
+                    firebaseToken: firebaseToken ?? '',
+                  );
+            },
           ),
         ),
       ],

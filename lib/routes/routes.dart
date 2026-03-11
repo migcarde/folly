@@ -34,7 +34,7 @@ class Routes {
             late ProfileParams params;
 
             if (profileParams == null) {
-              params = ProfileParams(uid: state.pathParameters['id']);
+              params = ProfileParams(uid: state.uri.queryParameters['id']);
             } else {
               params = profileParams;
             }

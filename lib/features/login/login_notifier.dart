@@ -1,15 +1,22 @@
 import 'package:domain/auth/auth_repository.dart';
 import 'package:domain/auth/models/auth_exceptions.dart';
+import 'package:domain/users/user_repository.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:folly/extensions/string_extensions.dart';
 import 'package:folly/features/login/models/login_state.dart';
 
 class LoginNotifier extends StateNotifier<LoginState> {
-  LoginNotifier({required this.authRepository}) : super(const LoginState());
+  LoginNotifier({required this.authRepository, required this.userRepository})
+    : super(const LoginState());
 
   final AuthRepository authRepository;
+  final UserRepository userRepository;
 
-  Future<void> login({required String email, required String password}) async {
+  Future<void> login({
+    required String email,
+    required String password,
+    required String firebaseToken,
+  }) async {
     state = state.copyWith(status: LoginStatus.loading, errors: []);
 
     final errors = [
@@ -26,7 +33,15 @@ class LoginNotifier extends StateNotifier<LoginState> {
         password: password,
       );
 
-      result.when((user) {}, (failure, __) => _onError(failure));
+      result.when((user) async {
+        final userResult = await userRepository.getUser(uid: user.uid);
+
+        userResult.ifSuccess((userToUpdate) {
+          userRepository.editUser(
+            user: userToUpdate.copyWith(firebaseToken: firebaseToken),
+          );
+        });
+      }, (failure, __) => _onError(failure));
     }
   }
 
@@ -47,5 +62,8 @@ class LoginNotifier extends StateNotifier<LoginState> {
 
 final loginNotifierProvider =
     StateNotifierProvider.autoDispose<LoginNotifier, LoginState>(
-      (ref) => LoginNotifier(authRepository: ref.watch(authRepositoryProvider)),
+      (ref) => LoginNotifier(
+        authRepository: ref.watch(authRepositoryProvider),
+        userRepository: ref.watch(userRepositoryProvider),
+      ),
     );

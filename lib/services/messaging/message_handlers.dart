@@ -45,7 +45,7 @@ Future<void> handleTapNotification({
 Future<void> _handleFollowNotification({required String uid}) async {
   globalNavigationKey.currentContext?.goNamed(
     Paths.userProfile.name,
-    pathParameters: {'id': uid},
+    queryParameters: {'id': uid},
   );
 }
 
