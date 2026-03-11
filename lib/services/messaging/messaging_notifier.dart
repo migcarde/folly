@@ -60,6 +60,11 @@ class MessagingNotifier extends AsyncNotifier<void>
       alert: true,
     );
 
+    final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
+    if (initialMessage != null) {
+      await _onTapBackgroundMessage(initialMessage);
+    }
+
     FirebaseMessaging.onMessage.listen(_onRecieveForegroundMessage);
     FirebaseMessaging.onBackgroundMessage(_onReceiveBackgroundMessage);
     FirebaseMessaging.onMessageOpenedApp.listen(

@@ -37,24 +37,26 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       log.severe('GoRouter exception: ${state.uri}');
     },
     redirect: (context, state) {
-      final authState = ref.watch(authNotifierProvider);
+      final authState = ref.read(authNotifierProvider);
       final isConnected = ref.read(authNotifierProvider.notifier).user != null;
-      final isLoading = ref.watch(authNotifierProvider).isLoading;
+      final isLoading = ref.read(authNotifierProvider).isLoading;
       final isAllowed = allowedPaths.contains(state.fullPath?.lastUrlSegment);
 
-      if (authState.status.isPasswordRecovery) {
-        FlutterNativeSplash.remove();
-        return Paths.changePassword.route;
-      } else if (!isLoading && !isConnected && !isAllowed) {
-        FlutterNativeSplash.remove();
-        return Paths.login.route;
-      } else if (!isLoading &&
-          isConnected &&
-          (isAllowed || state.fullPath == '/')) {
-        FlutterNativeSplash.remove();
-        return Paths.home.route;
-      } else {
+      if (isLoading) {
         return null;
+      } else {
+        FlutterNativeSplash.remove();
+
+        if (authState.status.isPasswordRecovery) {
+          return Paths.changePassword.route;
+        } else if (!isConnected && !isAllowed) {
+          return Paths.login.route;
+        } else if (isConnected && (isAllowed || state.fullPath == '/')) {
+          FlutterNativeSplash.remove();
+          return Paths.home.route;
+        } else {
+          return null;
+        }
       }
     },
   );
