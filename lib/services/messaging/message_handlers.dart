@@ -1,6 +1,3 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:folly/features/auth_notifier.dart';
-import 'package:folly/features/profile/models/profile_params.dart';
 import 'package:folly/routes/go_router_config.dart';
 import 'package:folly/routes/paths.dart';
 import 'package:folly/services/messaging/app_messaging_types.dart';
@@ -46,12 +43,9 @@ Future<void> handleTapNotification({
 }
 
 Future<void> _handleFollowNotification({required String uid}) async {
-  final provider = ProviderContainer();
-  provider.read(authNotifierProvider.notifier).listen();
-
   globalNavigationKey.currentContext?.goNamed(
     Paths.userProfile.name,
-    extra: ProfileParams(uid: uid),
+    pathParameters: {'id': uid},
   );
 }
 

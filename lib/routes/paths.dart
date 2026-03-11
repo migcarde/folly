@@ -9,7 +9,7 @@ enum Paths {
   settings(route: '/settings'),
   editProfile(route: '/editProfile'),
   changeLanguage(route: '/changeLanguage'),
-  userProfile(route: '/userProfile'),
+  userProfile(route: '/userProfile/:id'),
   friends(route: '/friends'),
   story(route: '/story');
 
