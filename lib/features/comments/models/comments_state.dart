@@ -61,5 +61,5 @@ class CommentsState extends Equatable {
     commentToReply: null,
   );
 
-  bool get isLast => (page + 1) == totalPages;
+  bool get isLast => (page + 1) >= totalPages;
 }
