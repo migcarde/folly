@@ -578,6 +578,61 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show less'**
   String get show_less;
+
+  /// A label for users, changes based on count
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No users found} =1{User} other{Users}}'**
+  String user(num count);
+
+  /// No description provided for @oops_something_went_wrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Oops, something went wrong'**
+  String get oops_something_went_wrong;
+
+  /// No description provided for @please_try_again_later.
+  ///
+  /// In en, this message translates to:
+  /// **'Please try again later'**
+  String get please_try_again_later;
+
+  /// No description provided for @describe_what_happend.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe what happend'**
+  String get describe_what_happend;
+
+  /// No description provided for @please_add_a_screenshot_or_a_video_of_the_reason_why_you_have_reported_this_user.
+  ///
+  /// In en, this message translates to:
+  /// **'Please add a screenshot or a video of the reason why you have reported this user'**
+  String
+  get please_add_a_screenshot_or_a_video_of_the_reason_why_you_have_reported_this_user;
+
+  /// No description provided for @upload_file.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload file'**
+  String get upload_file;
+
+  /// No description provided for @report.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get report;
+
+  /// No description provided for @report_sent_successfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Report sent successfully'**
+  String get report_sent_successfully;
+
+  /// No description provided for @this_action_cannot_be_undone.
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone'**
+  String get this_action_cannot_be_undone;
 }
 
 class _AppLocalizationsDelegate

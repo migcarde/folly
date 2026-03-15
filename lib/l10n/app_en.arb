@@ -227,5 +227,17 @@
     "oops_something_went_wrong": "Oops, something went wrong",
     "@oops_something_went_wrong": {},
     "please_try_again_later": "Please try again later",
-    "@please_try_again_later": {}
+    "@please_try_again_later": {},
+    "describe_what_happend": "Describe what happend",
+    "@describe_what_happend": {},
+    "please_add_a_screenshot_or_a_video_of_the_reason_why_you_have_reported_this_user": "Please add a screenshot or a video of the reason why you have reported this user",
+    "@please_add_a_screenshot_or_a_video_of_the_reason_why_you_have_reported_this_user": {},
+    "upload_file": "Upload file",
+    "@upload_file": {},
+    "report": "Report",
+    "@report": {},
+    "report_sent_successfully": "Report sent successfully",
+    "@report_sent_successfully": {},
+    "this_action_cannot_be_undone": "This action cannot be undone",
+    "@this_action_cannot_be_undone": {}
 }

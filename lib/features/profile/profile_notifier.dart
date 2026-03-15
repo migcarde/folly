@@ -21,7 +21,6 @@ class ProfileAsyncNotifier extends AsyncNotifier<ProfileState> {
 
   @override
   FutureOr<ProfileState> build() async {
-    // TODO: Change this to get uid or user entity from parameters and get user if is uid or set it directle
     late UserEntity user;
 
     state = AsyncLoading();
@@ -40,7 +39,7 @@ class ProfileAsyncNotifier extends AsyncNotifier<ProfileState> {
     final friendsRepository = ref.watch(friendsRepositoryProvider);
     final storiesRepository = ref.watch(storiesRepositoryProvider);
     final authNotifier = ref.watch(authNotifierProvider);
-    final isCurrentUser = authNotifier.user!.uid == user.uid;
+    final isCurrentUser = authNotifier.user?.uid == user.uid;
 
     final result = await Future.wait([
       storiesRepository.getStoriesFromUser(user: user, page: 0),

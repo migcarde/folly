@@ -37,7 +37,10 @@ class BaseButton extends StatelessWidget {
                   vertical: AppDimens.s,
                 )
               : const EdgeInsets.all(AppDimens.buttonPadding),
-          decoration: ContainerDecorators.button(color: style.backgroundColor),
+          decoration: ContainerDecorators.button(
+            color: style.backgroundColor,
+            borderColor: style.borderColor,
+          ),
           child: Row(
             mainAxisSize: size.isSmall ? MainAxisSize.min : MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,

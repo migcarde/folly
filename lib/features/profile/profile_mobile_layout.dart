@@ -38,19 +38,27 @@ class ProfileMobileLayout extends ConsumerWidget {
         ),
         child: Column(
           children: [
-            if (data.isCurrentUser)
-              Align(
-                alignment: Alignment.centerRight,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    right: AppDimens.screenPadding,
+            Align(
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: const EdgeInsets.only(right: AppDimens.screenPadding),
+                child: GestureDetector(
+                  child: Icon(
+                    data.isCurrentUser
+                        ? PhosphorIcons.gear()
+                        : PhosphorIcons.warningOctagon(),
                   ),
-                  child: GestureDetector(
-                    child: Icon(PhosphorIcons.gear()),
-                    onTap: () => context.pushNamed(Paths.settings.name),
+                  onTap: () => context.pushNamed(
+                    data.isCurrentUser
+                        ? Paths.settings.name
+                        : Paths.report.name,
+                    pathParameters: data.isCurrentUser
+                        ? {}
+                        : {'uid': data.user?.uid ?? ''},
                   ),
                 ),
               ),
+            ),
             ProfileImage(
               imageUrl: data.user?.photoPath,
               size: _profileImageSize,

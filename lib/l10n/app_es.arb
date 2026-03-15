@@ -226,5 +226,17 @@
     "oops_something_went_wrong": "Ha ocurrido un error",
     "@oops_something_went_wrong": {},
     "please_try_again_later": "Por favor, inténtelo más tarde",
-    "@please_try_again_later": {}
+    "@please_try_again_later": {},
+    "describe_what_happend": "Describe lo que pasó",
+    "@describe_what_happend": {},
+    "please_add_a_screenshot_or_a_video_of_the_reason_why_you_have_reported_this_user": "Por favor, adjunta una captura de pantalla o un video de la razón por la cual reportaste a este usuario",
+    "@please_add_a_screenshot_or_a_video_of_the_reason_why_you_have_reported_this_user": {},
+    "upload_file": "Sube un archivo",
+    "@upload_file": {},
+    "report": "Reportar",
+    "@report": {},
+    "report_sent_successfully": "Reporte enviado correctamente",
+    "@report_sent_successfully": {},
+    "this_action_cannot_be_undone": "Esta acción no se puede deshacer",
+    "@this_action_cannot_be_undone": {}
 }

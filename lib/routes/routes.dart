@@ -9,6 +9,7 @@ import 'package:folly/features/login/login_page.dart';
 import 'package:folly/features/profile/models/profile_params.dart';
 import 'package:folly/features/profile/profile_page.dart';
 import 'package:folly/features/register/register_page.dart';
+import 'package:folly/features/report_user/report_user_page.dart';
 import 'package:folly/features/reset_password/reset_password_page.dart';
 import 'package:folly/features/settings/settings_page.dart';
 import 'package:folly/features/stories/story_page.dart';
@@ -49,6 +50,15 @@ class Routes {
                 final viewModel = state.extra! as FriendsViewModel;
 
                 return FriendsPage(viewModel: viewModel);
+              },
+            ),
+            GoRoute(
+              path: Paths.report.route,
+              name: Paths.report.name,
+              builder: (context, state) {
+                final uid = state.pathParameters['uid'] as String;
+
+                return ReportUserPage(uid: uid);
               },
             ),
           ],
