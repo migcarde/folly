@@ -308,4 +308,47 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get show_less => 'Mostrar menos';
+
+  @override
+  String user(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Users',
+      one: 'User',
+      zero: 'No users found',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get oops_something_went_wrong => 'Ha ocurrido un error';
+
+  @override
+  String get please_try_again_later => 'Por favor, inténtelo más tarde';
+
+  @override
+  String get describe_what_happend => 'Describe lo que pasó';
+
+  @override
+  String
+  get please_add_a_screenshot_or_a_video_of_the_reason_why_you_have_reported_this_user =>
+      'Por favor, adjunta una captura de pantalla o un video de la razón por la cual reportaste a este usuario';
+
+  @override
+  String get upload_file => 'Sube un archivo';
+
+  @override
+  String get report => 'Reportar';
+
+  @override
+  String get report_sent_successfully => 'Reporte enviado correctamente';
+
+  @override
+  String get this_action_cannot_be_undone => 'Esta acción no se puede deshacer';
 }

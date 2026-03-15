@@ -11,7 +11,8 @@ enum Paths {
   changeLanguage(route: '/changeLanguage'),
   userProfile(route: '/userProfile'),
   friends(route: '/friends'),
-  story(route: '/story');
+  story(route: '/story'),
+  report(route: '/report/:uid');
 
   final String route;
 

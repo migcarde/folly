@@ -3,6 +3,8 @@ import 'package:data/remote/challenges/challenges_remote_datasource.dart';
 import 'package:data/remote/challenges/challenges_remote_datasource_impl.dart';
 import 'package:data/remote/notifications/notifications_remote_datasource.dart';
 import 'package:data/remote/notifications/notifications_remote_datasource_impl.dart';
+import 'package:data/remote/report_users/report_user_remote_datasource.dart';
+import 'package:data/remote/report_users/report_user_remote_datasource_impl.dart';
 import 'package:data/remote/stories/stories_remote_datasource.dart';
 import 'package:data/remote/stories/stories_remote_datasource_impl.dart';
 import 'package:data/remote/users/user_remote_datasource_impl.dart';
@@ -49,3 +51,8 @@ final notificationsRemoteDatasourceProvider =
 final feedRemoteDatasourceProvider = Provider.autoDispose<FeedRemoteDatasource>(
   (ref) => FeedRemoteDatasourceImpl(),
 );
+
+final reportUserRemoteDatasourceProvider =
+    Provider.autoDispose<ReportUserRemoteDatasource>(
+      (ref) => ReportUserRemoteDatasourceImpl(),
+    );
