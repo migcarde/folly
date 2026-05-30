@@ -3,7 +3,7 @@ class AppDimens {
   static const cardRadius = 20.0;
   static const buttonRadius = 10.0;
   static const buttonPadding = 12.0;
-  static const buttonHeight = 46.0;
+  static const buttonHeight = 50.0;
   static const optionHeight = 32.0;
   static const cardPaddingHorizontal = 18.0;
   static const cardPaddingVertical = 20.0;
