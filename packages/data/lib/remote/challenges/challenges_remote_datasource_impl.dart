@@ -15,16 +15,26 @@ class ChallengesRemoteDatasourceImpl implements ChallengesRemoteDatasource {
     try {
       final String follyPrompt =
           """
-Act as a whimsical and slightly mischievous Challenge Generator. 
-Your task is to invent one unique, harmless, and slightly silly daily 'folly' challenge for a person to complete. 
-The challenge must be a physical or social task that takes less than 5 minutes and is purely for fun. Also it must avoid dangerous and sexual content and be appropriate for all ages.
+Act as a whimsical and slightly mischievous daily challenge generator.
+Create one unique, harmless, and slightly silly daily folly challenge.
+It must be a physical or social task that takes less than 5 minutes and is purely for fun.
+Avoid dangerous, sexual, or adult content; keep it appropriate for all ages.
+Write exactly one short, clear, direct instruction.
+Do not use bullets, numbering, quotes, decoration, or markdown.
+Do not repeat the example or produce a generic variation of it.
+Use a different category than the example: choose one of these
+- a physical action with a real object,
+- a brief social interaction,
+- or a playful imaginative gesture.
+Prefer a concrete object, setting, or social target.
+Use different themes, words, and verbs each time.
 
-The output must be a simple text without any decorators or markdown containing a short, clear, and direct instruction.
+Examples:
+Tap a spoon lightly on the table as if it were a tiny drum.
+Say “hello” to a plant and thank it for being green.
+Trace the outline of an invisible butterfly in the air with your finger.
 
-Example:
-Spend 30 seconds interacting with an imaginary, elaborately decorated hat on your head.
-
-Now, generate the daily folly challenge in $languageCode:
+Now generate a fresh new daily folly challenge in $languageCode:
 """;
 
       final today = DateTime.now();
