@@ -12,45 +12,57 @@
 .swiftpm/
 migrate_working_dir/
 
-# IntelliJ related
+# IntelliJ / Android Studio
 *.iml
 *.ipr
 *.iws
 .idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
+# VS Code
+.vscode/
 
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
+# Flutter / Dart / Pub
 .dart_tool/
+.flutter-plugins
 .flutter-plugins-dependencies
+.packages
 .pub-cache/
 .pub/
-/build/
+build/
+**/build/
+**/doc/api/
+**/ios/Flutter/.last_build_id
+**/GeneratedPluginRegistrant.*
+**/flutter_export_environment.sh
+**/ephemeral/
+
+# Coverage
 /coverage/
 
-# Symbolication related
+# Symbolication
 app.*.symbols
 
-# Obfuscation related
+# Obfuscation
 app.*.map.json
 
-# Android Studio will place build artifacts here
+# Android build / local configuration
+android/.gradle/
+android/local.properties
+android/key.properties
+android/app/google-services.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# CocoaPods / Apple platform generated files
+ios/Pods/
+macos/Pods/
+**/GoogleService-Info.plist
+
+# Local config and generated files
 lib/firebase_options.dart
-pubspec.lock
 firebase.json
-android/app/google-services.json
-pubspec.lock
-pubspec.lock
 .env
-pubspec.lock
 lib/l10n/app_localizations_en.dart
 lib/l10n/app_localizations_es.dart
 lib/l10n/app_localizations.dart
